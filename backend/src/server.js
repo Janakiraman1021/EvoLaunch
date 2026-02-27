@@ -32,6 +32,9 @@ app.get('/api/health', (req, res) => {
 // ─── Routes ───────────────────────────────────────────────────────
 app.use('/api', require('./routes/api'));
 
+// ─── AI Agent Launchpad Routes (modular extension) ────────────────
+app.use('/api/ai-agents', require('./routes/aiAgentApi'));
+
 // ─── 404 handler ─────────────────────────────────────────────────
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
 
