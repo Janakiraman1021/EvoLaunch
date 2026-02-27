@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@700;800&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --background: #faf9f6;
+  --foreground: #2d4a2b;
+  --forest: #2d4a2b;
+  --sage: #7d8471;
+  --olive: #a4ac86;
+  --ivory: #faf9f6;
+}
+
+@layer base {
+  body {
+    @apply text-forest bg-ivory font-sans overflow-x-hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif font-bold tracking-tight;
+  }
+}
+
+@layer components {
+  .forest-glass {
+    @apply bg-white/40 backdrop-blur-xl border border-forest/5 shadow-2xl shadow-forest/5;
+  }
+
+  .organic-card {
+    @apply bg-white border border-sage/10 shadow-[0_8px_32px_-12px_rgba(45, 74, 43, 0.08)] hover:shadow-[0_20px_48px_-12px_rgba(45, 74, 43, 0.12)] hover:border-sage/30 transition-all duration-500 ease-out;
+  }
+
+  .cyber-nature-bg {
+    background-color: #faf9f6;
+    background-image:
+      radial-gradient(at 0% 0%, rgba(164, 172, 134, 0.1) 0, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(125, 132, 113, 0.1) 0, transparent 50%),
+      url("https://www.transparenttextures.com/patterns/leaf.png");
+    background-blend-mode: overlay;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-sage/20 rounded-full hover:bg-sage/40 transition-colors;
+  }
+}
+
+/* Custom animations for the organic feel */
+@keyframes leaf-float {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+}
+
+.animate-leaf {
+  animation: leaf-float 6s ease-in-out infinite;
+}

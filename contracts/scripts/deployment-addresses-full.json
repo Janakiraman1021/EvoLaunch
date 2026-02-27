@@ -1,0 +1,13 @@
+{
+  "launchFactory": "0x2C95eEeF7d0F5Be75dce165aC7689B09Fd06FEF6",
+  "adaptiveToken": "0xb142FCD1fc79BE3EA60C1B83558f171033A0c12E",
+  "liquidityVault": "0x383D77A86D51313e5C3F6f9feb372191FAEdA4fF",
+  "evolutionController": "0xC4D65495eB47AC8726Dad401d28A83C25B77f110",
+  "governanceModule": "0xfE63A74EcAC6BCaDF4078B7C53d01e2f511ff629",
+  "ammPair": "0x6FdFe8B580864A97Ae21f5Ba46046016FC3173DA",
+  "deployedAt": "2026-02-27T10:21:53.635Z",
+  "deployer": "0x7D02fD90716722221277D8CA750B3611Ca51dAB9",
+  "transactionHash": "0x9f33b035ac8c0713a059a8aa6cc7d81312ef2cc663f6888f83ec650fa2889103",
+  "blockNumber": 92783079,
+  "network": "bscTestnet"
+}

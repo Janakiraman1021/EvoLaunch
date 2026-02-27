@@ -1,0 +1,231 @@
+# EvoLaunch Protocol — Implementation Plan
+
+Adaptive multi-agent token launch infrastructure on BNB Smart Chain. The system deploys evolution-enabled tokens with dynamic liquidity management, Grok-powered AI agents, ECDSA-verified state transitions, and bounded deterministic enforcement.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Grok API Key**: The system requires a Grok (xAI) API key for the multi-agent intelligence layer. You must provide this in `.env`. If unavailable, the agents will use a deterministic fallback that computes MSS from pure on-chain metrics without AI reasoning — still fully functional, just without Grok's qualitative analysis layer.
+
+> [!IMPORTANT]
+> **BNB Testnet Deployer Wallet**: A funded BNB testnet wallet private key is required for deployment and agent transactions. You can get testnet BNB from https://testnet.bnbchain.org/faucet-smart
+
+> [!WARNING]
+> **MongoDB**: The backend requires a running MongoDB instance. If you don't have one locally, we'll use MongoDB Atlas free tier connection string or a local Docker instance.
+
+---
+
+## Proposed Changes
+
+### Smart Contracts (On-Chain Layer)
+
+Complete Solidity contract suite deployed via Hardhat to BNB Smart Chain testnet.
+
+---
+
+#### [NEW] [hardhat.config.js](file:///e:/BNB-Bengaluru/contracts/hardhat.config.js)
+- Hardhat config targeting BNB testnet (chainId 97)
+- Solidity 0.8.20 compiler
+- Network config for `bscTestnet` with RPC URL
+
+#### [NEW] [package.json](file:///e:/BNB-Bengaluru/contracts/package.json)
+- Dependencies: hardhat, @openzeppelin/contracts, @nomicfoundation/hardhat-toolbox, ethers
+
+#### [NEW] [IPancakeSwap.sol](file:///e:/BNB-Bengaluru/contracts/contracts/interfaces/IPancakeSwap.sol)
+- PancakeSwap Router, Factory, and Pair interfaces for AMM integration
+
+#### [NEW] [AdaptiveToken.sol](file:///e:/BNB-Bengaluru/contracts/contracts/AdaptiveToken.sol)
+- ERC20 token with dynamic transfer hooks
+- Bounded parameters: sellTax, buyTax, maxTxAmount, maxWalletSize
+- Each param has min/max bounds set at deploy, immutable
+- Transfer `_update` override enforces tax + caps based on current phase
+- Tax sent to a fee collector; AMM pair detection for buy/sell direction
+- Only EvolutionController can update current parameter values
+
+#### [NEW] [LiquidityVault.sol](file:///e:/BNB-Bengaluru/contracts/contracts/LiquidityVault.sol)
+- Holds LP tokens from initial liquidity provision
+- Liquidity divided into N tranches (configurable at deploy)
+- Each tranche unlocked when: MSS threshold met + phase condition met + no freeze
+- `unlockTranche()` callable only by EvolutionController with valid agent signature
+- Emergency freeze pauses all unlocks
+- Cannot release beyond total LP balance
+
+#### [NEW] [EvolutionController.sol](file:///e:/BNB-Bengaluru/contracts/contracts/EvolutionController.sol)
+- Phase state machine: Protective(0) → Growth(1) → Expansion(2) → Governance(3)
+- Stores authorized agent public keys (up to 4 agents)
+- `updateParameters()`: accepts signed payload, verifies ECDSA, verifies bounds, updates AdaptiveToken
+- `transitionPhase()`: accepts signed phase transition, verifies MSS threshold, verifies sequential progression (with downgrade support)
+- Timestamp/nonce freshness check prevents replay
+- Emits events for all state changes
+
+#### [NEW] [GovernanceModule.sol](file:///e:/BNB-Bengaluru/contracts/contracts/GovernanceModule.sol)
+- DAO-style proposal + voting for governance actions
+- Actions: freeze adaptive logic, adjust thresholds within bounds, replace agent keys, emergency pause
+- Voting power based on token holdings
+- Proposal execution requires quorum + majority
+- Cannot override immutable parameter bounds
+
+#### [NEW] [LaunchFactory.sol](file:///e:/BNB-Bengaluru/contracts/contracts/LaunchFactory.sol)
+- Single `createLaunch()` deploys: AdaptiveToken, LiquidityVault, EvolutionController, GovernanceModule
+- Sets all immutable bounds from founder config
+- Adds initial liquidity to PancakeSwap via Router
+- Transfers LP tokens to LiquidityVault
+- Registers agent public keys in EvolutionController
+- Emits LaunchCreated event with all contract addresses
+
+#### [NEW] [deploy.js](file:///e:/BNB-Bengaluru/contracts/scripts/deploy.js)
+- Deploys LaunchFactory
+- Creates a launch with sample config
+- Logs all deployed contract addresses
+
+---
+
+### Backend & AI Agent Layer
+
+Node.js orchestration service with Grok-powered multi-agent system.
+
+---
+
+#### [NEW] [package.json](file:///e:/BNB-Bengaluru/backend/package.json)
+- Dependencies: express, ethers, mongoose, axios, dotenv, cors
+
+#### [NEW] [server.js](file:///e:/BNB-Bengaluru/backend/src/server.js)
+- Express server with REST API for frontend
+- Endpoints: GET launch status, MSS history, phase history, agent logs, reputation scores
+- CORS enabled for frontend
+
+#### [NEW] [blockchain.js](file:///e:/BNB-Bengaluru/backend/src/services/blockchain.js)
+- Ethers.js provider + signer for BNB testnet
+- Contract instance factories for all deployed contracts
+- Event listener service: listens to Transfer, PhaseTransition, ParameterUpdate, TrancheUnlock events
+- Stores events in MongoDB
+
+#### [NEW] [mssEngine.js](file:///e:/BNB-Bengaluru/backend/src/services/mssEngine.js)
+- Computes Market Stability Score from real on-chain data
+- LiquidityScore: LP reserve ratio analysis
+- VolatilityScore: price deviation from rolling average (from swap events)
+- DistributionScore: holder concentration analysis (top holder %)
+- ParticipationScore: unique trader count growth
+- Weighted composite: MSS = (L×w1)+(V×w2)+(D×w3)+(P×w4), bounded 0–100
+- Configurable weights set at deploy
+
+#### [NEW] [marketAgent.js](file:///e:/BNB-Bengaluru/backend/src/agents/marketAgent.js)
+- Grok-powered Market Intelligence Agent
+- Pulls real swap events, computes buy/sell ratio, liquidity depth variance, whale concentration
+- Sends structured data to Grok for qualitative risk analysis
+- Outputs: MSS (0–100), Volatility Risk Indicator, Liquidity Stress Indicator
+- Fallback: pure algorithmic computation if Grok unavailable
+
+#### [NEW] [liquidityAgent.js](file:///e:/BNB-Bengaluru/backend/src/agents/liquidityAgent.js)
+- Interprets MSS and liquidity health
+- Decides: unlock next tranche / freeze / slow rate
+- Generates signed unlock approval payload
+
+#### [NEW] [reputationAgent.js](file:///e:/BNB-Bengaluru/backend/src/agents/reputationAgent.js)
+- Analyzes wallet transaction history on-chain
+- Scores: holding duration, dump frequency, participation patterns
+- Outputs: Reputation Score, Allocation Weight
+
+#### [NEW] [phaseAgent.js](file:///e:/BNB-Bengaluru/backend/src/agents/phaseAgent.js)
+- Consumes MSS, liquidity stress, distribution fairness, participation growth
+- Determines phase transition: upgrade or downgrade
+- MSS < 40 → Protective, 40–70 → Growth, > 70 → Expansion
+- Cannot skip phases upward; downgrades allowed
+- Generates signed phase transition payload
+
+#### [NEW] [signingService.js](file:///e:/BNB-Bengaluru/backend/src/services/signingService.js)
+- ECDSA signing with ethers.js
+- Signs structured payloads (MSS, phase, parameters, timestamp, nonce)
+- EIP-712 style typed data signing for on-chain verification
+
+#### [NEW] [orchestrator.js](file:///e:/BNB-Bengaluru/backend/src/services/orchestrator.js)
+- Scheduled evaluation cycles (configurable interval, default 60s)
+- Runs all agents in sequence: Market → Liquidity → Reputation → Phase
+- Aggregates signals
+- Submits signed transactions to EvolutionController
+- Logs all decisions to MongoDB
+
+#### [NEW] [models/](file:///e:/BNB-Bengaluru/backend/src/models/)
+- Mongoose schemas: Launch, MSSHistory, PhaseTransition, AgentLog, ReputationScore
+
+#### [NEW] [.env.example](file:///e:/BNB-Bengaluru/backend/.env.example)
+- Template with all required env vars
+
+---
+
+### Frontend Dashboard
+
+Next.js + TypeScript dashboard with real-time chain state visualization.
+
+---
+
+#### [NEW] [Next.js project](file:///e:/BNB-Bengaluru/frontend/)
+- Next.js 14 with App Router, TypeScript, TailwindCSS
+- Wagmi + Viem for wallet connection
+- **Theme**: "Forest Canopy" — Futuristic Earth-Tones
+  - **Colors**: Forest Green (#2d4a2b), Sage (#7d8471), Olive (#a4ac86), Ivory (#faf9f6)
+  - **Typography**: Crimson Text (Serif) for Headers, Inter (Sans) for Body
+  - **Aesthetic**: Solar-punk/Cyber-nature with glassmorphism and organic glows
+
+#### [NEW] [Dashboard page](file:///e:/BNB-Bengaluru/frontend/src/app/page.tsx)
+- Main dashboard showing: current phase, MSS gauge, token stats, recent events
+
+#### [NEW] [Phase Timeline](file:///e:/BNB-Bengaluru/frontend/src/components/PhaseTimeline.tsx)
+- Visual timeline of phase transitions with timestamps
+
+#### [NEW] [MSS Chart](file:///e:/BNB-Bengaluru/frontend/src/components/MSSChart.tsx)
+- Real-time line chart of MSS history with threshold bands
+
+#### [NEW] [Liquidity Tracker](file:///e:/BNB-Bengaluru/frontend/src/components/LiquidityTracker.tsx)
+- Progress bar showing unlocked/locked tranches
+
+#### [NEW] [Agent Logs](file:///e:/BNB-Bengaluru/frontend/src/components/AgentLogs.tsx)
+- Scrollable decision log from all agents
+
+#### [NEW] [Governance Panel](file:///e:/BNB-Bengaluru/frontend/src/components/GovernancePanel.tsx)
+- Proposal creation, voting, emergency actions
+
+#### [NEW] [Launch Form](file:///e:/BNB-Bengaluru/frontend/src/components/LaunchForm.tsx)
+- Create new launch with parameter configuration
+
+---
+
+## Verification Plan
+
+### Automated Tests
+
+1. **Smart Contract Compilation**
+   ```
+   cd e:\BNB-Bengaluru\contracts && npx hardhat compile
+   ```
+   Expected: Zero errors, zero warnings
+
+2. **Contract Unit Tests** (Hardhat test suite)
+   ```
+   cd e:\BNB-Bengaluru\contracts && npx hardhat test
+   ```
+   Tests will cover:
+   - AdaptiveToken: transfer hooks, tax application, bound enforcement
+   - EvolutionController: ECDSA verification, phase transitions, replay prevention
+   - LiquidityVault: tranche unlock, freeze logic
+   - LaunchFactory: full deployment flow
+
+3. **Backend Startup**
+   ```
+   cd e:\BNB-Bengaluru\backend && node src/server.js
+   ```
+   Expected: Server starts without errors, connects to MongoDB
+
+4. **Frontend Build**
+   ```
+   cd e:\BNB-Bengaluru\frontend && npm run build
+   ```
+   Expected: Build completes without errors
+
+### Manual Verification
+
+1. **Deploy to BNB Testnet**: Run `npx hardhat run scripts/deploy.js --network bscTestnet` and verify contract addresses on https://testnet.bscscan.com
+2. **Verify Liquidity**: Check PancakeSwap testnet for the created trading pair
+3. **Run Agent Cycle**: Start the backend orchestrator and observe MSS computation logs
+4. **Execute Test Swaps**: Use the frontend or BSCScan to buy/sell tokens and observe adaptive behavior
+5. **Verify Phase Transition**: After sufficient sell pressure, confirm phase downgrade in contract state
