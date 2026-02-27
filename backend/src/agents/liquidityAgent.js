@@ -1,23 +1,55 @@
 /**
- * @dev Liquidity Orchestrator Agent
+ * @module liquidityAgent
+ * @dev Evaluates whether a liquidity tranche should be unlocked.
+ *      Decisions are based on MSS, phase, and tranche-specific thresholds.
  */
-const evaluateLiquidityUnlock = (mss, currentTrancheIndex, totalTranches) => {
-    let shouldUnlock = false;
-    let shouldFreeze = false;
 
+/**
+ * Evaluate unlock eligibility for a single tranche.
+ * @param {number} mss - Current MSS (0–100)
+ * @param {number} trancheIndex
+ * @param {number} totalTranches
+ * @param {number} mssThreshold - Tranche's required MSS
+ * @param {number} phaseRequired - Tranche's required phase index
+ * @param {number} currentPhase - Current on-chain phase index
+ * @returns {{ shouldUnlock, shouldFreeze, reason }}
+ */
+const evaluateLiquidityUnlock = (
+    mss, trancheIndex, totalTranches,
+    mssThreshold, phaseRequired, currentPhase
+) => {
+    // Hard freeze threshold
     if (mss < 30) {
-        shouldFreeze = true;
-    } else if (mss >= 60 && currentTrancheIndex < totalTranches) {
-        shouldUnlock = true;
+        return {
+            shouldUnlock: false,
+            shouldFreeze: true,
+            reason: `MSS ${mss} is critically low — vault freeze recommended`
+        };
     }
 
+    // Check tranche-specific thresholds
+    if (mss < mssThreshold) {
+        return {
+            shouldUnlock: false,
+            shouldFreeze: false,
+            reason: `MSS ${mss} below tranche threshold ${mssThreshold}`
+        };
+    }
+
+    if (currentPhase < phaseRequired) {
+        return {
+            shouldUnlock: false,
+            shouldFreeze: false,
+            reason: `Current phase ${currentPhase} below required phase ${phaseRequired}`
+        };
+    }
+
+    // All conditions met
     return {
-        shouldUnlock,
-        shouldFreeze,
-        reason: mss < 30 ? "High instability" : (mss >= 60 ? "Stable growth" : "Neutral state")
+        shouldUnlock: true,
+        shouldFreeze: false,
+        reason: `MSS ${mss} ≥ ${mssThreshold} and phase ${currentPhase} ≥ ${phaseRequired}`
     };
 };
 
-module.exports = {
-    evaluateLiquidityUnlock
-};
+module.exports = { evaluateLiquidityUnlock };
