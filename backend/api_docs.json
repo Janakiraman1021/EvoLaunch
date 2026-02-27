@@ -1,0 +1,76 @@
+{
+    "project": "EvoLaunch Protocol",
+    "base_url": "http://localhost:5000",
+    "test_token_address": "0xb142FCD1fc79BE3EA60C1B83558f171033A0c12E",
+    "endpoints": [
+        {
+            "name": "System Health",
+            "path": "/api/health",
+            "method": "GET",
+            "description": "Checks connectivity to BNB Smart Chain and general system status.",
+            "sample_response": {
+                "healthy": true,
+                "governanceFrozen": false,
+                "lastGoodBlock": "2026-02-27T11:25:00.000Z"
+            }
+        },
+        {
+            "name": "Launch Status",
+            "path": "/api/status/:address",
+            "method": "GET",
+            "description": "Returns current MSS, phase, and the most recent agent neural logs.",
+            "sample_response": {
+                "mss": 70,
+                "logs": [
+                    {
+                        "phase": "Expansion",
+                        "mss": 70,
+                        "analysis": "Stable liquidity detected.",
+                        "txHash": "0x7cbb8ef..."
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Market Metrics",
+            "path": "/api/metrics/:address",
+            "method": "GET",
+            "description": "Live rolling window metrics (buy/sell volume, pressure, and whale count).",
+            "sample_response": {
+                "buyPressure": 71,
+                "whaleCount": 1,
+                "buyVolume": "5000000000000000000"
+            }
+        },
+        {
+            "name": "Neural Audit Trail",
+            "path": "/api/agent-logs/:address",
+            "method": "GET",
+            "description": "Detailed history of every decision made by the AI agents.",
+            "sample_response": [
+                {
+                    "mss": 70,
+                    "rawMSS": 68,
+                    "analysis": "Grok adjusted MSS based on trend...",
+                    "timestamp": "2026-02-27T11:20:17Z"
+                }
+            ]
+        },
+        {
+            "name": "Wallet Reputation",
+            "path": "/api/reputation/:wallet",
+            "method": "GET",
+            "description": "Wallet score (0-100) based on on-chain behavior (holding, dumps, botting).",
+            "sample_response": {
+                "score": 85,
+                "allocationWeight": 0.85,
+                "isBotSuspect": false
+            }
+        }
+    ],
+    "blockchain_verification": {
+        "mss_verification": "Check EvolutionController contract -> currentMSS()",
+        "phase_verification": "Check EvolutionController contract -> currentPhase()",
+        "tax_verification": "Check AdaptiveToken contract -> sellTax() / buyTax()"
+    }
+}

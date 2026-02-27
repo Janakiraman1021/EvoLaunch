@@ -1,13 +1,20 @@
 const mongoose = require('mongoose');
 
-const agentLogSchema = new mongoose.Schema({
-    agentName: { type: String, required: true },
+const AgentLogSchema = new mongoose.Schema({
     tokenAddress: { type: String, required: true, index: true },
-    timestamp: { type: Number, required: true },
-    decision: String,
-    reason: String,
-    payload: Object,
-    signature: String
+    mss: { type: Number, required: true },
+    rawMSS: { type: Number },
+    phase: { type: String, required: true },
+    sellTax: { type: Number },
+    buyTax: { type: Number },
+    maxTxAmt: { type: String },
+    maxWallet: { type: String },
+    volatilityRisk: { type: Number },
+    liquidityStress: { type: Number },
+    analysis: { type: String },
+    grokAnalysis: { type: String },
+    txHash: { type: String },
+    timestamp: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('AgentLog', agentLogSchema);
+module.exports = mongoose.model('AgentLog', AgentLogSchema);
