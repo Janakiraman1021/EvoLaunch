@@ -17,17 +17,40 @@
 }
 
 html[data-theme='light'] {
-  --background: #FDFDFB !important;
-  --secondary: #F4F4F0 !important;
-  --card: #FFFFFF !important;
-  --gold: #A6804A !important;
-  --gold-hover: #8D6D3F !important;
+  --background: #EDF2F7 !important; /* Dimmer light gray (Gray 100/200 mix) */
+  --secondary: #E2E8F0 !important;
+  --card: #F8FAFC !important;
+  --gold: #A36E2E !important;
+  --gold-hover: #8B5E27 !important;
   --status-success: #166534 !important;
   --status-warning: #B45309 !important;
   --status-danger: #991B1B !important;
-  --muted: #64748B !important;
-  --primary-text: #0F172A !important;
+  --muted: #4A5568 !important;
+  --primary-text: #171923 !important;
   --particle-color: 0, 0, 0 !important;
+}
+
+/* Global Fixes for Light Mode white text/borders */
+html[data-theme='light'] .text-white,
+html[data-theme='light'] .text-primary-text {
+  color: var(--primary-text) !important;
+}
+
+html[data-theme='light'] .border-white\/5,
+html[data-theme='light'] .border-white\/10,
+html[data-theme='light'] .border-white\/20 {
+  border-color: color-mix(in srgb, var(--primary-text), transparent 90%) !important;
+}
+
+html[data-theme='light'] .divide-white\/5,
+html[data-theme='light'] .divide-white\/10 {
+  border-color: color-mix(in srgb, var(--primary-text), transparent 90%) !important;
+}
+
+html[data-theme='light'] .bg-white\/5,
+html[data-theme='light'] .bg-white\/10,
+html[data-theme='light'] .bg-white\/03 {
+  background-color: color-mix(in srgb, var(--primary-text), transparent 95%) !important;
 }
 
 body {
@@ -50,14 +73,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .luxury-card {
-  background-color: color-mix(in srgb, var(--card), transparent 40%);
+  background-color: color-mix(in srgb, var(--card), transparent 20%);
   backdrop-filter: blur(24px);
-  border: 1px solid color-mix(in srgb, var(--primary-text), transparent 95%);
-  border-radius: 2rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border: 1px solid color-mix(in srgb, var(--primary-text), transparent 92%);
+  border-radius: 2.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html[data-theme='dark'] .luxury-card {
+  background-color: color-mix(in srgb, var(--card), transparent 40%);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .luxury-card::before {
@@ -74,6 +102,10 @@ h1, h2, h3, h4, h5, h6 {
 .luxury-card:hover {
   border-color: color-mix(in srgb, var(--gold), transparent 80%);
   transform: translateY(-2px);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.4), 0 0 30px color-mix(in srgb, var(--gold), transparent 95%);
+}
+
+html[data-theme='dark'] .luxury-card:hover {
   box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.9), 0 0 30px color-mix(in srgb, var(--gold), transparent 95%);
 }
 
@@ -97,12 +129,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .sidebar-icon {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   background-color: color-mix(in srgb, var(--primary-text), transparent 98%);
   border: 1px solid color-mix(in srgb, var(--primary-text), transparent 95%);
   color: var(--muted);
@@ -115,27 +147,48 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 1rem;
+  border-radius: 1.25rem;
   background-color: color-mix(in srgb, var(--primary-text), transparent 97%);
   border: 1px solid color-mix(in srgb, var(--primary-text), transparent 95%);
   color: var(--gold);
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.2);
   transition: all 0.5s ease;
 }
 
+html[data-theme='dark'] .icon-box-lg {
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+}
+
 .glass-panel {
-  background-color: color-mix(in srgb, var(--background), transparent 20%);
+  background-color: color-mix(in srgb, var(--background), transparent 15%);
   backdrop-filter: blur(40px);
-  border: 1px solid color-mix(in srgb, var(--primary-text), transparent 92%);
-  box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.3);
+  border: 1px solid color-mix(in srgb, var(--primary-text), transparent 90%);
+  box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.15);
+}
+
+html[data-theme='dark'] .glass-panel {
+  background-color: color-mix(in srgb, var(--background), transparent 20%);
+  box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.5);
 }
 
 .floating-sidebar {
-  height: 90vh;
-  margin: 5vh 0;
+  height: 85vh;
+  margin: 7.5vh 0;
   border-radius: 9999px;
-  width: 5rem;
-  left: 1.5rem;
+  width: 5.5rem;
+  left: 2.5rem;
+}
+
+.floating-navbar {
+  border-radius: 9999px !important;
+  margin-top: 1.5rem !important;
+  padding: 0.75rem 2.5rem !important;
+  border: 1px solid color-mix(in srgb, var(--primary-text), transparent 90%) !important;
+  box-shadow: 0 15px 35px -15px rgba(0, 0, 0, 0.1) !important;
+}
+
+html[data-theme='dark'] .floating-navbar {
+  box-shadow: 0 15px 35px -15px rgba(0, 0, 0, 0.5) !important;
 }
 
 .btn-primary {

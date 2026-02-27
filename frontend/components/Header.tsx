@@ -32,7 +32,7 @@ export default function Header() {
   };
 
   return (
-    <header className="flex items-center justify-between mb-12 sticky top-0 z-30 py-6 px-1 border-b border-gold/10 bg-[var(--background)]/80 backdrop-blur-2xl overflow-hidden transition-colors duration-500">
+    <header className="flex items-center justify-between mb-12 sticky top-6 z-30 py-6 px-1 glass-panel floating-navbar transition-colors duration-500">
       <div className="noise-overlay" />
       <div className="flex flex-col relative z-10">
         <h2 className="text-3xl font-bold text-primary tracking-tighter fade-in group cursor-default">

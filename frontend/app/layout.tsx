@@ -28,9 +28,9 @@ export default function RootLayout({
 
     return (
         <html lang="en" className={`${outfit.variable} ${playfair.variable}`}>
-            <body className="flex h-screen overflow-hidden bg-background text-primary font-body antialiased selection:bg-gold/30">
+            <body className="flex h-screen overflow-hidden bg-background text-primary font-body antialiased">
                 {!isLanding && <Sidebar />}
-                <main className={`flex-1 ${isLanding ? 'ml-0' : 'ml-32'} h-screen overflow-y-auto p-12 relative scroll-smooth overflow-x-hidden`}>
+                <main className={`flex-1 ${isLanding ? 'ml-0' : 'ml-40'} h-screen overflow-y-auto p-12 relative scroll-smooth overflow-x-hidden`}>
                     {/* Institutional Background Elements */}
                     <div className="fixed inset-0 pointer-events-none overflow-hidden select-none z-0">
                         <div className="absolute inset-0 neural-grid opacity-20" />

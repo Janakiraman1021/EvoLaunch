@@ -13,7 +13,7 @@ export default function AgentLogs() {
     return (
         <div className="space-y-6 font-sans text-sm overflow-y-auto max-h-[500px] pr-4 custom-scrollbar">
             {logs.map((log, i) => (
-                <div key={i} className="flex gap-6 p-6 rounded-2xl bg-secondary/30 border border-gold/[0.05] items-start hover:border-gold/20 hover:bg-gold/[0.02] transition-all duration-500 group">
+                <div key={i} className="flex gap-6 p-6 rounded-2xl bg-[var(--secondary)]/40 border border-[var(--gold)]/[0.1] items-start hover:border-[var(--gold)]/30 hover:bg-[var(--gold)]/[0.04] transition-all duration-500 group">
                     <div className={`mt-1 p-3 rounded-xl border transition-all duration-300 ${
                         log.type === 'success' ? 'bg-status-success/5 text-status-success border-status-success/20' :
                         log.type === 'warning' ? 'bg-status-warning/5 text-status-warning border-status-warning/20' :

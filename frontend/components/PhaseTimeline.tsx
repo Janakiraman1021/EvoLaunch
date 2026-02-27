@@ -17,7 +17,7 @@ export default function PhaseTimeline() {
                     <div className={`absolute left-0 p-3 rounded-2xl z-10 transition-all duration-700 glass-panel border-2 ${
                         p.status === 'completed' ? 'text-gold border-gold/40' :
                         p.status === 'current' ? 'text-gold border-gold shadow-gold-glow animate-pulse' :
-                        'text-muted/20 border-white/5 bg-secondary'
+                        'text-muted/40 border-[var(--primary-text)]/10 bg-[var(--secondary)]'
                     }`}>
                         {p.status === 'completed' ? <CheckCircle2 size={24} /> :
                             p.status === 'current' ? <Sparkles size={24} /> :
