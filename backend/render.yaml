@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: evolaunch-backend
+    runtime: docker
+    plan: starter
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        fromConfig: mongodb_uri # Or set manually in Render dashboard
+      - key: BNB_RPC_URL
+        sync: false
+      - key: GROK_API_KEY
+        sync: false
+      - key: AGENT_PRIVATE_KEY
+        sync: false
+      - key: ADAPTIVE_TOKEN_ADDRESS
+        sync: false
+      - key: AMM_PAIR_ADDRESS
+        sync: false
+      - key: EVOLUTION_CONTROLLER_ADDRESS
+        sync: false
+      - key: LIQUIDITY_VAULT_ADDRESS
+        sync: false
+      - key: AUTO_SUBMIT
+        value: "false"
+      - key: UPDATE_INTERVAL_MS
+        value: "300000"

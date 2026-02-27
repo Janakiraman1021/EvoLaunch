@@ -1,9 +1,18 @@
 const { ethers } = require('ethers');
 const dotenv = require('dotenv');
 dotenv.config();
+const networks = require('../../config/networks.json');
 
-// HTTP provider for read/write calls
-const provider = new ethers.JsonRpcProvider(process.env.BNB_RPC_URL);
+// HTTP provider with failover logic
+const rpcUrls = [process.env.BNB_RPC_URL, ...networks.bsc_testnet.rpc_urls];
+let _currentRpcIndex = 0;
+let provider = new ethers.JsonRpcProvider(rpcUrls[_currentRpcIndex]);
+
+const rotateProvider = () => {
+    _currentRpcIndex = (_currentRpcIndex + 1) % rpcUrls.length;
+    console.log(`[Blockchain] Rotating RPC provider to: ${rpcUrls[_currentRpcIndex]}`);
+    provider = new ethers.JsonRpcProvider(rpcUrls[_currentRpcIndex]);
+};
 
 // Agent wallet for signing
 const agentWallet = process.env.AGENT_PRIVATE_KEY
@@ -23,8 +32,9 @@ const isProviderHealthy = async () => {
     try {
         const block = await provider.getBlockNumber();
         const now = Date.now();
-        if (block === _lastBlockNumber && now - _lastBlockTime > 60000) {
+        if (block === _lastBlockNumber && now - _lastBlockTime > 90000) {
             console.warn('[Blockchain] Block number stale — possible RPC issue');
+            rotateProvider();
             return false;
         }
         _lastBlockNumber = block;
@@ -32,12 +42,14 @@ const isProviderHealthy = async () => {
         return true;
     } catch (err) {
         console.error('[Blockchain] Health check failed:', err.message);
+        rotateProvider();
         return false;
     }
 };
 
 module.exports = {
     provider,
+    rotateProvider,
     agentWallet,
     getContract,
     getContractWithSigner,

@@ -1,76 +1,145 @@
 {
     "project": "EvoLaunch Protocol",
     "base_url": "http://localhost:5000",
-    "test_token_address": "0xb142FCD1fc79BE3EA60C1B83558f171033A0c12E",
+    "version": "1.0.0",
     "endpoints": [
         {
             "name": "System Health",
             "path": "/api/health",
             "method": "GET",
-            "description": "Checks connectivity to BNB Smart Chain and general system status.",
+            "description": "Checks connectivity to BNB Smart Chain, RPC failover status, and global governance freeze state.",
             "sample_response": {
                 "healthy": true,
                 "governanceFrozen": false,
-                "lastGoodBlock": "2026-02-27T11:25:00.000Z"
+                "currentRPC": "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+                "lastGoodBlock": 92792450
             }
         },
         {
-            "name": "Launch Status",
+            "name": "Live Market Metrics",
+            "path": "/api/metrics/:address",
+            "method": "GET",
+            "description": "Returns rolling window analysis of the last 1000 blocks including buy/sell pressure and whale activity.",
+            "sample_response": {
+                "buyVolume": "1500.5",
+                "sellVolume": "450.2",
+                "buyPressure": 76.9,
+                "uniqueBuyers": 12,
+                "whaleCount": 2
+            }
+        },
+        {
+            "name": "Launch Dashboard Status",
             "path": "/api/status/:address",
             "method": "GET",
-            "description": "Returns current MSS, phase, and the most recent agent neural logs.",
+            "description": "Aggregated endpoint for the main dashboard. Returns token metadata, current MSS, and recent AI logs.",
             "sample_response": {
-                "mss": 70,
+                "launch": {
+                    "tokenAddress": "0x...",
+                    "name": "EvoToken",
+                    "symbol": "EVO"
+                },
+                "mss": 82,
                 "logs": [
                     {
-                        "phase": "Expansion",
-                        "mss": 70,
-                        "analysis": "Stable liquidity detected.",
-                        "txHash": "0x7cbb8ef..."
+                        "mss": 82,
+                        "phase": "Growth",
+                        "analysis": "High buy pressure detected, recommending upgrade.",
+                        "timestamp": "2026-02-27T17:15:00Z"
                     }
                 ]
             }
         },
         {
-            "name": "Market Metrics",
-            "path": "/api/metrics/:address",
+            "name": "MSS History",
+            "path": "/api/history/:address?limit=100",
             "method": "GET",
-            "description": "Live rolling window metrics (buy/sell volume, pressure, and whale count).",
-            "sample_response": {
-                "buyPressure": 71,
-                "whaleCount": 1,
-                "buyVolume": "5000000000000000000"
-            }
-        },
-        {
-            "name": "Neural Audit Trail",
-            "path": "/api/agent-logs/:address",
-            "method": "GET",
-            "description": "Detailed history of every decision made by the AI agents.",
+            "description": "Historical MSS scores for rendering time-series stability charts.",
             "sample_response": [
                 {
-                    "mss": 70,
-                    "rawMSS": 68,
-                    "analysis": "Grok adjusted MSS based on trend...",
-                    "timestamp": "2026-02-27T11:20:17Z"
+                    "mss": 50,
+                    "timestamp": "2026-02-27T11:00:00Z"
+                },
+                {
+                    "mss": 55,
+                    "timestamp": "2026-02-27T11:05:00Z"
                 }
             ]
         },
         {
-            "name": "Wallet Reputation",
+            "name": "Neural Audit Logs",
+            "path": "/api/agent-logs/:address",
+            "method": "GET",
+            "description": "Detailed trace of AI agent reasoning, including volatility risk and liquidity stress assessments.",
+            "sample_response": [
+                {
+                    "mss": 82,
+                    "rawMSS": 80,
+                    "volatilityRisk": 0.15,
+                    "liquidityStress": 0.05,
+                    "analysis": "Stable trend identified by Grok-3.3.",
+                    "txHash": "0x4819f47..."
+                }
+            ]
+        },
+        {
+            "name": "Phase Transition History",
+            "path": "/api/phase-history/:address",
+            "method": "GET",
+            "description": "Logs of every successful phase upgrade or downgrade triggered by the Phase Evolution Agent.",
+            "sample_response": [
+                {
+                    "fromPhase": 0,
+                    "toPhase": 1,
+                    "mssAtTime": 82,
+                    "timestamp": "2026-02-27T17:15:00Z"
+                }
+            ]
+        },
+        {
+            "name": "Liquidity Unlock Records",
+            "path": "/api/liquidity-unlocks/:address",
+            "method": "GET",
+            "description": "History of all tranche releases from the LiquidityVault, including proof of MSS compliance at time of release.",
+            "sample_response": [
+                {
+                    "trancheIndex": 0,
+                    "amount": "100000000000000000000",
+                    "mss": 75,
+                    "txHash": "0x..."
+                }
+            ]
+        },
+        {
+            "name": "Wallet Reputation Score",
             "path": "/api/reputation/:wallet",
             "method": "GET",
-            "description": "Wallet score (0-100) based on on-chain behavior (holding, dumps, botting).",
+            "description": "AI-calculated reputation (0-100) based on on-chain behavior analysis.",
             "sample_response": {
-                "score": 85,
-                "allocationWeight": 0.85,
+                "walletAddress": "0x...",
+                "score": 88,
+                "allocationWeight": 0.88,
+                "holdingHours": 144,
                 "isBotSuspect": false
             }
+        },
+        {
+            "name": "Governance Global Events",
+            "path": "/api/governance-events/:address",
+            "method": "GET",
+            "description": "List of governance actions such as freeze events, fee changes, or emergency halts.",
+            "sample_response": [
+                {
+                    "type": "VaultFrozen",
+                    "proposer": "0x...",
+                    "timestamp": "2026-02-27T10:00:00Z"
+                }
+            ]
         }
     ],
-    "blockchain_verification": {
-        "mss_verification": "Check EvolutionController contract -> currentMSS()",
-        "phase_verification": "Check EvolutionController contract -> currentPhase()",
-        "tax_verification": "Check AdaptiveToken contract -> sellTax() / buyTax()"
+    "verification_guide": {
+        "mss": "Verify via EvolutionController.currentMSS()",
+        "phase": "Verify via EvolutionController.currentPhase()",
+        "parameters": "Verify via AdaptiveToken.getParameters()"
     }
 }

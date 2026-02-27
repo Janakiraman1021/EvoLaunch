@@ -8,7 +8,10 @@ const { provider, getContract } = require('../services/blockchain');
 const { getRollingMetrics } = require('../services/marketData');
 const { analyzeWithGrok } = require('../services/grokService');
 
-const PAIR_ABI = ['function getReserves() view returns (uint112, uint112, uint32)'];
+const PAIR_ABI = [
+    'function getReserves() view returns (uint112, uint112, uint32)',
+    'function token0() view returns (address)'
+];
 
 /**
  * Computes the Market Stability Score from live on-chain data.
@@ -21,8 +24,17 @@ const analyzeMarket = async (tokenAddress, pairAddress) => {
     let lScore = 50; // Default mid
     try {
         const pair = getContract(pairAddress, PAIR_ABI);
-        const [, reserve1] = await pair.getReserves(); // reserve1 = WBNB side
-        const wbnbReserve = Number(reserve1) / 1e18;
+        const [token0, reserves] = await Promise.all([
+            pair.token0(),
+            pair.getReserves()
+        ]);
+
+        // Find which reserve is WBNB (assuming token0 is not the protocol token usually works, 
+        // but let's be absolute: if token0 is ADAPTIVE_TOKEN, then reserve1 is WBNB)
+        const isToken0 = token0.toLowerCase() === tokenAddress.toLowerCase();
+        const wbnbReserveRaw = isToken0 ? reserves[1] : reserves[0];
+
+        const wbnbReserve = Number(wbnbReserveRaw) / 1e18;
         lScore = Math.min(100, (wbnbReserve / 50) * 100); // 50 BNB = full score
     } catch (e) {
         console.warn('[MarketAgent] Liquidity fetch error:', e.message);

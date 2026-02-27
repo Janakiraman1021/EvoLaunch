@@ -11,8 +11,7 @@
  *   6. Persist cycle log to MongoDB
  */
 
-const { analyzeMarket } = require('../agents/marketAgent');
-const { evaluatePhaseTransition } = require('../agents/phaseAgent');
+const { callPythonAgent } = require('./pythonBridge');
 const { broadcastSignal } = require('./txBroadcaster');
 const { checkAndUnlockTranches } = require('./liquidityService');
 const { isSystemHealthy, isGovernanceFrozen } = require('./healthMonitor');
@@ -29,38 +28,26 @@ const CONTROLLER_ABI = [
 
 const PHASE_NAMES = ['Protective', 'Growth', 'Expansion', 'Governance'];
 
-// Tax parameters per phase (in basis points: 100 = 1%)
+// Tax parameters per phase (in basis points)
 const PHASE_PARAMS = {
-    0: { sellTax: 1500, buyTax: 500 },   // Protective: 15% sell, 5% buy
-    1: { sellTax: 500, buyTax: 200 },   // Growth: 5% sell, 2% buy
-    2: { sellTax: 200, buyTax: 100 },   // Expansion: 2% sell, 1% buy
-    3: { sellTax: 100, buyTax: 100 },   // Governance: 1%/1%
+    0: { sellTax: 1500, buyTax: 500 },
+    1: { sellTax: 500, buyTax: 200 },
+    2: { sellTax: 200, buyTax: 100 },
+    3: { sellTax: 100, buyTax: 100 },
 };
 
-// Transaction limits in wei (token units × 1e18)
-const MAX_TX_AMT = '10000000000000000000000';  // 10k tokens
-const MAX_WALLET = '20000000000000000000000';  // 20k tokens
+const MAX_TX_AMT = '10000000000000000000000';
+const MAX_WALLET = '20000000000000000000000';
 
 let _isRunning = false;
 
 const runEvaluationCycle = async () => {
-    if (_isRunning) {
-        console.log('[Orchestrator] Cycle already running — skipping');
-        return;
-    }
+    if (_isRunning) return;
     _isRunning = true;
 
-    const cycleStart = Date.now();
-    console.log(`\n[Orchestrator] ═══ Cycle started at ${new Date().toISOString()} ═══`);
-
     try {
-        // ── Guard: System health & governance ────────────────────
-        if (!isSystemHealthy()) {
-            console.warn('[Orchestrator] ⚠️  System unhealthy — cycle aborted, keeping last state');
-            return;
-        }
-        if (isGovernanceFrozen()) {
-            console.warn('[Orchestrator] 🔒 Governance freeze active — cycle aborted');
+        if (!isSystemHealthy() || isGovernanceFrozen()) {
+            console.warn('[Orchestrator] System unhealthy or frozen — skipping');
             return;
         }
 
@@ -68,80 +55,73 @@ const runEvaluationCycle = async () => {
         const pairAddress = process.env.AMM_PAIR_ADDRESS;
         const controllerAddress = process.env.EVOLUTION_CONTROLLER_ADDRESS;
 
-        if (!tokenAddress || !controllerAddress) {
-            throw new Error('Missing ADAPTIVE_TOKEN_ADDRESS or EVOLUTION_CONTROLLER_ADDRESS in .env');
-        }
+        const { getRollingMetrics } = require('./marketData');
+        const metrics = getRollingMetrics(tokenAddress, pairAddress);
 
-        // ── Step 1: Get current on-chain state ───────────────────
-        const controller = getContract(controllerAddress, CONTROLLER_ABI);
-        const [currentPhaseIdx, onChainMSS] = await Promise.all([
-            controller.currentPhase(),
-            controller.currentMSS()
+        // ─── Phase 1: Market Intelligence (Python) ──────────────
+        console.log('[Orchestrator] Running Market Intelligence...');
+        const marketResult = await callPythonAgent('mss_agent.py', [
+            '--metrics', JSON.stringify(metrics),
+            '--mss', '50' // Seed value
         ]);
-        const currentPhase = Number(currentPhaseIdx);
-        console.log(`[Orchestrator] On-chain: Phase=${PHASE_NAMES[currentPhase]} MSS=${Number(onChainMSS)}`);
+        if (marketResult.error) throw new Error(`MarketAgent failed: ${marketResult.error}`);
 
-        // ── Step 2: Market Intelligence Agent ────────────────────
-        const marketData = await analyzeMarket(tokenAddress, pairAddress);
-        console.log(`[Orchestrator] MarketAgent: MSS=${marketData.mss} risk=${marketData.volatilityRisk} liquidityStress=${marketData.liquidityStress}`);
+        // ─── Phase 2: Phase Evolution (Python) ──────────────────
+        console.log('[Orchestrator] Running Phase Evolution...');
+        const phaseResult = await callPythonAgent('phase_agent.py', [
+            '--mss', marketResult.mss.toString(),
+            '--volatility', marketResult.volatilityRisk.toString(),
+            '--stress', marketResult.liquidityStress.toString()
+        ]);
+        if (phaseResult.error) throw new Error(`PhaseAgent failed: ${phaseResult.error}`);
 
-        // ── Step 3: Phase Evolution Agent ────────────────────────
-        const phaseDecision = evaluatePhaseTransition(
-            currentPhase, marketData.mss,
-            marketData.volatilityRisk, marketData.liquidityStress,
-            isGovernanceFrozen()
-        );
-        console.log(`[Orchestrator] PhaseAgent: ${phaseDecision.reason}`);
+        // ─── Phase 3: Liquidity Orchestration (Python) ──────────
+        console.log('[Orchestrator] Running Liquidity Orchestration...');
+        const liqResult = await callPythonAgent('liquidity_agent.py', [
+            '--mss', marketResult.mss.toString(),
+            '--phase', phaseResult.nextPhase.toString()
+        ]);
 
-        // ── Step 4: Determine token parameters ───────────────────
-        const targetPhase = phaseDecision.nextPhase;
-        const params = PHASE_PARAMS[targetPhase] || PHASE_PARAMS[0];
+        // ─── On-Chain Execution ────────────────────────────────
+        const controller = getContract(controllerAddress, CONTROLLER_ABI);
+        const onChainMSS = await controller.currentMSS();
 
-        // ── Step 5: Broadcast signal to EvolutionController ──────
+        const mssDiff = Math.abs(marketResult.mss - Number(onChainMSS));
+        const phaseChanged = phaseResult.nextPhase !== phaseResult.currentPhase;
+        const autoSubmit = process.env.AUTO_SUBMIT === 'true';
+
         let txResult = null;
-        try {
+        if ((phaseChanged || mssDiff >= 5) && autoSubmit) {
+            const params = PHASE_PARAMS[phaseResult.nextPhase] || PHASE_PARAMS[0];
             txResult = await broadcastSignal({
-                mss: marketData.mss,
+                mss: marketResult.mss,
                 sellTax: params.sellTax,
                 buyTax: params.buyTax,
                 maxTxAmt: MAX_TX_AMT,
                 maxWallet: MAX_WALLET
             });
-            if (txResult) {
-                console.log(`[Orchestrator] ✅ Signal submitted: ${txResult.txHash}`);
-            }
-        } catch (txErr) {
-            console.error('[Orchestrator] TX failed:', txErr.message);
-            // Do not crash — preserve last valid on-chain state
         }
 
-        // ── Step 6: Liquidity Agent + unlock check ────────────────
-        await checkAndUnlockTranches(marketData.mss, targetPhase, tokenAddress);
-
-        // ── Step 7: Persist cycle results ────────────────────────
-        const cycleDuration = Date.now() - cycleStart;
+        // ─── Persist ───────────────────────────────────────────
         await AgentLog.create({
             tokenAddress,
-            mss: marketData.mss,
-            rawMSS: marketData.rawMSS,
-            phase: PHASE_NAMES[targetPhase],
-            sellTax: params.sellTax,
-            buyTax: params.buyTax,
-            maxTxAmt: MAX_TX_AMT,
-            maxWallet: MAX_WALLET,
-            volatilityRisk: marketData.volatilityRisk,
-            liquidityStress: marketData.liquidityStress,
-            analysis: marketData.analysis,
-            txHash: txResult?.txHash || null
+            mss: marketResult.mss,
+            rawMSS: marketResult.rawMSS,
+            phase: PHASE_NAMES[phaseResult.nextPhase],
+            analysis: marketResult.analysis,
+            txHash: txResult?.txHash || null,
+            volatilityRisk: marketResult.volatilityRisk,
+            liquidityStress: marketResult.liquidityStress
         });
 
+        // ─── Phase 4: Persistence ───────────────────────────
         await MSSHistory.create({
             tokenAddress,
-            mss: marketData.mss,
+            mss: marketResult.mss,
             timestamp: Math.floor(Date.now() / 1000)
         });
 
-        console.log(`[Orchestrator] ═══ Cycle complete in ${cycleDuration}ms ═══\n`);
+        console.log(`[Orchestrator] Cycle complete. MSS: ${marketResult.mss}`);
     } catch (err) {
         console.error('[Orchestrator] ❌ Cycle error:', err.message);
     } finally {
@@ -150,8 +130,9 @@ const runEvaluationCycle = async () => {
 };
 
 const startOrchestrator = () => {
-    const intervalMs = parseInt(process.env.UPDATE_INTERVAL_MS) || 300000; // Default: 5 minutes
-    console.log(`[Orchestrator] Starting with ${intervalMs / 1000}s interval`);
+    // Default to 5 minutes (300,000ms) if not set in .env
+    const intervalMs = parseInt(process.env.UPDATE_INTERVAL_MS) || 300000;
+    console.log(`[Orchestrator] Starting with ${intervalMs / 1000}s interval (High Frequency Prevention)`);
     runEvaluationCycle(); // Immediate first cycle
     setInterval(runEvaluationCycle, intervalMs);
 };
