@@ -1,40 +1,63 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TrendingUp, Wallet, Activity, AlertCircle, BarChart3, PieChart } from 'lucide-react';
 import Link from 'next/link';
+import api from '../../lib/api';
+import { useContracts } from '../../lib/hooks/useContracts';
+import { useWeb3 } from '../../lib/hooks/useWeb3';
 
 export default function DashboardPage() {
   const [timeframe, setTimeframe] = useState('24h');
+  const { wallet } = useWeb3();
+  const contracts = useContracts(wallet?.address);
 
-  const stats = {
+  const [stats, setStats] = useState({
     portfolio: '42.5 BNB',
     unrealizedGains: '+8.5%',
     activePositions: 5,
     totalValue: '125.3 BNB',
     dailyChange: '+2.1 BNB',
-  };
+  });
 
-  const positions = [
+  const [positions, setPositions] = useState([
     { symbol: 'EVO', amount: '50,000', value: '8.5 BNB', change: '+12.5%', phase: 'Growth' },
     { symbol: 'TOKEN1', amount: '10,000', value: '3.2 BNB', change: '+5.2%', phase: 'Expansion' },
     { symbol: 'TOKEN2', amount: '25,000', value: '2.1 BNB', change: '-2.1%', phase: 'Protective' },
     { symbol: 'TOKEN3', amount: '5,000', value: '1.8 BNB', change: '+18.3%', phase: 'Growth' },
     { symbol: 'TOKEN4', amount: '8,000', value: '0.9 BNB', change: '+3.5%', phase: 'Expansion' },
-  ];
+  ]);
 
-  const recentActivity = [
+  const [recentActivity, setRecentActivity] = useState([
     { type: 'buy', symbol: 'EVO', amount: '5,000', price: '0.00017', time: '2 mins ago' },
     { type: 'sell', symbol: 'TOKEN1', amount: '2,000', price: '0.00032', time: '15 mins ago' },
     { type: 'buy', symbol: 'TOKEN3', amount: '5,000', price: '0.00018', time: '1 hour ago' },
     { type: 'buy', symbol: 'TOKEN2', amount: '10,000', price: '0.000084', time: '3 hours ago' },
-  ];
+  ]);
+
+  // Update with on-chain data
+  useEffect(() => {
+    if (contracts.token) {
+      const sym = contracts.token.symbol;
+      const balance = parseFloat(contracts.userBalance);
+      setPositions(prev => prev.map((p, i) =>
+        i === 0 ? {
+          ...p,
+          symbol: sym,
+          amount: balance > 0 ? balance.toLocaleString() : p.amount,
+          phase: contracts.phase?.phaseName || p.phase,
+        } : p
+      ));
+      if (balance > 0) {
+        setStats(prev => ({ ...prev, activePositions: 1, portfolio: `${balance.toFixed(2)} ${sym}` }));
+      }
+    }
+  }, [contracts.token, contracts.userBalance, contracts.phase]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
       {/* Header */}
       <div className="bg-slate-800/50 border-b border-emerald-500/20 sticky top-0 z-10 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <h1 className="text-3xl font-bold text-primary">
             Dashboard <span className="text-emerald-400">Overview</span>

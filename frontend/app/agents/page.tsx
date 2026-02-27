@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, CheckCircle, AlertCircle, Activity, Key } from 'lucide-react';
+import api from '../../lib/api';
 
 interface Agent {
   id: string;
@@ -90,8 +91,28 @@ export default function AgentControlPanel() {
   };
 
   const [loading, setLoading] = useState(true);
+  const [auditTrail, setAuditTrail] = useState([
+    { agent: 'Liquidity Agent', timestamp: '2m ago', block: 42847592, status: 'VERIFIED' },
+    { agent: 'Market Agent', timestamp: '5m ago', block: 42847591, status: 'VERIFIED' },
+    { agent: 'Reputation Agent', timestamp: '12m ago', block: 42847590, status: 'VERIFIED' },
+    { agent: 'Market Agent', timestamp: '18m ago', block: 42847589, status: 'VERIFIED' },
+  ]);
 
   useEffect(() => {
+    // Fetch real agent logs from backend
+    const tokenAddress = api.getTokenAddress();
+    if (tokenAddress) {
+      api.getAgentLogs(tokenAddress).then(logs => {
+        if (logs.length > 0) {
+          setAuditTrail(logs.map(l => ({
+            agent: l.agent || 'Neural Agent',
+            timestamp: new Date(l.timestamp).toLocaleString(),
+            block: Math.floor(l.timestamp / 1000),
+            status: 'VERIFIED',
+          })));
+        }
+      });
+    }
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
@@ -143,11 +164,10 @@ export default function AgentControlPanel() {
                   <div>
                     <div className="flex items-center gap-5 mb-6">
                       <h3 className="text-2xl font-bold text-primary tracking-tight group-hover:text-gold transition-colors">{agent.name}</h3>
-                      <div className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest border transition-all ${
-                        agent.isActive
-                          ? 'bg-status-success/10 text-status-success border-status-success/30 shadow-status-success'
-                          : 'bg-muted/10 text-muted border-muted/30'
-                      }`}>
+                      <div className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest border transition-all ${agent.isActive
+                        ? 'bg-status-success/10 text-status-success border-status-success/30 shadow-status-success'
+                        : 'bg-muted/10 text-muted border-muted/30'
+                        }`}>
                         {agent.isActive ? 'OPERATIONAL' : 'DORMANT'}
                       </div>
                       <div className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest border border-gold/30 bg-gold/5 text-gold`}>
@@ -178,11 +198,10 @@ export default function AgentControlPanel() {
                     </div>
                     <button
                       onClick={() => toggleAgentStatus(agent.id)}
-                      className={`w-full py-4 rounded-xl font-bold uppercase tracking-[0.1em] text-xs transition-all duration-500 border ${
-                        agent.isActive
-                          ? 'border-status-danger/40 text-status-danger hover:bg-status-danger/10'
-                          : 'border-status-success/40 text-status-success hover:bg-status-success/10'
-                      }`}
+                      className={`w-full py-4 rounded-xl font-bold uppercase tracking-[0.1em] text-xs transition-all duration-500 border ${agent.isActive
+                        ? 'border-status-danger/40 text-status-danger hover:bg-status-danger/10'
+                        : 'border-status-success/40 text-status-success hover:bg-status-success/10'
+                        }`}
                     >
                       {agent.isActive ? 'Revoke Mandate' : 'Authorize Agent'}
                     </button>
@@ -254,12 +273,7 @@ export default function AgentControlPanel() {
 
           <div className="luxury-card p-12 bg-secondary/20">
             <div className="space-y-4">
-              {[
-                { agent: 'Liquidity Agent', timestamp: '2m ago', block: 42847592, status: 'VERIFIED' },
-                { agent: 'Market Agent', timestamp: '5m ago', block: 42847591, status: 'VERIFIED' },
-                { agent: 'Reputation Agent', timestamp: '12m ago', block: 42847590, status: 'VERIFIED' },
-                { agent: 'Market Agent', timestamp: '18m ago', block: 42847589, status: 'VERIFIED' },
-              ].map((entry, idx) => (
+              {auditTrail.map((entry, idx) => (
                 <div key={idx} className="flex items-center justify-between py-6 border-b border-white/[0.03] last:border-b-0 group">
                   <div className="flex items-center gap-6">
                     <div className="w-10 h-10 rounded-xl bg-gold/5 border border-gold/20 flex items-center justify-center text-gold group-hover:bg-gold/10 transition-all">

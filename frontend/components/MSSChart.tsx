@@ -3,7 +3,12 @@
 import React from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 
-const data = [
+interface MSSDataPoint {
+    time: string;
+    mss: number;
+}
+
+const fallbackData: MSSDataPoint[] = [
     { time: '12:00', mss: 85 },
     { time: '12:05', mss: 82 },
     { time: '12:10', mss: 78 },
@@ -13,10 +18,11 @@ const data = [
     { time: '12:30', mss: 75 },
 ];
 
-export default function MSSChart({ mss }: { mss?: number }) {
+export default function MSSChart({ mss, data }: { mss?: number; data?: MSSDataPoint[] }) {
+    const chartData = data && data.length > 0 ? data : fallbackData;
     return (
         <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={data} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
+            <AreaChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
                 <defs>
                     <linearGradient id="colorMss" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#E6C07B" stopOpacity={0.1} />
@@ -43,10 +49,10 @@ export default function MSSChart({ mss }: { mss?: number }) {
                     hide
                 />
                 <Tooltip
-                    contentStyle={{ 
-                        backgroundColor: '#1C1C21', 
-                        border: '1px solid rgba(230, 192, 123, 0.1)', 
-                        borderRadius: '16px', 
+                    contentStyle={{
+                        backgroundColor: '#1C1C21',
+                        border: '1px solid rgba(230, 192, 123, 0.1)',
+                        borderRadius: '16px',
                         boxShadow: '0 20px 40px rgba(0,0,0,0.8)',
                         backdropFilter: 'blur(10px)'
                     }}

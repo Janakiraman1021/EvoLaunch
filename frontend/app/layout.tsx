@@ -1,44 +1,29 @@
 'use client';
 
-import { Outfit } from 'next/font/google'
 import './globals.css'
 import Sidebar from '../components/Sidebar'
-import Header from '../components/Header'
-import SparklingParticles from '../components/SparklingParticles'
-import { usePathname } from 'next/navigation'
 
-const outfit = Outfit({ 
-  subsets: ['latin'],
-  variable: '--font-outfit',
-})
+// Note: Metadata only works in server components, moved to individual pages
 
 export default function RootLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
-    const pathname = usePathname();
-    const isLanding = pathname === '/landing';
-
     return (
-        <html lang="en" className={`${outfit.variable}`}>
-            <body className="flex h-screen overflow-hidden bg-background text-primary font-body antialiased">
-                {!isLanding && <Sidebar />}
-                <main className={`flex-1 ${isLanding ? 'ml-0' : 'ml-40'} h-screen overflow-y-auto p-12 relative scroll-smooth overflow-x-hidden`}>
+        <html lang="en">
+            <body className="flex h-screen overflow-hidden bg-background text-primary font-body antialiased selection:bg-gold/30">
+                <Sidebar />
+                <main className="flex-1 ml-0 md:ml-80 h-screen overflow-y-auto p-6 md:p-12 relative scroll-smooth overflow-x-hidden">
                     {/* Institutional Background Elements */}
-                    <div className="fixed inset-0 pointer-events-none overflow-hidden select-none z-0">
-                        <div className="absolute inset-0 neural-grid opacity-20" />
-                        <SparklingParticles />
+                    <div className="fixed inset-0 pointer-events-none overflow-hidden select-none">
                         <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-gold/5 blur-[150px] rounded-full animate-gold-pulse" />
                         <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-gold/5 blur-[150px] rounded-full animate-gold-pulse" style={{ animationDelay: '4s' }} />
                         <div className="absolute top-[30%] left-[40%] w-[30%] h-[30%] bg-gold/3 blur-[120px] rounded-full animate-gold-pulse" style={{ animationDelay: '2s' }} />
                     </div>
                     
-                    <div className="max-w-7xl mx-auto relative z-10">
-                      <Header />
-                      <div className="fade-in">
-                        {children}
-                      </div>
+                    <div className="max-w-7xl mx-auto space-y-12 relative z-10 fade-in">
+                      {children}
                     </div>
                 </main>
             </body>

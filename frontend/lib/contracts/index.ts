@@ -1,12 +1,12 @@
-import { Contract, BrowserProvider } from 'ethers';
+import { Contract, BrowserProvider, JsonRpcProvider, formatUnits } from 'ethers';
 
-// LaunchFactory ABI - Updated to use struct parameter
+// ─── Contract ABIs ────────────────────────────────────────────────
+
 export const LAUNCH_FACTORY_ABI = [
   `function createLaunch((string name, string symbol, uint256 totalSupply, uint256 initialSellTax, uint256 initialBuyTax, uint256 initialMaxTx, uint256 initialMaxWallet, uint256 minTax, uint256 maxTax, uint256 minMaxTx, uint256 minMaxWallet, address feeCollector, address[] agentPublicKeys) params) external payable returns (address)`,
   'event LaunchCreated(address indexed token, address vault, address controller, address governance, address ammPair)',
 ];
 
-// AdaptiveToken ABI
 export const ADAPTIVE_TOKEN_ABI = [
   'function name() external view returns (string)',
   'function symbol() external view returns (string)',
@@ -16,17 +16,19 @@ export const ADAPTIVE_TOKEN_ABI = [
   'function buyTax() external view returns (uint256)',
   'function maxTxAmount() external view returns (uint256)',
   'function maxWalletSize() external view returns (uint256)',
+  'function decimals() external view returns (uint8)',
+  'function owner() external view returns (address)',
 ];
 
-// EvolutionController ABI
 export const EVOLUTION_CONTROLLER_ABI = [
   'function currentPhase() external view returns (uint8)',
   'function currentMSS() external view returns (uint256)',
   'function lastUpdateTimestamp() external view returns (uint256)',
+  'function phaseThresholds(uint256) external view returns (uint256)',
   'event PhaseTransitioned(uint8 from, uint8 to, uint256 mss)',
+  'event MSSUpdated(uint256 newMSS, uint256 timestamp)',
 ];
 
-// LiquidityVault ABI
 export const LIQUIDITY_VAULT_ABI = [
   'function totalReleased() external view returns (uint256)',
   'function isFrozen() external view returns (bool)',
@@ -34,18 +36,56 @@ export const LIQUIDITY_VAULT_ABI = [
   'event TrancheReleased(uint256 index, uint256 amount)',
 ];
 
-// Key contract addresses (update with your deployed addresses)
+export const GOVERNANCE_MODULE_ABI = [
+  'function paused() external view returns (bool)',
+  'function hasRole(bytes32 role, address account) external view returns (bool)',
+  'function GOVERNOR_ROLE() external view returns (bytes32)',
+  'event AgentKeyUpdated(address oldKey, address newKey)',
+  'event LogicFrozen(bool frozen)',
+];
+
+// ─── Deployed Contract Addresses (BSC Testnet) ────────────────────
+
 export const CONTRACT_ADDRESSES = {
-  LAUNCH_FACTORY: '0x2C95eEeF7d0F5Be75dce165aC7689B09Fd06FEF6', // Deployed to BSC Testnet
-  RPC_URL: 'https://data-seed-prebsc-1-b.binance.org:8545',
+  LAUNCH_FACTORY: '0x2C95eEeF7d0F5Be75dce165aC7689B09Fd06FEF6',
+  ADAPTIVE_TOKEN: '0xb142FCD1fc79BE3EA60C1B83558f171033A0c12E',
+  LIQUIDITY_VAULT: '0x383D77A86D51313e5C3F6f9feb372191FAEdA4fF',
+  EVOLUTION_CONTROLLER: '0xC4D65495eB47AC8726Dad401d28A83C25B77f110',
+  GOVERNANCE_MODULE: '0xfE63A74EcAC6BCaDF4078B7C53d01e2f511ff629',
+  AMM_PAIR: '0x6FdFe8B580864A97Ae21f5Ba46046016FC3173DA',
+  RPC_URL: 'https://data-seed-prebsc-1-s1.binance.org:8545',
   CHAIN_ID: 97,
   CHAIN_NAME: 'BSC Testnet',
+  BLOCK_EXPLORER: 'https://testnet.bscscan.com',
 };
+
+// ─── Phase Names ──────────────────────────────────────────────────
+
+export const PHASE_NAMES: Record<number, string> = {
+  0: 'Genesis',
+  1: 'Growth',
+  2: 'Expansion',
+  3: 'Governance',
+  4: 'Protective',
+};
+
+// ─── Provider (read-only, no wallet needed) ───────────────────────
+
+let _readProvider: JsonRpcProvider | null = null;
+
+export const getReadProvider = (): JsonRpcProvider => {
+  if (!_readProvider) {
+    _readProvider = new JsonRpcProvider(CONTRACT_ADDRESSES.RPC_URL);
+  }
+  return _readProvider;
+};
+
+// ─── Contract Getters ─────────────────────────────────────────────
 
 export const getContract = (
   address: string,
   abi: string[],
-  provider: BrowserProvider
+  provider: BrowserProvider | JsonRpcProvider
 ) => {
   return new Contract(address, abi, provider);
 };
@@ -57,3 +97,134 @@ export const getSignedContract = (
 ) => {
   return new Contract(address, abi, signer);
 };
+
+/** Get read-only contract instances (no wallet required) */
+export const getReadContracts = () => {
+  const provider = getReadProvider();
+  return {
+    token: new Contract(CONTRACT_ADDRESSES.ADAPTIVE_TOKEN, ADAPTIVE_TOKEN_ABI, provider),
+    controller: new Contract(CONTRACT_ADDRESSES.EVOLUTION_CONTROLLER, EVOLUTION_CONTROLLER_ABI, provider),
+    vault: new Contract(CONTRACT_ADDRESSES.LIQUIDITY_VAULT, LIQUIDITY_VAULT_ABI, provider),
+    governance: new Contract(CONTRACT_ADDRESSES.GOVERNANCE_MODULE, GOVERNANCE_MODULE_ABI, provider),
+    factory: new Contract(CONTRACT_ADDRESSES.LAUNCH_FACTORY, LAUNCH_FACTORY_ABI, provider),
+  };
+};
+
+// ─── On-Chain Data Fetchers ───────────────────────────────────────
+
+export interface OnChainTokenData {
+  name: string;
+  symbol: string;
+  totalSupply: string;
+  sellTax: number;
+  buyTax: number;
+  maxTxAmount: string;
+  maxWalletSize: string;
+}
+
+export interface OnChainPhaseData {
+  phase: number;
+  phaseName: string;
+  mss: number;
+  lastUpdate: number;
+}
+
+export interface OnChainVaultData {
+  totalReleased: string;
+  isFrozen: boolean;
+}
+
+export interface OnChainGovernanceData {
+  paused: boolean;
+}
+
+/** Fetch token data from AdaptiveToken contract */
+export async function fetchTokenData(): Promise<OnChainTokenData | null> {
+  try {
+    const { token } = getReadContracts();
+    const [name, symbol, totalSupply, sellTax, buyTax, maxTx, maxWallet] = await Promise.all([
+      token.name(),
+      token.symbol(),
+      token.totalSupply(),
+      token.sellTax(),
+      token.buyTax(),
+      token.maxTxAmount(),
+      token.maxWalletSize(),
+    ]);
+    return {
+      name,
+      symbol,
+      totalSupply: formatUnits(totalSupply, 18),
+      sellTax: Number(sellTax) / 100,
+      buyTax: Number(buyTax) / 100,
+      maxTxAmount: formatUnits(maxTx, 18),
+      maxWalletSize: formatUnits(maxWallet, 18),
+    };
+  } catch (err) {
+    console.warn('[Contracts] fetchTokenData failed:', (err as Error).message);
+    return null;
+  }
+}
+
+/** Fetch phase data from EvolutionController */
+export async function fetchPhaseData(): Promise<OnChainPhaseData | null> {
+  try {
+    const { controller } = getReadContracts();
+    const [phase, mss, lastUpdate] = await Promise.all([
+      controller.currentPhase(),
+      controller.currentMSS(),
+      controller.lastUpdateTimestamp(),
+    ]);
+    return {
+      phase: Number(phase),
+      phaseName: PHASE_NAMES[Number(phase)] || 'Unknown',
+      mss: Number(mss),
+      lastUpdate: Number(lastUpdate),
+    };
+  } catch (err) {
+    console.warn('[Contracts] fetchPhaseData failed:', (err as Error).message);
+    return null;
+  }
+}
+
+/** Fetch vault data from LiquidityVault */
+export async function fetchVaultData(): Promise<OnChainVaultData | null> {
+  try {
+    const { vault } = getReadContracts();
+    const [totalReleased, isFrozen] = await Promise.all([
+      vault.totalReleased(),
+      vault.isFrozen(),
+    ]);
+    return {
+      totalReleased: formatUnits(totalReleased, 18),
+      isFrozen,
+    };
+  } catch (err) {
+    console.warn('[Contracts] fetchVaultData failed:', (err as Error).message);
+    return null;
+  }
+}
+
+/** Fetch governance data */
+export async function fetchGovernanceData(): Promise<OnChainGovernanceData | null> {
+  try {
+    const { governance } = getReadContracts();
+    const paused = await governance.paused();
+    return { paused };
+  } catch (err) {
+    console.warn('[Contracts] fetchGovernanceData failed:', (err as Error).message);
+    return null;
+  }
+}
+
+/** Fetch user's token balance */
+export async function fetchUserBalance(userAddress: string): Promise<string> {
+  try {
+    const { token } = getReadContracts();
+    const balance = await token.balanceOf(userAddress);
+    return formatUnits(balance, 18);
+  } catch (err) {
+    console.warn('[Contracts] fetchUserBalance failed:', (err as Error).message);
+    return '0';
+  }
+}

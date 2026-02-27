@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, TrendingUp, Shield, AlertCircle, CheckCircle } from 'lucide-react';
 import { useWeb3 } from '../../lib/hooks/useWeb3';
+import api from '../../lib/api';
 
 interface WalletReputation {
   score: number;
@@ -25,18 +26,31 @@ export default function ReputationDashboard() {
       return;
     }
 
-    // Simulate fetching reputation data
-    const mockReputation: WalletReputation = {
-      score: 87,
-      category: 'Premium Holder',
-      holdingBehavior: 'Long-term accumulator',
-      dumpFrequency: 2,
-      allocationMultiplier: 1.85,
-      launchEligibility: true,
-    };
-
-    setReputation(mockReputation);
-    setLoading(false);
+    // Fetch real reputation from backend
+    api.getReputation(wallet.address).then(data => {
+      const score = data.score || 50;
+      const multiplier = data.allocationWeight || 0.5;
+      setReputation({
+        score,
+        category: score >= 80 ? 'Premium Holder' : score >= 60 ? 'Standard Holder' : 'New Participant',
+        holdingBehavior: data.holdingDuration > 30 ? 'Long-term accumulator' : data.holdingDuration > 7 ? 'Medium-term holder' : 'Active trader',
+        dumpFrequency: data.dumpCount || 0,
+        allocationMultiplier: 1 + multiplier,
+        launchEligibility: score >= 60,
+      });
+      setLoading(false);
+    }).catch(() => {
+      // Fallback to mock data
+      setReputation({
+        score: 87,
+        category: 'Premium Holder',
+        holdingBehavior: 'Long-term accumulator',
+        dumpFrequency: 2,
+        allocationMultiplier: 1.85,
+        launchEligibility: true,
+      });
+      setLoading(false);
+    });
   }, [wallet]);
 
   return (
@@ -78,7 +92,7 @@ export default function ReputationDashboard() {
             {/* Main Score Card */}
             <div className="luxury-card p-16 text-center bg-secondary/20 relative overflow-hidden group">
               <div className="absolute inset-0 bg-gold/[0.02] blur-3xl rounded-full scale-150 group-hover:bg-gold/[0.05] transition-colors duration-1000" />
-              
+
               <div className="relative z-10 mb-10">
                 <p className="text-xs font-bold text-gold uppercase tracking-[0.2em] mb-6 opacity-60">Consensus Reputation Score</p>
                 <div className="text-9xl font-bold text-primary tracking-tighter mb-4 shadow-gold-glow-large animate-gold-pulse">

@@ -1,43 +1,86 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Activity, 
-  Shield, 
-  TrendingUp, 
-  Zap, 
-  Lock, 
-  Unlock, 
-  MessageSquare, 
-  Compass, 
-  Wind,
-  LineChart,
-  Target,
-  ZapOff
+import {
+    Activity,
+    Shield,
+    TrendingUp,
+    Zap,
+    Lock,
+    Unlock,
+    MessageSquare,
+    Compass,
+    Wind,
+    LineChart,
+    Target,
+    ZapOff
 } from 'lucide-react';
 import MSSChart from '../components/MSSChart';
 import PhaseTimeline from '../components/PhaseTimeline';
 import AgentLogs from '../components/AgentLogs';
+import api from '../lib/api';
+import { useContracts } from '../lib/hooks/useContracts';
+import { PHASE_NAMES, CONTRACT_ADDRESSES } from '../lib/contracts';
 
 export default function Dashboard() {
     const [mss, setMss] = useState(82);
-    const [phase] = useState('Growth');
-    const [tokenStats] = useState({
+    const [phase, setPhase] = useState('Growth');
+    const [tokenStats, setTokenStats] = useState({
         price: '0.0042 BNB',
         marketCap: '$1.2M',
         liquidity: '$420K',
         holders: '1,240'
     });
+    const [mssChartData, setMssChartData] = useState<{ time: string; mss: number }[]>([]);
+    const [agentLogs, setAgentLogs] = useState<any[]>([]);
+    const [sellTax, setSellTax] = useState('5.0');
+    const [buyTax, setBuyTax] = useState('2.0');
+    const [vaultFrozen, setVaultFrozen] = useState(false);
 
-    // Simulated live MSS updates
+    // Read on-chain data from deployed contracts
+    const contracts = useContracts();
+
     useEffect(() => {
-        const interval = setInterval(() => {
-            setMss(prev => {
-                const change = (Math.random() - 0.5) * 2;
-                return Math.min(Math.max(Number((prev + change).toFixed(1)), 70), 95);
+        if (contracts.phase) {
+            setMss(contracts.phase.mss);
+            setPhase(contracts.phase.phaseName);
+        }
+        if (contracts.token) {
+            setSellTax(contracts.token.sellTax.toFixed(1));
+            setBuyTax(contracts.token.buyTax.toFixed(1));
+            setTokenStats(prev => ({
+                ...prev,
+                marketCap: `${Number(contracts.token!.totalSupply).toLocaleString()} ${contracts.token!.symbol}`,
+            }));
+        }
+        if (contracts.vault) {
+            setVaultFrozen(contracts.vault.isFrozen);
+        }
+    }, [contracts.phase, contracts.token, contracts.vault]);
+
+    // Supplementary: Fetch history + logs from backend API
+    useEffect(() => {
+        const tokenAddress = api.getTokenAddress();
+        if (tokenAddress) {
+            api.getHistory(tokenAddress, 20).then(history => {
+                if (history.length > 0) {
+                    setMssChartData(history.map(h => ({
+                        time: new Date(h.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        mss: h.mss,
+                    })));
+                }
             });
-        }, 3000);
-        return () => clearInterval(interval);
+            api.getAgentLogs(tokenAddress).then(logs => {
+                if (logs.length > 0) {
+                    setAgentLogs(logs.map(l => ({
+                        agent: l.agent || 'Neural-Core',
+                        type: l.result === 'success' ? 'success' : l.result === 'warning' ? 'warning' : 'info',
+                        msg: l.action || '',
+                        time: new Date(l.timestamp).toLocaleTimeString(),
+                    })));
+                }
+            });
+        }
     }, []);
 
     return (
@@ -59,7 +102,7 @@ export default function Dashboard() {
                             <span className="text-xs font-bold text-gold uppercase tracking-[0.2em]">
                                 MANDATE_GENESIS: <span className="text-primary">COMPLETED</span>
                             </span>
-                             <span className="text-xs font-bold text-muted uppercase tracking-[0.2em]">
+                            <span className="text-xs font-bold text-muted uppercase tracking-[0.2em]">
                                 POE_VALIDATION: <span className="text-primary">0.002s</span>
                             </span>
                         </div>
@@ -120,13 +163,13 @@ export default function Dashboard() {
                             </div>
                         </div>
                         <div className="h-[400px] w-full relative z-10">
-                            <MSSChart />
+                            <MSSChart data={mssChartData} />
                         </div>
                     </div>
 
                     {/* Performance Audit Metrics */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                         <div className="luxury-card p-8 group">
+                        <div className="luxury-card p-8 group">
                             <div className="flex items-center gap-5 mb-8">
                                 <div className="icon-box bg-gold/10 border-gold/20 text-gold shadow-gold-subtle">
                                     <Target size={20} />
@@ -142,12 +185,12 @@ export default function Dashboard() {
                                     <span className="text-sm font-bold text-gold">8.2%</span>
                                 </div>
                                 <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                                     <div className="h-full bg-gold shadow-gold-glow w-[65%]" />
+                                    <div className="h-full bg-gold shadow-gold-glow w-[65%]" />
                                 </div>
                             </div>
-                         </div>
+                        </div>
 
-                         <div className="luxury-card p-8 group">
+                        <div className="luxury-card p-8 group">
                             <div className="flex items-center gap-5 mb-8">
                                 <div className="icon-box bg-status-success/10 border-status-success/20 text-status-success">
                                     <LineChart size={20} />
@@ -163,10 +206,10 @@ export default function Dashboard() {
                                     <span className="text-sm font-bold text-status-success">Low</span>
                                 </div>
                                 <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                                     <div className="h-full bg-status-success shadow-[0_0_10px_#15803D] w-[30%]" />
+                                    <div className="h-full bg-status-success shadow-[0_0_10px_#15803D] w-[30%]" />
                                 </div>
                             </div>
-                         </div>
+                        </div>
                     </div>
                 </div>
 
@@ -188,7 +231,7 @@ export default function Dashboard() {
                             <MessageSquare className="text-gold" size={28} /> Audit Command Trail
                         </h2>
                         <div className="max-h-[520px] overflow-y-auto no-scrollbar pr-2">
-                             <AgentLogs />
+                            <AgentLogs logs={agentLogs} />
                         </div>
                     </div>
                 </div>

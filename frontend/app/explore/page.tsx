@@ -1,9 +1,28 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Compass, Search, Filter, ShieldCheck, Zap } from 'lucide-react';
+import api from '../../lib/api';
 
 export default function ExplorePage() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [items, setItems] = useState([
+    { name: 'Alpha Prime Cluster', type: 'Core protocol', st: 'Stable', cap: '$2.5M' },
+    { name: 'Hyper-Liquidity Node', type: 'High Velocity', st: 'Aggressive', cap: '$850k' },
+    { name: 'Stability Mandate VI', type: 'Institutional', st: 'Defensive', cap: '$1.2M' },
+    { name: 'Genesis Reserve', type: 'Protocol Owned', st: 'Optimal', cap: '$5.0M' },
+    { name: 'Yield Aggregator II', type: 'Derivative', st: 'Stable', cap: '$120k' },
+    { name: 'Network Governor', type: 'Governance', st: 'Stable', cap: '$0.0' },
+  ]);
+
+  // Filter items by search query
+  const filteredItems = searchQuery
+    ? items.filter(item =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.type.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    : items;
+
   return (
     <div className="space-y-12 animate-in fade-in duration-1000 pt-8 max-w-7xl mx-auto">
       <div className="flex flex-wrap items-center justify-between gap-8">
@@ -11,13 +30,15 @@ export default function ExplorePage() {
           <h1 className="text-4xl font-bold text-primary tracking-tight">Ecosystem Explorer</h1>
           <p className="text-muted text-lg font-body">Discover high-stability curated institutional mandates.</p>
         </div>
-        
+
         <div className="flex items-center gap-4 bg-primary/[0.03] p-2 rounded-2xl border border-primary/10 w-full max-w-md">
           <Search className="text-muted ml-4" size={20} />
-          <input 
-            type="text" 
-            placeholder="Search clusters, mandates, or entities..." 
+          <input
+            type="text"
+            placeholder="Search clusters, mandates, or entities..."
             className="bg-transparent border-none outline-none text-primary text-sm w-full py-3 px-2 placeholder:text-muted/30"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
           />
           <button className="px-6 py-2.5 bg-secondary border border-primary/5 rounded-xl text-xs font-bold text-gold uppercase tracking-widest hover:border-gold/30 transition-all">
             <Filter size={16} />
@@ -26,14 +47,7 @@ export default function ExplorePage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {[
-          { name: 'Alpha Prime Cluster', type: 'Core protocol', st: 'Stable', cap: '$2.5M' },
-          { name: 'Hyper-Liquidity Node', type: 'High Velocity', st: 'Aggressive', cap: '$850k' },
-          { name: 'Stability Mandate VI', type: 'Institutional', st: 'Defensive', cap: '$1.2M' },
-          { name: 'Genesis Reserve', type: 'Protocol Owned', st: 'Optimal', cap: '$5.0M' },
-          { name: 'Yield Aggregator II', type: 'Derivative', st: 'Stable', cap: '$120k' },
-          { name: 'Network Governor', type: 'Governance', st: 'Stable', cap: '$0.0' },
-        ].map((item, i) => (
+        {filteredItems.map((item, i) => (
           <div key={i} className="luxury-card p-10 flex flex-col gap-8 group">
             <div className="shine-sweep" />
             <div className="flex justify-between items-start relative z-10">
@@ -55,7 +69,8 @@ export default function ExplorePage() {
               </button>
             </div>
           </div>
-        ))}
+        ))
+        }
       </div>
     </div>
   );
