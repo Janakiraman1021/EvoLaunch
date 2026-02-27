@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, AlertCircle, CheckCircle, Zap, Lock } from 'lucide-react';
-import { useWeb3 } from '@/lib/hooks/useWeb3';
-import { CONTRACT_ADDRESSES, LAUNCH_FACTORY_ABI, getSignedContract } from '@/lib/contracts';
+import { useWeb3 } from '../../lib/hooks/useWeb3';
+import { CONTRACT_ADDRESSES, LAUNCH_FACTORY_ABI, getSignedContract } from '../../lib/contracts';
 
 interface FormData {
   name: string;
@@ -63,16 +63,16 @@ export default function LaunchPage() {
   useEffect(() => {
     const warnings: string[] = [];
 
-    if (parseInt(form.minTax) > form.initialSellTax) {
+    if (form.minTax > form.initialSellTax) {
       warnings.push('Minimum tax is higher than initial sell tax');
     }
-    if (form.initialSellTax > parseInt(form.maxTax)) {
+    if (form.initialSellTax > form.maxTax) {
       warnings.push('Initial sell tax exceeds maximum tax bound');
     }
-    if (parseInt(form.minMaxTx) > parseInt(form.initialMaxTx)) {
+    if (BigInt(form.minMaxTx) > BigInt(form.initialMaxTx)) {
       warnings.push('Minimum max-tx is higher than initial max-tx');
     }
-    if (parseInt(form.minMaxWallet) > parseInt(form.initialMaxWallet)) {
+    if (BigInt(form.minMaxWallet) > BigInt(form.initialMaxWallet)) {
       warnings.push('Minimum max-wallet is higher than initial max-wallet');
     }
     if (!form.feeCollector || form.feeCollector === '') {
@@ -121,21 +121,21 @@ export default function LaunchPage() {
         return BigInt(Math.floor(parseFloat(val) * Math.pow(10, decimals)));
       };
 
-      const tx = await factory.createLaunch(
-        form.name,
-        form.symbol,
-        parseValue(form.totalSupply),
-        form.initialSellTax * 100, // Convert to basis points
-        form.initialBuyTax * 100,
-        parseValue(form.initialMaxTx),
-        parseValue(form.initialMaxWallet),
-        form.minTax * 100,
-        form.maxTax * 100,
-        parseValue(form.minMaxTx),
-        parseValue(form.minMaxWallet),
-        form.feeCollector || wallet.address,
-        [wallet.address]
-      );
+      const tx = await factory.createLaunch({
+        name: form.name,
+        symbol: form.symbol,
+        totalSupply: parseValue(form.totalSupply),
+        initialSellTax: form.initialSellTax * 100, // Convert to basis points
+        initialBuyTax: form.initialBuyTax * 100,
+        initialMaxTx: parseValue(form.initialMaxTx),
+        initialMaxWallet: parseValue(form.initialMaxWallet),
+        minTax: form.minTax * 100,
+        maxTax: form.maxTax * 100,
+        minMaxTx: parseValue(form.minMaxTx),
+        minMaxWallet: parseValue(form.minMaxWallet),
+        feeCollector: form.feeCollector || wallet.address,
+        agentPublicKeys: [wallet.address]
+      });
 
       setTxHash(tx.hash);
 

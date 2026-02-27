@@ -1,7 +1,7 @@
 'use client';
 
 import './globals.css'
-import Navigation from '@/components/Navigation'
+import Navigation from '../components/Navigation'
 
 // Note: Metadata only works in server components, moved to individual pages
 

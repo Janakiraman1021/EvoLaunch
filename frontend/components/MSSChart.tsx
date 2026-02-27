@@ -13,7 +13,7 @@ const data = [
     { time: '12:30', mss: 75 },
 ];
 
-export default function MSSChart() {
+export default function MSSChart({ mss }: { mss?: number }) {
     return (
         <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>

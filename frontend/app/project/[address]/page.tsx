@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, AlertCircle, LineChart, Lock, Zap, Activity, TrendingUp } from 'lucide-react';
-import MSSChart from '@/components/MSSChart';
+import MSSChart from '../../../components/MSSChart';
 
 interface ProjectData {
   symbol: string;
@@ -12,7 +12,7 @@ interface ProjectData {
   mssValue: number;
   phaseDescription: string;
   lastAgentUpdateTime: string;
-  
+
   tokenInfo: {
     address: string;
     totalSupply: string;
@@ -230,11 +230,10 @@ export default function ProjectDashboard({ params }: { params: { address: string
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-3 font-semibold border-b-2 transition flex items-center gap-2 whitespace-nowrap ${
-                activeTab === tab.id
-                  ? 'border-forest text-forest'
-                  : 'border-transparent text-forest/60 hover:text-forest'
-              }`}
+              className={`px-4 py-3 font-semibold border-b-2 transition flex items-center gap-2 whitespace-nowrap ${activeTab === tab.id
+                ? 'border-forest text-forest'
+                : 'border-transparent text-forest/60 hover:text-forest'
+                }`}
             >
               <tab.icon size={18} />
               {tab.label}
@@ -313,11 +312,10 @@ export default function ProjectDashboard({ params }: { params: { address: string
                   </div>
                   <div>
                     <p className="text-sm text-forest/60 mb-1">Status</p>
-                    <div className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
-                      project.liquidityInfo.frozen
-                        ? 'bg-red-50 text-red-700 border border-red-200'
-                        : 'bg-green-50 text-green-700 border border-green-200'
-                    }`}>
+                    <div className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${project.liquidityInfo.frozen
+                      ? 'bg-red-50 text-red-700 border border-red-200'
+                      : 'bg-green-50 text-green-700 border border-green-200'
+                      }`}>
                       {project.liquidityInfo.frozen ? 'Frozen' : 'Active'}
                     </div>
                   </div>
@@ -333,11 +331,10 @@ export default function ProjectDashboard({ params }: { params: { address: string
                         <p className="font-semibold text-forest">Tranche {tranche.tranche}</p>
                         <p className="text-xs text-forest/60">{tranche.amount}</p>
                       </div>
-                      <div className={`text-xs font-bold px-2 py-1 rounded ${
-                        tranche.status === 'unlocked'
-                          ? 'bg-green-50 text-green-700'
-                          : 'bg-amber-50 text-amber-700'
-                      }`}>
+                      <div className={`text-xs font-bold px-2 py-1 rounded ${tranche.status === 'unlocked'
+                        ? 'bg-green-50 text-green-700'
+                        : 'bg-amber-50 text-amber-700'
+                        }`}>
                         {tranche.status}
                       </div>
                     </div>
@@ -396,11 +393,10 @@ export default function ProjectDashboard({ params }: { params: { address: string
                       <h4 className="font-bold text-forest">{log.agent}</h4>
                       <p className="text-sm text-forest/60">{log.timestamp}</p>
                     </div>
-                    <div className={`text-xs font-bold px-3 py-1 rounded ${
-                      log.verified
-                        ? 'bg-green-50 text-green-700 border border-green-200'
-                        : 'bg-red-50 text-red-700 border border-red-200'
-                    }`}>
+                    <div className={`text-xs font-bold px-3 py-1 rounded ${log.verified
+                      ? 'bg-green-50 text-green-700 border border-green-200'
+                      : 'bg-red-50 text-red-700 border border-red-200'
+                      }`}>
                       {log.verified ? 'Verified' : 'Unverified'}
                     </div>
                   </div>
@@ -418,9 +414,8 @@ export default function ProjectDashboard({ params }: { params: { address: string
             <h3 className="text-xl font-bold text-forest mb-6">Recent Transactions</h3>
             <div className="space-y-3">
               {project.transactions.map((tx, idx) => (
-                <div key={idx} className={`border rounded-lg p-4 flex justify-between items-center ${
-                  tx.volumeSpike ? 'border-amber-200 bg-amber-50' : 'border-forest/10'
-                }`}>
+                <div key={idx} className={`border rounded-lg p-4 flex justify-between items-center ${tx.volumeSpike ? 'border-amber-200 bg-amber-50' : 'border-forest/10'
+                  }`}>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <span className={`font-bold ${tx.type === 'buy' ? 'text-green-600' : 'text-red-600'}`}>

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, TrendingUp, Shield, AlertCircle } from 'lucide-react';
-import { useWeb3 } from '@/lib/hooks/useWeb3';
+import { useWeb3 } from '../../lib/hooks/useWeb3';
 
 interface WalletReputation {
   score: number;
