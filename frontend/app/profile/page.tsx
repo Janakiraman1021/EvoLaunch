@@ -5,12 +5,12 @@ import {
   ShieldCheck, 
   Wallet, 
   Cpu, 
-  Globe, 
   History, 
   Award,
   ExternalLink,
   ChevronRight,
-  Fingerprint
+  Fingerprint,
+  Activity
 } from 'lucide-react';
 
 export default function ProfilePage() {
@@ -44,12 +44,12 @@ export default function ProfilePage() {
 
             <div className="flex-1 text-center md:text-left space-y-4">
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
-                <h1 className="text-4xl font-bold text-white tracking-tight">{profileData.rank}</h1>
+                <h1 className="text-4xl font-bold text-primary tracking-tight">{profileData.rank}</h1>
                 <div className="px-3 py-1 bg-gold/10 border border-gold/20 rounded-full text-[10px] font-bold text-gold uppercase tracking-widest">
                   Verified Entity
                 </div>
               </div>
-              <div className="flex items-center justify-center md:justify-start gap-3 bg-white/[0.03] w-fit px-4 py-2 rounded-xl border border-white/5">
+              <div className="flex items-center justify-center md:justify-start gap-3 bg-[var(--primary-text)]/[0.03] w-fit px-4 py-2 rounded-xl border border-white/5">
                 <Wallet size={14} className="text-gold" />
                 <span className="text-sm font-mono text-muted">{profileData.address}</span>
                 <ExternalLink size={14} className="text-muted/40 cursor-pointer hover:text-gold transition-colors" />
@@ -68,7 +68,7 @@ export default function ProfilePage() {
           <div className="relative z-10 space-y-4">
             <Award size={40} className="text-gold mx-auto mb-2" />
             <div className="text-[10px] font-bold text-muted uppercase tracking-[0.3em]">Protocol Reputation</div>
-            <div className="text-6xl font-black text-white tracking-tighter shadow-gold-glow-text">
+            <div className="text-6xl font-black text-primary tracking-tighter shadow-gold-glow-text">
               {profileData.reputation}
             </div>
             <div className="text-xs font-bold text-status-success tracking-widest uppercase">Expert Tier</div>
@@ -92,7 +92,7 @@ export default function ProfilePage() {
                  <stat.icon size={24} className="text-gold" />
                </div>
                <div>
-                 <div className="text-lg font-bold text-white tracking-tight">{stat.value}</div>
+                 <div className="text-lg font-bold text-primary tracking-tight">{stat.value}</div>
                  <div className="text-[10px] text-muted font-bold uppercase tracking-widest">{stat.label}</div>
                </div>
              </div>
@@ -106,7 +106,7 @@ export default function ProfilePage() {
       <div className="luxury-card overflow-hidden">
         <div className="p-10 border-b border-white/5 flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-white flex items-center gap-3 tracking-tight">
+            <h2 className="text-2xl font-bold text-primary flex items-center gap-3 tracking-tight">
               <History className="text-gold" size={24} /> Audit Trail History
             </h2>
             <p className="text-muted text-sm mt-1 uppercase tracking-widest text-[9px] font-bold">Transaction Ledger for 0x742d...44e</p>
@@ -137,14 +137,14 @@ export default function ProfilePage() {
                   <td className="px-10 py-6">
                     <div className="flex flex-col">
                       <span className="text-xs font-mono text-gold font-bold">{row.id}</span>
-                      <span className="text-xs text-white/40">{row.type}</span>
+                      <span className="text-xs text-primary/40">{row.type}</span>
                     </div>
                   </td>
                   <td className="px-10 py-6">
                     <span className="px-3 py-1 rounded-lg bg-secondary text-muted text-[10px] font-bold border border-white/5 uppercase tracking-widest group-hover:border-gold/30 transition-all">Alpha Cluster</span>
                   </td>
                   <td className="px-10 py-6 text-right">
-                    <span className="text-sm font-bold text-white tracking-tight">{row.amt}</span>
+                    <span className="text-sm font-bold text-primary tracking-tight">{row.amt}</span>
                   </td>
                   <td className="px-10 py-6 text-right">
                     <span className="text-xs text-muted/60">{row.time}</span>

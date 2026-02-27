@@ -14,6 +14,8 @@ export default function Navigation() {
     { href: '/launch', label: 'Launch Token', show: true },
     { href: '/explore', label: 'Explorer', show: true },
     { href: '/reputation', label: 'My Reputation', show: true },
+    { href: '/profile', label: 'Profile', show: true },
+    { href: '/dashboard', label: 'Dashboard', show: true },
     { href: '/agents', label: 'Agents', show: true },
     { href: '/docs', label: 'Docs', show: true },
     { href: '/system', label: 'System Status', show: true },

@@ -14,14 +14,24 @@ import {
   Moon,
   User,
   BarChart3,
-  LayoutDashboard 
+  LayoutDashboard,
+  Copy,
+  Settings,
+  LogOut
 } from 'lucide-react';
 
 export default function Sidebar() {
   const pathname = usePathname();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [copied, setCopied] = useState(false);
+
+  const mockProfile = {
+    name: 'Institutional Node',
+    address: '0x7D02fD90716722221277D8CA750B3611Ca51dAB9',
+    reputation: 85,
+    totalValue: '125.3 BNB',
+  };
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' || 'dark';
@@ -34,6 +44,12 @@ export default function Sidebar() {
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(mockProfile.address);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const links = [
@@ -58,6 +74,7 @@ export default function Sidebar() {
   return (
     <nav className="fixed flex flex-col items-center py-8 glass-panel z-50 floating-sidebar transition-colors duration-500 shadow-2xl">
       <div className="noise-overlay" />
+      
       {/* Premium Logo Section */}
       <Link href="/" className="mb-6 relative group">
         <div className="absolute inset-0 bg-gold/20 blur-xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-700 opacity-50" />
