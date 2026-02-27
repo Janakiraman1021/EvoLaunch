@@ -111,7 +111,7 @@ export default function Sidebar() {
               </div>
               
               {/* Sidebar Tooltip */}
-              <div className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-secondary border border-gold/20 text-gold text-[10px] font-bold uppercase tracking-widest opacity-0 scale-90 translate-x-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap shadow-luxury-soft">
+              <div className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-secondary border border-gold/20 text-gold text-xs font-bold uppercase tracking-widest opacity-0 scale-90 translate-x-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap shadow-luxury-soft">
                 {link.label}
                 <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-secondary border-l border-b border-gold/20 rotate-45" />
               </div>
@@ -128,7 +128,7 @@ export default function Sidebar() {
           title={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
         >
           {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-          <div className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-secondary border border-gold/20 text-gold text-[10px] font-bold uppercase tracking-widest opacity-0 scale-90 translate-x-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap shadow-luxury-soft">
+          <div className="absolute left-14 top-1/2 -translate-y-1/2 px-4 py-2 rounded-lg bg-secondary border border-gold/20 text-gold text-xs font-bold uppercase tracking-widest opacity-0 scale-90 translate-x-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap shadow-luxury-soft">
             {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
             <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-secondary border-l border-b border-gold/20 rotate-45" />
           </div>
@@ -139,12 +139,12 @@ export default function Sidebar() {
           <div className="absolute inset-0 bg-gold/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           <div className="w-9 h-9 rounded-full p-[1px] bg-gradient-to-b from-gold/40 to-transparent relative z-10 transition-transform duration-500 group-hover:scale-110">
             <div className="w-full h-full rounded-full bg-background flex items-center justify-center overflow-hidden border border-black/50">
-              <span className="text-[9px] font-bold text-gold tracking-tighter">EVO</span>
+              <span className="text-[10px] font-bold text-gold tracking-tighter">EVO</span>
             </div>
           </div>
           <div className="absolute bottom-0 right-0 w-2 h-2 bg-status-success rounded-full border border-background z-20 shadow-status-success" />
           
-          <div className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-secondary border border-gold/20 text-gold text-[10px] font-bold uppercase tracking-widest opacity-0 scale-90 translate-x-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap">
+          <div className="absolute left-14 top-1/2 -translate-y-1/2 px-4 py-2 rounded-lg bg-secondary border border-gold/20 text-gold text-xs font-bold uppercase tracking-widest opacity-0 scale-90 translate-x-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap shadow-luxury-soft">
             Institutional Profile
             <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-secondary border-l border-b border-gold/20 rotate-45" />
           </div>

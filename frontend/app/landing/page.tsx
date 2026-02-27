@@ -16,11 +16,11 @@ export default function LandingPage() {
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-8 pt-40 pb-32 relative">
         <div className="text-center mb-40 animate-in fade-in slide-in-from-bottom-12 duration-1000 relative z-10">
-          <div className="inline-block px-5 py-2 bg-gold/10 border border-gold/20 rounded-full text-[10px] font-bold text-gold uppercase tracking-[0.4em] mb-12 shadow-gold-glow">
+          <div className="inline-block px-5 py-2 bg-gold/10 border border-gold/20 rounded-full text-xs font-bold text-gold uppercase tracking-[0.3em] mb-12 shadow-gold-glow">
             Institutional Grade Protocol
           </div>
           <h1 className="text-7xl md:text-9xl font-bold text-primary mb-10 leading-[0.85] tracking-tighter">
-            Adaptive <span className="text-gold italic font-serif">Tokenomics</span> <br />
+            Adaptive <span className="text-gold">Tokenomics</span> <br />
             <span className="opacity-90">Orchestrated by AI.</span>
           </h1>
           <p className="text-xl text-muted max-w-2xl mx-auto mb-16 leading-relaxed">
@@ -35,7 +35,7 @@ export default function LandingPage() {
             </Link>
             <Link
               href="/explore"
-              className="px-12 py-3.5 border border-gold/20 text-gold rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-gold/5 transition-all flex items-center gap-3"
+              className="px-12 py-3.5 border border-gold/20 text-gold rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-gold/5 transition-all flex items-center gap-3"
             >
               Access Explorer
             </Link>
@@ -82,11 +82,11 @@ export default function LandingPage() {
           <div className="luxury-card p-1 bg-secondary/20 relative overflow-hidden">
              <div className="grid md:grid-cols-2 gap-1 px-1">
                 <div className="p-12 space-y-8 flex flex-col justify-center">
-                  <h3 className="text-4xl font-bold text-primary tracking-tight italic">Autonomous <br/>Signal Integrity</h3>
+                  <h3 className="text-4xl font-bold text-primary tracking-tight">Autonomous <br/>Signal Integrity</h3>
                   <p className="text-muted text-lg leading-relaxed">
                     EvoLaunch agents process petabytes of on-chain signals every millisecond, transforming raw data into verified protocol mandates.
                   </p>
-                  <div className="flex items-center gap-4 text-gold text-[10px] font-bold uppercase tracking-widest">
+                  <div className="flex items-center gap-4 text-gold text-xs font-bold uppercase tracking-widest">
                     <span className="w-2 h-2 rounded-full bg-status-success shadow-gold-glow" /> 
                     Live Node Synchronization Active
                   </div>
@@ -102,7 +102,7 @@ export default function LandingPage() {
                            <div className="w-8 h-8 rounded-lg bg-gold/5 flex items-center justify-center border border-gold/10 group-hover:border-gold/30 transition-all">
                               <node.icon size={14} className="text-gold" />
                            </div>
-                           <span className="text-[10px] text-muted font-bold uppercase tracking-widest">{node.label}</span>
+                           <span className="text-xs text-muted font-bold uppercase tracking-widest">{node.label}</span>
                         </div>
                         <span className="text-sm font-mono text-primary font-bold">{node.value}</span>
                      </div>
@@ -115,7 +115,7 @@ export default function LandingPage() {
         {/* Institutional CTA */}
         <div className="text-center py-20 relative">
           <div className="absolute inset-0 bg-gold/5 blur-[120px] rounded-full pointer-events-none" />
-          <h2 className="text-5xl md:text-6xl font-bold text-primary mb-10 tracking-tight italic">Initialize Your Mandate.</h2>
+          <h2 className="text-5xl md:text-6xl font-bold text-primary mb-10 tracking-tight">Initialize Your Mandate.</h2>
           <p className="text-xl text-muted/60 mb-16 max-w-xl mx-auto">
             Deploy your adaptive neural token today. Advanced protocol recalibration and algorithmic transparency.
           </p>

@@ -35,7 +35,8 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="bg-slate-800/50 border-b border-emerald-500/20 sticky top-0 z-10 backdrop-blur">
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <h1 className="text-3xl font-bold text-white">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <h1 className="text-3xl font-bold text-primary">
             Dashboard <span className="text-emerald-400">Overview</span>
           </h1>
           <p className="text-slate-400 mt-1">Track your portfolio and trading activity</p>
@@ -50,7 +51,7 @@ export default function DashboardPage() {
               <p className="text-slate-400">Portfolio Value</p>
               <Wallet className="w-5 h-5 text-emerald-400" />
             </div>
-            <p className="text-3xl font-bold text-white">{stats.totalValue}</p>
+            <p className="text-3xl font-bold text-primary">{stats.totalValue}</p>
             <p className="text-emerald-400 text-sm mt-2">+{stats.dailyChange} today</p>
           </div>
 
@@ -59,7 +60,7 @@ export default function DashboardPage() {
               <p className="text-slate-400">Available Balance</p>
               <TrendingUp className="w-5 h-5 text-emerald-400" />
             </div>
-            <p className="text-3xl font-bold text-white">{stats.portfolio}</p>
+            <p className="text-3xl font-bold text-primary">{stats.portfolio}</p>
             <p className="text-slate-400 text-sm mt-2">Ready to trade</p>
           </div>
 
@@ -68,7 +69,7 @@ export default function DashboardPage() {
               <p className="text-slate-400">Active Positions</p>
               <Activity className="w-5 h-5 text-emerald-400" />
             </div>
-            <p className="text-3xl font-bold text-white">{stats.activePositions}</p>
+            <p className="text-3xl font-bold text-primary">{stats.activePositions}</p>
             <p className="text-slate-400 text-sm mt-2">Tokens held</p>
           </div>
 
@@ -88,7 +89,7 @@ export default function DashboardPage() {
             {/* Positions Table */}
             <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg overflow-hidden">
               <div className="p-6 border-b border-slate-700/50">
-                <h2 className="text-2xl font-bold text-white">Your Positions</h2>
+                <h2 className="text-2xl font-bold text-primary">Your Positions</h2>
               </div>
 
               <div className="overflow-x-auto">
@@ -111,7 +112,7 @@ export default function DashboardPage() {
                           </Link>
                         </td>
                         <td className="px-6 py-4 text-slate-300">{position.amount}</td>
-                        <td className="px-6 py-4 font-semibold text-white">{position.value}</td>
+                        <td className="px-6 py-4 font-semibold text-primary">{position.value}</td>
                         <td className={`px-6 py-4 font-semibold ${position.change.startsWith('+') ? 'text-emerald-400' : 'text-red-400'}`}>
                           {position.change}
                         </td>
@@ -129,7 +130,7 @@ export default function DashboardPage() {
 
             {/* Recent Activity */}
             <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg p-6">
-              <h2 className="text-2xl font-bold text-white mb-6">Recent Activity</h2>
+              <h2 className="text-2xl font-bold text-primary mb-6">Recent Activity</h2>
 
               <div className="space-y-4">
                 {recentActivity.map((activity, idx) => (
@@ -137,7 +138,7 @@ export default function DashboardPage() {
                     <div className="flex items-center gap-4">
                       <div className={`w-3 h-3 rounded-full ${activity.type === 'buy' ? 'bg-emerald-400' : 'bg-red-400'}`} />
                       <div>
-                        <p className="font-semibold text-white">
+                        <p className="font-semibold text-primary">
                           {activity.type === 'buy' ? '📈 Buy' : '📉 Sell'} {activity.symbol}
                         </p>
                         <p className="text-xs text-slate-400">{activity.amount} @ {activity.price}</p>
@@ -154,12 +155,12 @@ export default function DashboardPage() {
           <div className="space-y-6">
             {/* Watchlist */}
             <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg p-6">
-              <h2 className="text-lg font-bold text-white mb-4">Top Gainers</h2>
+              <h2 className="text-lg font-bold text-primary mb-4">Top Gainers</h2>
 
               <div className="space-y-3">
                 <div className="p-3 bg-slate-700/30 rounded border border-slate-600/50">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="text-white font-semibold">NOVA</span>
+                    <span className="text-primary font-semibold">NOVA</span>
                     <span className="text-emerald-400 font-bold">+45.2%</span>
                   </div>
                   <p className="text-xs text-slate-400">0.00025 BNB</p>
@@ -167,7 +168,7 @@ export default function DashboardPage() {
 
                 <div className="p-3 bg-slate-700/30 rounded border border-slate-600/50">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="text-white font-semibold">PULSE</span>
+                    <span className="text-primary font-semibold">PULSE</span>
                     <span className="text-emerald-400 font-bold">+32.1%</span>
                   </div>
                   <p className="text-xs text-slate-400">0.00089 BNB</p>
@@ -175,7 +176,7 @@ export default function DashboardPage() {
 
                 <div className="p-3 bg-slate-700/30 rounded border border-slate-600/50">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="text-white font-semibold">NEXUS</span>
+                    <span className="text-primary font-semibold">NEXUS</span>
                     <span className="text-emerald-400 font-bold">+28.9%</span>
                   </div>
                   <p className="text-xs text-slate-400">0.00042 BNB</p>
@@ -185,7 +186,7 @@ export default function DashboardPage() {
 
             {/* Quick Actions */}
             <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg p-6">
-              <h2 className="text-lg font-bold text-white mb-4">Quick Actions</h2>
+              <h2 className="text-lg font-bold text-primary mb-4">Quick Actions</h2>
 
               <div className="space-y-2">
                 <Link

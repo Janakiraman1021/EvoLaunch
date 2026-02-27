@@ -189,7 +189,7 @@ export default function LaunchPage() {
               <div className="luxury-card p-10 bg-secondary/30">
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="space-y-3">
-                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Token Name</label>
+                    <label className="text-xs font-bold text-gold uppercase tracking-[0.1em] ml-2">Token Name</label>
                     <input
                       type="text"
                       value={form.name}
@@ -199,7 +199,7 @@ export default function LaunchPage() {
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Ticker Symbol</label>
+                    <label className="text-xs font-bold text-gold uppercase tracking-[0.1em] ml-2">Ticker Symbol</label>
                     <input
                       type="text"
                       value={form.symbol}
@@ -210,7 +210,7 @@ export default function LaunchPage() {
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Total Issuance</label>
+                    <label className="text-xs font-bold text-gold uppercase tracking-[0.1em] ml-2">Total Issuance</label>
                     <input
                       type="number"
                       value={form.totalSupply}
@@ -219,7 +219,7 @@ export default function LaunchPage() {
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Initial Liquidity</label>
+                    <label className="text-xs font-bold text-gold uppercase tracking-[0.1em] ml-2">Initial Liquidity</label>
                     <input
                       type="number"
                       value={form.initialLiquidity}
@@ -246,7 +246,7 @@ export default function LaunchPage() {
               <div className="luxury-card p-10 bg-secondary/30">
                 <div className="grid md:grid-cols-2 gap-x-10 gap-y-8">
                   <div className="space-y-3">
-                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Initial Sell Tax (%)</label>
+                    <label className="text-xs font-bold text-gold uppercase tracking-[0.1em] ml-2">Initial Sell Tax (%)</label>
                     <input
                       type="number"
                       value={form.initialSellTax}
@@ -255,7 +255,7 @@ export default function LaunchPage() {
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Initial Buy Tax (%)</label>
+                    <label className="text-xs font-bold text-gold uppercase tracking-[0.1em] ml-2">Initial Buy Tax (%)</label>
                     <input
                       type="number"
                       value={form.initialBuyTax}
@@ -264,7 +264,7 @@ export default function LaunchPage() {
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Minimum Tax Floor</label>
+                    <label className="text-xs font-bold text-gold uppercase tracking-[0.1em] ml-2">Minimum Tax Floor</label>
                     <input
                       type="number"
                       value={form.minTax}
@@ -273,7 +273,7 @@ export default function LaunchPage() {
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Maximum Tax Ceiling</label>
+                    <label className="text-xs font-bold text-gold uppercase tracking-[0.1em] ml-2">Maximum Tax Ceiling</label>
                     <input
                       type="number"
                       value={form.maxTax}
@@ -300,7 +300,7 @@ export default function LaunchPage() {
               <div className="luxury-card p-10 bg-secondary/30">
                 <div className="grid md:grid-cols-2 gap-x-10 gap-y-8">
                   <div className="space-y-3">
-                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Max Transaction Amt</label>
+                    <label className="text-xs font-bold text-gold uppercase tracking-[0.1em] ml-2">Max Transaction Amt</label>
                     <input
                       type="number"
                       value={form.initialMaxTx}
@@ -309,7 +309,7 @@ export default function LaunchPage() {
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Max Wallet Capacity</label>
+                    <label className="text-xs font-bold text-gold uppercase tracking-[0.1em] ml-2">Max Wallet Capacity</label>
                     <input
                       type="number"
                       value={form.initialMaxWallet}
@@ -355,7 +355,7 @@ export default function LaunchPage() {
                   <CheckCircle size={20} />
                   <span className="text-sm font-bold uppercase tracking-widest tracking-widest">Transaction Propagating</span>
                 </div>
-                <code className="text-[10px] text-gold/60 font-mono block truncate py-2 px-4 bg-background/50 rounded-lg">{txHash}</code>
+                <code className="text-xs text-gold/60 font-mono block truncate py-2 px-4 bg-background/50 rounded-lg">{txHash}</code>
               </div>
             )}
 
@@ -371,7 +371,7 @@ export default function LaunchPage() {
                 </span>
               ) : 'Execute Deployment'}
             </button>
-            <p className="text-[9px] text-muted/30 text-center font-bold uppercase tracking-[0.3em] mt-6">
+            <p className="text-xs text-muted/30 text-center font-bold uppercase tracking-[0.3em] mt-6">
               Authenticated & Secured by EvoLaunch Institutional Core
             </p>
           </div>

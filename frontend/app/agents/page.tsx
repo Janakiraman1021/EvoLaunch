@@ -120,8 +120,8 @@ export default function AgentControlPanel() {
           <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
           Neural Core Home
         </Link>
-        <h1 className="text-5xl font-bold text-white tracking-tight mb-4 flex items-baseline gap-4">
-          Agent <span className="text-gold italic font-serif">Command</span> Center
+        <h1 className="text-5xl font-bold text-primary tracking-tight mb-4 flex items-baseline gap-4">
+          Agent <span className="text-gold">Command</span> Center
         </h1>
         <p className="text-muted text-lg max-w-2xl leading-relaxed">
           Monitor registered neural agents, verify cryptographic signatures, and inspect real-time stability score parameters.
@@ -131,7 +131,7 @@ export default function AgentControlPanel() {
       <div className="py-12 space-y-16">
         {/* Agent Registry */}
         <div className="space-y-8">
-          <h2 className="text-3xl font-bold text-white flex items-center gap-4 tracking-tight">
+          <h2 className="text-3xl font-bold text-primary flex items-center gap-4 tracking-tight">
             <Key size={32} className="text-gold" />
             Institutional Registry
           </h2>
@@ -142,23 +142,23 @@ export default function AgentControlPanel() {
                 <div className="grid lg:grid-cols-2 gap-12 mb-8">
                   <div>
                     <div className="flex items-center gap-5 mb-6">
-                      <h3 className="text-2xl font-bold text-white tracking-tight group-hover:text-gold transition-colors">{agent.name}</h3>
-                      <div className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border transition-all ${
+                      <h3 className="text-2xl font-bold text-primary tracking-tight group-hover:text-gold transition-colors">{agent.name}</h3>
+                      <div className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest border transition-all ${
                         agent.isActive
                           ? 'bg-status-success/10 text-status-success border-status-success/30 shadow-status-success'
                           : 'bg-muted/10 text-muted border-muted/30'
                       }`}>
                         {agent.isActive ? 'OPERATIONAL' : 'DORMANT'}
                       </div>
-                      <div className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border border-gold/30 bg-gold/5 text-gold`}>
+                      <div className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest border border-gold/30 bg-gold/5 text-gold`}>
                         {agent.verificationStatus}
                       </div>
                     </div>
 
                     <div className="space-y-4">
                       <div>
-                        <p className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] mb-2 opacity-60">Public Identifier (ECDSA)</p>
-                        <p className="font-mono text-white/70 break-all text-xs bg-black/40 p-4 rounded-xl border border-white/[0.03] leading-relaxed">
+                        <p className="text-xs font-bold text-gold uppercase tracking-[0.2em] mb-2 opacity-60">Public Identifier (ECDSA)</p>
+                        <p className="font-mono text-primary/70 break-all text-sm bg-black/40 p-4 rounded-xl border border-white/[0.03] leading-relaxed">
                           {agent.publicKey}
                         </p>
                       </div>
@@ -168,17 +168,17 @@ export default function AgentControlPanel() {
                   <div className="grid col-span-1 gap-6">
                     <div className="grid grid-cols-2 gap-6">
                       <div className="p-6 bg-secondary/40 rounded-2xl border border-white/[0.03]">
-                        <p className="text-[10px] text-muted uppercase font-bold tracking-widest mb-1 opacity-60">Last Sequence</p>
-                        <p className="text-lg font-bold text-white">{agent.lastUpdate}</p>
+                        <p className="text-xs text-muted uppercase font-bold tracking-widest mb-1 opacity-60">Last Sequence</p>
+                        <p className="text-lg font-bold text-primary">{agent.lastUpdate}</p>
                       </div>
                       <div className="p-6 bg-secondary/40 rounded-2xl border border-white/[0.03]">
-                        <p className="text-[10px] text-muted uppercase font-bold tracking-widest mb-1 opacity-60">Total Mandates</p>
-                        <p className="text-lg font-bold text-white">{agent.updateCount}</p>
+                        <p className="text-xs text-muted uppercase font-bold tracking-widest mb-1 opacity-60">Total Mandates</p>
+                        <p className="text-lg font-bold text-primary">{agent.updateCount}</p>
                       </div>
                     </div>
                     <button
                       onClick={() => toggleAgentStatus(agent.id)}
-                      className={`w-full py-4 rounded-xl font-bold uppercase tracking-[0.2em] text-[10px] transition-all duration-500 border ${
+                      className={`w-full py-4 rounded-xl font-bold uppercase tracking-[0.1em] text-xs transition-all duration-500 border ${
                         agent.isActive
                           ? 'border-status-danger/40 text-status-danger hover:bg-status-danger/10'
                           : 'border-status-success/40 text-status-success hover:bg-status-success/10'
@@ -190,8 +190,8 @@ export default function AgentControlPanel() {
                 </div>
 
                 <div className="border-t border-gold/[0.05] pt-6 group">
-                  <p className="text-[9px] text-gold/40 uppercase font-bold tracking-widest mb-2">Cryptographic Signature</p>
-                  <p className="font-mono text-[10px] text-muted/40 break-all group-hover:text-gold/40 transition-colors uppercase">{agent.signature}</p>
+                  <p className="text-xs text-gold/40 uppercase font-bold tracking-widest mb-2">Cryptographic Signature</p>
+                  <p className="font-mono text-xs text-muted/40 break-all group-hover:text-gold/40 transition-colors uppercase">{agent.signature}</p>
                 </div>
               </div>
             ))}
@@ -200,7 +200,7 @@ export default function AgentControlPanel() {
 
         {/* MSS Computation Inputs */}
         <div className="space-y-8">
-          <h2 className="text-3xl font-bold text-white flex items-center gap-4 tracking-tight">
+          <h2 className="text-3xl font-bold text-primary flex items-center gap-4 tracking-tight">
             <Activity size={32} className="text-gold" />
             Stability Intelligence Inputs
           </h2>
@@ -215,16 +215,16 @@ export default function AgentControlPanel() {
                 <div key={idx} className="luxury-card p-8 bg-black/40 border-gold/10 hover:border-gold/30 group transition-all">
                   <div className="flex justify-between items-start mb-6">
                     <div>
-                      <p className="font-bold text-white text-lg tracking-tight mb-1 group-hover:text-gold transition-colors">{input.metric}</p>
+                      <p className="font-bold text-primary text-lg tracking-tight mb-1 group-hover:text-gold transition-colors">{input.metric}</p>
                       <p className="text-sm text-gold/60 font-mono font-bold">{input.value}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-[9px] text-muted uppercase font-bold tracking-[0.2em] mb-1 opacity-60">Weight</p>
-                      <p className="text-2xl font-bold text-white tracking-tighter">{input.weight}</p>
+                      <p className="text-xs text-muted uppercase font-bold tracking-[0.2em] mb-1 opacity-60">Weight</p>
+                      <p className="text-2xl font-bold text-primary tracking-tighter">{input.weight}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 text-[9px] text-muted/60 uppercase font-bold tracking-widest pt-5 border-t border-white/[0.03]">
+                  <div className="flex items-center gap-2 text-xs text-muted/60 uppercase font-bold tracking-widest pt-5 border-t border-white/[0.03]">
                     <CheckCircle size={12} className="text-status-success shadow-gold-glow" />
                     <span>Source: {input.source}</span>
                   </div>
@@ -233,11 +233,11 @@ export default function AgentControlPanel() {
             </div>
 
             <div className="mt-12 pt-8 border-t border-gold/[0.05]">
-              <h4 className="text-[10px] font-bold text-gold uppercase tracking-[0.3em] mb-6">MSS Computational Model</h4>
-              <div className="bg-black/40 p-10 rounded-2xl font-mono text-sm text-white/50 border border-white/[0.03] overflow-x-auto relative group">
+              <h4 className="text-xs font-bold text-gold uppercase tracking-[0.3em] mb-6">MSS Computational Model</h4>
+              <div className="bg-black/40 p-10 rounded-2xl font-mono text-sm text-primary/50 border border-white/[0.03] overflow-x-auto relative group">
                 <div className="absolute inset-0 bg-gold/[0.01] blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                <p className="relative z-10 text-white font-bold mb-4">MSS = (LDI × 0.50) + (HC × 0.20) + (BSR × 0.20) + (VF × 0.10)</p>
-                <div className="relative z-10 text-[10px] text-muted uppercase tracking-widest leading-relaxed">
+                <p className="relative z-10 text-primary font-bold mb-4">MSS = (LDI × 0.50) + (HC × 0.20) + (BSR × 0.20) + (VF × 0.10)</p>
+                <div className="relative z-10 text-xs text-muted uppercase tracking-widest leading-relaxed">
                   LDI: Liquidity Depth Index | HC: Holder Concentration | BSR: Buy/Sell Ratio | VF: Volatility Factor
                 </div>
               </div>
@@ -247,7 +247,7 @@ export default function AgentControlPanel() {
 
         {/* Audit History */}
         <div className="space-y-8">
-          <h2 className="text-3xl font-bold text-white flex items-center gap-4 tracking-tight">
+          <h2 className="text-3xl font-bold text-primary flex items-center gap-4 tracking-tight">
             <CheckCircle size={32} className="text-gold" />
             Signature Audit Trail
           </h2>
@@ -266,13 +266,13 @@ export default function AgentControlPanel() {
                       <CheckCircle size={18} />
                     </div>
                     <div>
-                      <p className="font-bold text-white text-base tracking-tight group-hover:text-gold transition-colors">{entry.agent}</p>
-                      <p className="text-[10px] text-muted font-bold tracking-widest opacity-60 uppercase">Sequence Block: #{entry.block}</p>
+                      <p className="font-bold text-primary text-base tracking-tight group-hover:text-gold transition-colors">{entry.agent}</p>
+                      <p className="text-xs text-muted font-bold tracking-widest opacity-60 uppercase">Sequence Block: #{entry.block}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-white/80 mb-1">{entry.timestamp}</p>
-                    <p className="text-[10px] text-status-success font-bold tracking-widest shadow-gold-glow animate-pulse">{entry.status}</p>
+                    <p className="text-sm font-bold text-primary/80 mb-1">{entry.timestamp}</p>
+                    <p className="text-xs text-status-success font-bold tracking-widest shadow-gold-glow animate-pulse">{entry.status}</p>
                   </div>
                 </div>
               ))}

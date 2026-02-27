@@ -45,7 +45,7 @@ export default function ProfilePage() {
             <div className="flex-1 text-center md:text-left space-y-4">
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
                 <h1 className="text-4xl font-bold text-primary tracking-tight">{profileData.rank}</h1>
-                <div className="px-3 py-1 bg-gold/10 border border-gold/20 rounded-full text-[10px] font-bold text-gold uppercase tracking-widest">
+                <div className="px-3 py-1 bg-gold/10 border border-gold/20 rounded-full text-xs font-bold text-gold uppercase tracking-widest">
                   Verified Entity
                 </div>
               </div>
@@ -67,13 +67,13 @@ export default function ProfilePage() {
           <div className="absolute inset-0 bg-gold/5 blur-[80px] rounded-full scale-50 group-hover:scale-100 transition-transform duration-1000" />
           <div className="relative z-10 space-y-4">
             <Award size={40} className="text-gold mx-auto mb-2" />
-            <div className="text-[10px] font-bold text-muted uppercase tracking-[0.3em]">Protocol Reputation</div>
+            <div className="text-xs font-bold text-muted uppercase tracking-[0.2em]">Protocol Reputation</div>
             <div className="text-6xl font-black text-primary tracking-tighter shadow-gold-glow-text">
               {profileData.reputation}
             </div>
             <div className="text-xs font-bold text-status-success tracking-widest uppercase">Expert Tier</div>
           </div>
-          <button className="w-full mt-6 py-3 rounded-xl bg-secondary border border-gold/20 text-gold text-[10px] font-bold uppercase tracking-widest hover:bg-gold hover:text-background transition-all duration-500">
+          <button className="w-full mt-6 py-3 rounded-xl bg-secondary border border-gold/20 text-gold text-xs font-bold uppercase tracking-widest hover:bg-gold hover:text-background transition-all duration-500">
             View Credentials
           </button>
         </div>
@@ -93,11 +93,11 @@ export default function ProfilePage() {
                </div>
                <div>
                  <div className="text-lg font-bold text-primary tracking-tight">{stat.value}</div>
-                 <div className="text-[10px] text-muted font-bold uppercase tracking-widest">{stat.label}</div>
+                 <div className="text-xs text-muted font-bold uppercase tracking-widest">{stat.label}</div>
                </div>
              </div>
              <div className="h-[1px] w-full bg-white/5" />
-             <div className="text-[10px] text-gold font-bold uppercase opacity-60 tracking-widest">{stat.sub}</div>
+             <div className="text-xs text-gold font-bold uppercase opacity-60 tracking-widest">{stat.sub}</div>
           </div>
         ))}
       </div>
@@ -109,16 +109,16 @@ export default function ProfilePage() {
             <h2 className="text-2xl font-bold text-primary flex items-center gap-3 tracking-tight">
               <History className="text-gold" size={24} /> Audit Trail History
             </h2>
-            <p className="text-muted text-sm mt-1 uppercase tracking-widest text-[9px] font-bold">Transaction Ledger for 0x742d...44e</p>
+            <p className="text-muted text-sm mt-1 uppercase tracking-widest text-xs font-bold">Transaction Ledger for 0x742d...44e</p>
           </div>
-          <button className="text-gold text-[10px] font-bold uppercase tracking-widest hover:underline flex items-center gap-2">
+          <button className="text-gold text-xs font-bold uppercase tracking-widest hover:underline flex items-center gap-2">
             Export Ledger <ChevronRight size={14} />
           </button>
         </div>
         <div className="p-0">
           <table className="w-full text-left">
             <thead>
-              <tr className="bg-white/[0.02] text-[10px] font-bold text-muted uppercase tracking-[0.2em]">
+              <tr className="bg-primary/[0.02] text-xs font-bold text-muted uppercase tracking-[0.15em]">
                 <th className="px-10 py-5">Event Identifier</th>
                 <th className="px-10 py-5">Mandate</th>
                 <th className="px-10 py-5 text-right">Magnitude</th>
@@ -141,7 +141,7 @@ export default function ProfilePage() {
                     </div>
                   </td>
                   <td className="px-10 py-6">
-                    <span className="px-3 py-1 rounded-lg bg-secondary text-muted text-[10px] font-bold border border-white/5 uppercase tracking-widest group-hover:border-gold/30 transition-all">Alpha Cluster</span>
+                    <span className="px-3 py-1 rounded-lg bg-secondary text-muted text-xs font-bold border border-primary/5 uppercase tracking-widest group-hover:border-gold/30 transition-all">Alpha Cluster</span>
                   </td>
                   <td className="px-10 py-6 text-right">
                     <span className="text-sm font-bold text-primary tracking-tight">{row.amt}</span>

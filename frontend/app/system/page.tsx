@@ -132,7 +132,7 @@ export default function SystemStatusPage() {
             Infrastructure Home
           </Link>
           <h1 className="text-5xl font-bold text-primary tracking-tight mb-4 flex items-baseline gap-4">
-            System <span className="text-gold italic font-serif">Health</span> Matrix
+            System <span className="text-gold">Health</span> Matrix
           </h1>
           <p className="text-muted text-lg max-w-2xl leading-relaxed">
             Real-time infrastructure monitoring for the EvoLaunch Neural Core. Cryptographic verification of hardware and network parameters.
@@ -141,7 +141,7 @@ export default function SystemStatusPage() {
         
         <button
           onClick={() => setAutoRefresh(!autoRefresh)}
-          className={`px-6 py-3 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 border ${
+          className={`px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-[0.1em] transition-all duration-500 border ${
             autoRefresh
               ? 'bg-gold text-background border-gold shadow-gold-glow'
               : 'bg-secondary/50 border-gold/10 text-muted hover:border-gold/30 hover:text-primary'
@@ -166,7 +166,7 @@ export default function SystemStatusPage() {
               </div>
             </div>
             <div className="text-right hidden md:block">
-              <p className="text-[10px] text-gold uppercase font-bold tracking-[0.3em] mb-2 opacity-60">Status ID: ev0-1b4f</p>
+              <p className="text-xs text-gold uppercase font-bold tracking-[0.2em] mb-2 opacity-60">Status ID: ev0-1b4f</p>
               <div className="px-4 py-2 rounded-lg bg-black/40 border border-white/5 text-primary/40 font-mono text-xs">
                 Uptime: {systemStatus.backendHealth.uptime}
               </div>
@@ -193,7 +193,7 @@ export default function SystemStatusPage() {
                 { label: 'Last Cryptographic Check', val: systemStatus.rpcConnection.lastCheck },
               ].map((item, i) => (
                 <div key={i} className="flex justify-between items-end border-b border-white/[0.03] pb-4 last:border-0 last:pb-0">
-                  <span className="text-[10px] font-bold text-muted uppercase tracking-[0.2em]">{item.label}</span>
+                  <span className="text-xs font-bold text-muted uppercase tracking-[0.1em]">{item.label}</span>
                   <span className={`text-sm ${item.mono ? 'font-mono' : 'font-bold'} ${item.b ? 'text-status-success' : 'text-primary'}`}>{item.val}</span>
                 </div>
               ))}
@@ -217,7 +217,7 @@ export default function SystemStatusPage() {
                 { label: 'Neural Heartbeat', val: systemStatus.agentService.lastHeartbeat },
               ].map((item, i) => (
                 <div key={i} className="flex justify-between items-end border-b border-white/[0.03] pb-4 last:border-0 last:pb-0">
-                  <span className="text-[10px] font-bold text-muted uppercase tracking-[0.2em]">{item.label}</span>
+                  <span className="text-xs font-bold text-muted uppercase tracking-[0.1em]">{item.label}</span>
                   <span className={`text-sm font-bold ${item.b ? 'text-status-success' : 'text-primary'}`}>{item.val}</span>
                 </div>
               ))}
@@ -236,7 +236,7 @@ export default function SystemStatusPage() {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="space-y-8">
                 <div>
-                  <p className="text-[10px] font-bold text-muted uppercase tracking-[0.3em] mb-4">Neural Stability Floor</p>
+                  <p className="text-xs font-bold text-muted uppercase tracking-[0.2em] mb-4">Neural Stability Floor</p>
                   <p className="text-7xl font-bold text-primary tracking-tighter group-hover:text-gold transition-colors">{systemStatus.mssComputation.mssValue}<span className="text-2xl text-gold/40">/100</span></p>
                 </div>
                 <div className="w-full bg-secondary rounded-full h-2 overflow-hidden border border-white/[0.03]">
@@ -248,11 +248,11 @@ export default function SystemStatusPage() {
               </div>
 
               <div className="space-y-6 bg-black/40 p-8 rounded-2xl border border-white/[0.03]">
-                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest border-b border-white/5 pb-4">
+                <div className="flex justify-between text-xs font-bold uppercase tracking-widest border-b border-white/5 pb-4">
                   <span className="text-muted">Last Execution</span>
                   <span className="text-gold">{systemStatus.mssComputation.lastRun}</span>
                 </div>
-                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
+                <div className="flex justify-between text-xs font-bold uppercase tracking-widest">
                   <span className="text-muted">Computation Load</span>
                   <span className="text-primary font-mono">{systemStatus.mssComputation.computationTime}ms</span>
                 </div>
@@ -272,11 +272,11 @@ export default function SystemStatusPage() {
 
             <div className="space-y-8 mt-12">
               <div>
-                <p className="text-[9px] text-muted uppercase font-bold tracking-[0.3em] mb-2 opacity-60">Avg Response Latency</p>
+                <p className="text-xs text-muted uppercase font-bold tracking-[0.2em] mb-2 opacity-60">Avg Response Latency</p>
                 <p className="text-4xl font-bold text-primary tracking-tight font-mono">{systemStatus.backendHealth.responseTime}ms</p>
               </div>
               <div className="p-4 rounded-xl bg-black/40 border border-white/5">
-                <p className="text-[9px] text-muted uppercase font-bold tracking-widest mb-1 opacity-60">Historical Uptime</p>
+                <p className="text-xs text-muted uppercase font-bold tracking-widest mb-1 opacity-60">Historical Uptime</p>
                 <p className="text-xs font-bold text-primary/70 font-mono tracking-tighter">{systemStatus.backendHealth.uptime}</p>
               </div>
             </div>
@@ -296,15 +296,15 @@ export default function SystemStatusPage() {
 
           <div className="grid md:grid-cols-3 gap-12 relative z-10">
             <div>
-              <p className="text-[10px] text-muted uppercase font-bold tracking-[0.3em] mb-3 opacity-60">Handshake Status</p>
+              <p className="text-xs text-muted uppercase font-bold tracking-[0.2em] mb-3 opacity-60">Handshake Status</p>
               <p className="text-3xl font-bold text-status-success uppercase tracking-widest">{systemStatus.contractConnectivity.status}</p>
             </div>
             <div>
-              <p className="text-[10px] text-muted uppercase font-bold tracking-[0.3em] mb-3 opacity-60">Last Interaction</p>
+              <p className="text-xs text-muted uppercase font-bold tracking-[0.2em] mb-3 opacity-60">Last Interaction</p>
               <p className="text-2xl font-mono text-primary font-bold">{systemStatus.contractConnectivity.lastInteraction}</p>
             </div>
             <div>
-              <p className="text-[10px] text-muted uppercase font-bold tracking-[0.3em] mb-3 opacity-60">Interaction Success Rate</p>
+              <p className="text-xs text-muted uppercase font-bold tracking-[0.2em] mb-3 opacity-60">Interaction Success Rate</p>
               <p className="text-5xl font-bold text-gold tracking-tighter">{systemStatus.contractConnectivity.successRate}<span className="text-xl text-gold/40">%</span></p>
             </div>
           </div>
@@ -328,8 +328,8 @@ export default function SystemStatusPage() {
                   <p className="text-sm font-bold text-primary group-hover:text-gold transition-colors">{dep.name}</p>
                   <CheckCircle className="text-status-success shadow-gold-glow animate-pulse" size={16} />
                 </div>
-                <p className="text-[10px] text-muted uppercase tracking-widest font-bold mb-4 opacity-60">{dep.desc}</p>
-                <span className="text-[9px] font-bold text-status-success/80 border border-status-success/20 px-3 py-1 rounded-full">{dep.status}</span>
+                <p className="text-xs text-muted uppercase tracking-widest font-bold mb-4 opacity-60">{dep.desc}</p>
+                <span className="text-xs font-bold text-status-success/80 border border-status-success/20 px-3 py-1 rounded-full">{dep.status}</span>
               </div>
             ))}
           </div>

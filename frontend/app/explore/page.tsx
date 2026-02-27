@@ -8,7 +8,7 @@ export default function ExplorePage() {
     <div className="space-y-12 animate-in fade-in duration-1000 pt-8 max-w-7xl mx-auto">
       <div className="flex flex-wrap items-center justify-between gap-8">
         <div className="flex flex-col gap-4">
-          <h1 className="text-4xl font-bold text-primary tracking-tight italic">Ecosystem Explorer</h1>
+          <h1 className="text-4xl font-bold text-primary tracking-tight">Ecosystem Explorer</h1>
           <p className="text-muted text-lg font-body">Discover high-stability curated institutional mandates.</p>
         </div>
         
@@ -19,7 +19,7 @@ export default function ExplorePage() {
             placeholder="Search clusters, mandates, or entities..." 
             className="bg-transparent border-none outline-none text-primary text-sm w-full py-3 px-2 placeholder:text-muted/30"
           />
-          <button className="px-6 py-2.5 bg-secondary border border-primary/5 rounded-xl text-[10px] font-bold text-gold uppercase tracking-widest hover:border-gold/30 transition-all">
+          <button className="px-6 py-2.5 bg-secondary border border-primary/5 rounded-xl text-xs font-bold text-gold uppercase tracking-widest hover:border-gold/30 transition-all">
             <Filter size={16} />
           </button>
         </div>
@@ -40,7 +40,7 @@ export default function ExplorePage() {
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold/20 to-transparent border border-gold/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <ShieldCheck className="text-gold" size={24} />
               </div>
-              <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${item.st === 'Aggressive' ? 'bg-status-warning/10 text-status-warning border border-status-warning/20' : 'bg-status-success/10 text-status-success border border-status-success/20'}`}>
+              <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest ${item.st === 'Aggressive' ? 'bg-status-warning/10 text-status-warning border border-status-warning/20' : 'bg-status-success/10 text-status-success border border-status-success/20'}`}>
                 {item.st}
               </span>
             </div>
@@ -50,7 +50,7 @@ export default function ExplorePage() {
             </div>
             <div className="flex justify-between items-center relative z-10 pt-4 border-t border-primary/5">
               <div className="text-sm font-bold text-primary tracking-tight">{item.cap}</div>
-              <button className="text-[10px] font-bold text-gold uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-1 transition-transform">
+              <button className="text-xs font-bold text-gold uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-1 transition-transform">
                 Inspect <Zap size={14} />
               </button>
             </div>

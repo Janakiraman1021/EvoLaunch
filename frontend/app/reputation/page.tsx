@@ -48,7 +48,7 @@ export default function ReputationDashboard() {
           Neural Core Home
         </Link>
         <h1 className="text-5xl font-bold text-primary tracking-tight mb-4 flex items-baseline gap-4">
-          Neural <span className="text-gold italic font-serif">Reputation</span> Matrix
+          Neural <span className="text-gold">Reputation</span> Matrix
         </h1>
         <p className="text-muted text-lg max-w-2xl leading-relaxed">
           Your wallet reputation governs allocation mandates, participant multipliers, and protocol governance weight.
@@ -80,7 +80,7 @@ export default function ReputationDashboard() {
               <div className="absolute inset-0 bg-gold/[0.02] blur-3xl rounded-full scale-150 group-hover:bg-gold/[0.05] transition-colors duration-1000" />
               
               <div className="relative z-10 mb-10">
-                <p className="text-[10px] font-bold text-gold uppercase tracking-[0.4em] mb-6 opacity-60">Consensus Reputation Score</p>
+                <p className="text-xs font-bold text-gold uppercase tracking-[0.2em] mb-6 opacity-60">Consensus Reputation Score</p>
                 <div className="text-9xl font-bold text-primary tracking-tighter mb-4 shadow-gold-glow-large animate-gold-pulse">
                   {reputation.score}
                 </div>
@@ -112,17 +112,17 @@ export default function ReputationDashboard() {
                 </h3>
                 <div className="space-y-8">
                   <div className="p-6 bg-black/40 rounded-2xl border border-white/[0.03]">
-                    <p className="text-[9px] text-muted uppercase font-bold tracking-[0.3em] mb-2 opacity-60">Classification</p>
+                    <p className="text-xs text-muted uppercase font-bold tracking-[0.2em] mb-2 opacity-60">Classification</p>
                     <p className="text-xl font-bold text-primary tracking-tight">{reputation.holdingBehavior}</p>
                   </div>
                   <div className="grid grid-cols-2 gap-6">
                     <div className="p-6 bg-black/40 rounded-2xl border border-white/[0.03]">
-                      <p className="text-[9px] text-muted uppercase font-bold tracking-[0.3em] mb-2 opacity-60">Liquidation Freq</p>
-                      <p className="text-xl font-bold text-primary tracking-tight">{reputation.dumpFrequency} <span className="text-[10px] text-muted font-normal lowercase tracking-normal">per epoch</span></p>
+                      <p className="text-xs text-muted uppercase font-bold tracking-[0.2em] mb-2 opacity-60">Liquidation Freq</p>
+                      <p className="text-xl font-bold text-primary tracking-tight">{reputation.dumpFrequency} <span className="text-xs text-muted font-normal lowercase tracking-normal">per epoch</span></p>
                     </div>
                   </div>
                   <div className="pt-8 border-t border-white/[0.03]">
-                    <p className="text-[9px] text-gold uppercase font-bold tracking-[0.3em] mb-4">Positive Vectors</p>
+                    <p className="text-xs text-gold uppercase font-bold tracking-[0.2em] mb-4">Positive Vectors</p>
                     <ul className="space-y-3">
                       {['Resilient during market volatility', 'Sustained average holding epoch', 'Verified community attestation'].map((item, i) => (
                         <li key={i} className="flex items-center gap-3 text-sm text-muted font-medium">
@@ -143,16 +143,16 @@ export default function ReputationDashboard() {
                 <div className="text-center py-10 mb-8 bg-black/40 rounded-3xl border border-white/[0.03] relative overflow-hidden group">
                   <div className="absolute inset-0 bg-gold/[0.03] opacity-0 group-hover:opacity-100 transition-opacity" />
                   <div className="text-7xl font-bold text-primary tracking-tighter mb-2">{reputation.allocationMultiplier}<span className="text-2xl text-gold/40">x</span></div>
-                  <p className="text-gold/60 font-bold uppercase tracking-[0.3em] text-[10px]">Active Allocation Pulse</p>
+                  <p className="text-gold/60 font-bold uppercase tracking-[0.2em] text-xs">Active Allocation Pulse</p>
                 </div>
 
                 <div className="space-y-4">
                   <div className="flex justify-between p-5 bg-white/[0.02] rounded-xl border border-white/[0.03]">
-                    <span className="text-[10px] text-muted uppercase font-bold tracking-widest">Base Multiplier</span>
+                    <span className="text-xs text-muted uppercase font-bold tracking-widest">Base Multiplier</span>
                     <span className="text-sm font-bold text-primary">1.00x</span>
                   </div>
                   <div className="flex justify-between p-5 bg-status-success/5 rounded-xl border border-status-success/20">
-                    <span className="text-[10px] text-status-success uppercase font-bold tracking-widest">Reputation Bonus</span>
+                    <span className="text-xs text-status-success uppercase font-bold tracking-widest">Reputation Bonus</span>
                     <span className="text-sm font-bold text-status-success">+{((reputation.allocationMultiplier - 1) * 100).toFixed(0)}%</span>
                   </div>
                 </div>
@@ -194,7 +194,7 @@ export default function ReputationDashboard() {
             <div className="luxury-card p-12 bg-gold/5 border-gold/20 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-96 h-96 bg-gold/[0.05] -mr-48 -mt-48 rounded-full blur-3xl" />
               <h3 className="text-2xl font-bold text-primary mb-6 relative z-10 flex items-center gap-4">
-                Institutional Tier: <span className="text-gold italic font-serif tracking-tight">Premium Accumulator</span>
+                Institutional Tier: <span className="text-gold tracking-tight">Premium Accumulator</span>
               </h3>
               <p className="text-muted text-lg mb-10 relative z-10 leading-relaxed max-w-3xl">
                 Premium Accumulators demonstrate the highest level of network fidelity. They are the bedrock of the EvoLaunch ecosystem, ensuring long-term token stability.
@@ -202,7 +202,7 @@ export default function ReputationDashboard() {
 
               <div className="grid md:grid-cols-2 gap-6 relative z-10">
                 <div className="luxury-card p-8 bg-black/40 border-white/5">
-                  <p className="text-[10px] font-bold text-gold uppercase tracking-[0.3em] mb-6 opacity-60">Privileged Entitlements</p>
+                  <p className="text-xs font-bold text-gold uppercase tracking-[0.2em] mb-6 opacity-60">Privileged Entitlements</p>
                   <ul className="space-y-4">
                     {[
                       'Institutional 1.85x allocation multiplier',
@@ -220,7 +220,7 @@ export default function ReputationDashboard() {
                 </div>
                 <div className="p-8 rounded-3xl border border-gold/10 bg-gold/[0.02] flex items-center justify-center text-center">
                   <div>
-                    <p className="text-gold font-bold italic text-lg mb-2">Maximum Protocol Trust</p>
+                    <p className="text-gold font-bold text-lg mb-2">Maximum Protocol Trust</p>
                     <p className="text-muted text-sm px-6">Your data is cryptographically signed and stored in the Neural Registry.</p>
                   </div>
                 </div>

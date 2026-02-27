@@ -63,8 +63,9 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-playfair), serif;
-  letter-spacing: -0.02em;
+  font-family: var(--font-outfit), sans-serif;
+  letter-spacing: -0.01em;
+  font-weight: 700;
 }
 
 .neural-grid {
@@ -198,8 +199,8 @@ html[data-theme='dark'] .floating-navbar {
   border-radius: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.625rem;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
   box-shadow: 0 0 15px color-mix(in srgb, var(--gold), transparent 65%);
   transition: all 0.5s ease;
   border: none;
@@ -219,7 +220,7 @@ html[data-theme='dark'] .floating-navbar {
   backdrop-filter: blur(24px);
   border: 1px solid color-mix(in srgb, var(--primary-text), transparent 95%);
   border-radius: 9999px;
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.2em;
@@ -247,10 +248,10 @@ html[data-theme='dark'] .floating-navbar {
   background-color: color-mix(in srgb, var(--primary-text), transparent 97%);
   border: 1px solid color-mix(in srgb, var(--primary-text), transparent 93%);
   border-radius: 0.75rem;
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   color: var(--primary-text);
   transition: all 0.3s ease;
 }

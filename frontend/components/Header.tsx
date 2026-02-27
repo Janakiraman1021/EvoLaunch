@@ -39,7 +39,7 @@ export default function Header() {
           {getPageTitle()}
           <span className="block h-0.5 w-0 group-hover:w-full bg-gold transition-all duration-700" />
         </h2>
-        <p className="text-[10px] text-muted font-bold uppercase tracking-[0.3em] mt-2 flex items-center gap-2">
+        <p className="text-xs text-muted font-bold uppercase tracking-[0.2em] mt-2 flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-status-success animate-pulse shadow-gold-glow" />
           Ecosystem State: <span className="text-gold/80">Synchronized</span>
         </p>
@@ -61,7 +61,7 @@ export default function Header() {
         {/* Network Indicator */}
         <div className="flex items-center gap-3 px-4 py-2 bg-secondary/40 border border-white/[0.05] rounded-xl">
           <div className="w-2 h-2 rounded-full bg-status-warning shadow-gold-glow animate-pulse" />
-          <span className="text-[10px] font-bold text-primary uppercase tracking-widest flex items-center gap-2">
+          <span className="text-xs font-bold text-primary uppercase tracking-widest flex items-center gap-2">
             <Globe size={12} className="text-muted" />
             {CONTRACT_ADDRESSES.CHAIN_NAME}
           </span>
@@ -72,8 +72,8 @@ export default function Header() {
           {isConnected ? (
             <div className="flex items-center gap-4 bg-white/[0.03] border border-white/[0.05] px-5 py-2 rounded-xl hover:border-gold/30 transition-all cursor-default">
               <div className="text-right">
-                <p className="text-[9px] text-muted font-bold uppercase tracking-widest">Connected Wallet</p>
-                <p className="text-xs font-mono text-gold font-bold">
+                <p className="text-xs text-muted font-bold uppercase tracking-widest">Connected Wallet</p>
+                <p className="text-sm font-mono text-gold font-bold">
                   {wallet?.address.slice(0, 6)}...{wallet?.address.slice(-4)}
                 </p>
               </div>
@@ -93,7 +93,7 @@ export default function Header() {
           )}
 
           {error && !isConnected && (
-            <div className="absolute top-full right-0 mt-4 px-4 py-2 bg-status-danger/10 border border-status-danger/20 rounded-lg text-status-danger text-[10px] font-bold uppercase tracking-widest animate-in fade-in slide-in-from-top-2 whitespace-nowrap z-50">
+            <div className="absolute top-full right-0 mt-4 px-4 py-2 bg-status-danger/10 border border-status-danger/20 rounded-lg text-status-danger text-xs font-bold uppercase tracking-widest animate-in fade-in slide-in-from-top-2 whitespace-nowrap z-50">
               {error.includes('switch') ? 'Please Switch to BSC Testnet' : 'Verification Failed'}
             </div>
           )}

@@ -7,7 +7,7 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-12 animate-in fade-in duration-1000 pt-8 max-w-7xl mx-auto">
       <div className="flex flex-col gap-4">
-        <h1 className="text-4xl font-bold text-white tracking-tight italic">Protocol Analytics</h1>
+        <h1 className="text-4xl font-bold text-primary tracking-tight">Protocol Analytics</h1>
         <p className="text-muted text-lg font-body">Deep-dive into ecosystem metrics and liquidity dynamics.</p>
       </div>
 
@@ -26,8 +26,8 @@ export default function AnalyticsPage() {
               <span className="text-sm font-bold text-status-success">{stat.trend}</span>
             </div>
             <div className="relative z-10">
-              <div className="text-3xl font-bold text-white tracking-tighter">{stat.value}</div>
-              <div className="text-[10px] text-muted font-bold uppercase tracking-widest mt-1">{stat.label}</div>
+              <div className="text-3xl font-bold text-primary tracking-tighter">{stat.value}</div>
+              <div className="text-xs text-muted font-bold uppercase tracking-widest mt-1">{stat.label}</div>
             </div>
           </div>
         ))}
@@ -42,7 +42,7 @@ export default function AnalyticsPage() {
            <div className="w-16 h-16 rounded-2xl bg-gold/10 flex items-center justify-center mx-auto mb-6 border border-gold/20">
              <PieChart className="text-gold" size={32} />
            </div>
-           <h2 className="text-2xl font-bold text-white tracking-tight italic">Advanced Visualizer Booting...</h2>
+           <h2 className="text-2xl font-bold text-primary tracking-tight">Advanced Visualizer Booting...</h2>
            <p className="text-muted mt-2 text-sm uppercase tracking-widest font-bold">Synchronizing node data for real-time projection</p>
         </div>
       </div>

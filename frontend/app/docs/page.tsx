@@ -206,7 +206,7 @@ export default function DocsPage() {
         </Link>
         <h1 className="text-5xl font-bold text-primary tracking-tight mb-4 flex items-center gap-6">
           <BookOpen size={48} className="text-gold" />
-          Protocol <span className="text-gold italic font-serif">Reference</span>
+          Protocol <span className="text-gold">Reference</span>
         </h1>
         <p className="text-muted text-lg max-w-2xl leading-relaxed">
           Technical specifications and cryptographic architecture of the EvoLaunch Protocol. Pure institutional intelligence.
@@ -238,7 +238,7 @@ export default function DocsPage() {
                     <div className="space-y-10 mt-10 pt-10 border-t border-gold/[0.05]">
                       {section.subsections.map((sub, idx) => (
                         <div key={idx} className="luxury-card p-8 bg-black/40 border-gold/10 hover:border-gold/30 transition-all">
-                          <h3 className="text-[10px] font-bold text-gold uppercase tracking-[0.3em] mb-4">{sub.title}</h3>
+                          <h3 className="text-xs font-bold text-gold uppercase tracking-[0.2em] mb-4">{sub.title}</h3>
                           <p className="text-primary leading-relaxed text-sm font-medium">{sub.content}</p>
                         </div>
                       ))}

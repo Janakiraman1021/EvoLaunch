@@ -1,6 +1,6 @@
 'use client';
 
-import { Outfit, Playfair_Display } from 'next/font/google'
+import { Outfit } from 'next/font/google'
 import './globals.css'
 import Sidebar from '../components/Sidebar'
 import Header from '../components/Header'
@@ -12,12 +12,6 @@ const outfit = Outfit({
   variable: '--font-outfit',
 })
 
-const playfair = Playfair_Display({ 
-  subsets: ['latin'],
-  style: ['italic', 'normal'],
-  variable: '--font-playfair',
-})
-
 export default function RootLayout({
     children,
 }: {
@@ -27,7 +21,7 @@ export default function RootLayout({
     const isLanding = pathname === '/landing';
 
     return (
-        <html lang="en" className={`${outfit.variable} ${playfair.variable}`}>
+        <html lang="en" className={`${outfit.variable}`}>
             <body className="flex h-screen overflow-hidden bg-background text-primary font-body antialiased">
                 {!isLanding && <Sidebar />}
                 <main className={`flex-1 ${isLanding ? 'ml-0' : 'ml-40'} h-screen overflow-y-auto p-12 relative scroll-smooth overflow-x-hidden`}>
