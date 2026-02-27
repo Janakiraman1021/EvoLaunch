@@ -14,7 +14,7 @@ export default function RootLayout({
         <html lang="en">
             <body className="flex h-screen overflow-hidden bg-background text-primary font-body antialiased selection:bg-gold/30">
                 <Sidebar />
-                <main className="flex-1 ml-20 h-screen overflow-y-auto p-12 relative scroll-smooth overflow-x-hidden">
+                <main className="flex-1 ml-0 md:ml-80 h-screen overflow-y-auto p-6 md:p-12 relative scroll-smooth overflow-x-hidden">
                     {/* Institutional Background Elements */}
                     <div className="fixed inset-0 pointer-events-none overflow-hidden select-none">
                         <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-gold/5 blur-[150px] rounded-full animate-gold-pulse" />
