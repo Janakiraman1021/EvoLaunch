@@ -81,8 +81,7 @@ export default function SystemStatusPage() {
         },
         mssComputation: {
           ...prev.mssComputation,
-          status: 'active',
-          currentMSS: contracts.phase?.mss || prev.mssComputation.currentMSS,
+          mssValue: contracts.phase?.mss || prev.mssComputation.mssValue,
           lastRun: contracts.phase?.lastUpdate
             ? new Date(contracts.phase.lastUpdate * 1000).toLocaleString()
             : prev.mssComputation.lastRun,
@@ -99,7 +98,7 @@ export default function SystemStatusPage() {
         ...prev,
         contractConnectivity: {
           ...prev.contractConnectivity,
-          status: contracts.governance!.paused ? 'paused' : 'connected',
+          status: contracts.governance!.paused ? 'disconnected' : 'connected',
         },
       }));
     }
