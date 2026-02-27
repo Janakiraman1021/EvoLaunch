@@ -3,52 +3,53 @@ import { Gavel, ShieldAlert, Key, Settings, TreePine } from 'lucide-react';
 
 export default function GovernancePanel() {
     return (
-        <div className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <button className="p-6 organic-card rounded-[2rem] flex flex-col items-center gap-4 hover:border-protective/40 group transition-all duration-500">
-                    <div className="p-4 rounded-2xl bg-protective/5 text-protective group-hover:scale-110 transition-transform">
-                        <ShieldAlert size={28} />
+        <div className="space-y-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <button className="p-8 luxury-card flex flex-col items-center gap-6 hover:border-status-danger/40 group transition-all duration-500 bg-secondary/50 backdrop-blur-sm shadow-luxury-soft">
+                    <div className="p-5 rounded-2xl bg-status-danger/5 text-status-danger border border-status-danger/10 group-hover:scale-110 group-hover:bg-status-danger/10 transition-all duration-500">
+                        <ShieldAlert size={32} />
                     </div>
                     <div className="text-center">
-                        <span className="block text-lg font-bold text-forest">Emergency Pause</span>
-                        <span className="text-[10px] font-medium text-forest/40 uppercase tracking-widest mt-1 block">Root-Level Freeze</span>
+                        <span className="block text-xl font-bold text-white tracking-tight">Emergency Protocol</span>
+                        <span className="text-[10px] font-bold text-muted uppercase tracking-[0.2em] mt-2 block">Root-Level Freeze</span>
                     </div>
                 </button>
-                <button className="p-6 organic-card rounded-[2rem] flex flex-col items-center gap-4 hover:border-sage/40 group transition-all duration-500">
-                    <div className="p-4 rounded-2xl bg-sage/5 text-sage group-hover:scale-110 transition-transform">
-                        <Gavel size={28} />
+                <button className="p-8 luxury-card flex flex-col items-center gap-6 hover:border-gold/40 group transition-all duration-500 bg-secondary/50 backdrop-blur-sm shadow-luxury-soft">
+                    <div className="p-5 rounded-2xl bg-gold/5 text-gold border border-gold/10 group-hover:scale-110 group-hover:bg-gold/10 transition-all duration-500">
+                        <Gavel size={32} />
                     </div>
                     <div className="text-center">
-                        <span className="block text-lg font-bold text-forest">New Proposal</span>
-                        <span className="text-[10px] font-medium text-forest/40 uppercase tracking-widest mt-1 block">Canopy Evolution</span>
+                        <span className="block text-xl font-bold text-white tracking-tight">Submit Mandate</span>
+                        <span className="text-[10px] font-bold text-muted uppercase tracking-[0.2em] mt-2 block">Protocol Governance</span>
                     </div>
                 </button>
-                <button className="p-6 organic-card rounded-[2rem] flex flex-col items-center gap-4 hover:border-olive/40 group transition-all duration-500">
-                    <div className="p-4 rounded-2xl bg-olive/5 text-olive group-hover:scale-110 transition-transform">
-                        <Key size={28} />
+                <button className="p-8 luxury-card flex flex-col items-center gap-6 hover:border-gold/40 group transition-all duration-500 bg-secondary/50 backdrop-blur-sm shadow-luxury-soft">
+                    <div className="p-5 rounded-2xl bg-gold/5 text-gold border border-gold/10 group-hover:scale-110 group-hover:bg-gold/10 transition-all duration-500">
+                        <Key size={32} />
                     </div>
                     <div className="text-center">
-                        <span className="block text-lg font-bold text-forest">Key Rotation</span>
-                        <span className="text-[10px] font-medium text-forest/40 uppercase tracking-widest mt-1 block">Neural Seed Update</span>
+                        <span className="block text-xl font-bold text-white tracking-tight">Access Control</span>
+                        <span className="text-[10px] font-bold text-muted uppercase tracking-[0.2em] mt-2 block">Authority Rotation</span>
                     </div>
                 </button>
-                <button className="p-6 organic-card rounded-[2rem] flex flex-col items-center gap-4 hover:border-forest/20 group transition-all duration-500">
-                    <div className="p-4 rounded-2xl bg-forest/5 text-forest group-hover:scale-110 transition-transform">
-                        <Settings size={28} />
+                <button className="p-8 luxury-card flex flex-col items-center gap-6 hover:border-white/20 group transition-all duration-500 bg-secondary/50 backdrop-blur-sm shadow-luxury-soft">
+                    <div className="p-5 rounded-2xl bg-white/5 text-white border border-white/10 group-hover:scale-110 group-hover:bg-white/10 transition-all duration-500">
+                        <Settings size={32} />
                     </div>
                     <div className="text-center">
-                        <span className="block text-lg font-bold text-forest">Config Bounds</span>
-                        <span className="text-[10px] font-medium text-forest/40 uppercase tracking-widest mt-1 block">Immutable Laws</span>
+                        <span className="block text-xl font-bold text-white tracking-tight">Configuration</span>
+                        <span className="text-[10px] font-bold text-muted uppercase tracking-[0.2em] mt-2 block">Global Parameters</span>
                     </div>
                 </button>
             </div>
 
-            <div className="organic-card p-8 rounded-[2rem] bg-forest/5 border-forest/10 border-dashed">
-                <h3 className="text-lg font-bold text-forest mb-4 flex items-center gap-3">
-                    <TreePine size={20} className="text-sage" /> Active Proposals
+            <div className="luxury-card p-12 bg-secondary/30 border-dashed border-gold/10">
+                <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-4 tracking-tight">
+                    <div className="w-1.5 h-1.5 rounded-full bg-gold shadow-gold-glow animate-pulse" />
+                    Pending Institutional Votes
                 </h3>
-                <div className="text-xs text-forest/30 font-medium text-center py-8">
-                    The governance thicket is currently quiet.
+                <div className="text-sm text-muted/40 font-medium text-center py-12 tracking-widest uppercase">
+                    The governance audit trail is currently pristine.
                 </div>
             </div>
         </div>

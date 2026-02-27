@@ -64,111 +64,119 @@ export default function GovernancePage({ params }: { params: { address: string }
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-transparent">
       {/* Header */}
-      <div className="border-b border-forest/10 bg-forest/5">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <Link href="/explore" className="text-forest/60 hover:text-forest transition flex items-center gap-2 mb-4">
-            <ArrowLeft size={18} />
-            Back to Explorer
-          </Link>
-          <h1 className="text-4xl font-bold text-forest mb-2">Governance Control</h1>
-          <p className="text-forest/60">
-            Manage protocol parameters, freeze adaptive logic, and rotate agent keys via on-chain governance.
-          </p>
-        </div>
+      <div className="pb-12 border-b border-gold/[0.05]">
+        <Link href="/explore" className="text-muted/60 hover:text-gold transition-all flex items-center gap-3 mb-8 text-xs font-bold uppercase tracking-widest group">
+          <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+          Market Explorer
+        </Link>
+        <h1 className="text-5xl font-bold text-white tracking-tight mb-4 flex items-baseline gap-4">
+          Protocol <span className="text-gold italic font-serif">Governance</span> Mandate
+        </h1>
+        <p className="text-muted text-lg max-w-2xl leading-relaxed">
+          The ultimate control vector. Override adaptive intelligence, rotate neural keys, and define protocol constants through decentralized consensus.
+        </p>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Emergency Actions */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-forest mb-6 flex items-center gap-2">
-            <AlertCircle className="text-red-600" size={24} />
-            Emergency Actions
+      <div className="py-12 space-y-16">
+        {/* Emergency Mandates */}
+        <div>
+          <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-5 tracking-tight">
+            <AlertCircle className="text-status-danger shadow-status-danger" size={32} />
+            High-Security Overrides
           </h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            <button className="bg-white border-2 border-red-200 rounded-lg p-6 hover:border-red-400 transition text-left">
-              <h3 className="font-bold text-forest mb-2 flex items-center gap-2">
-                <Lock size={20} className="text-red-600" />
-                Freeze Adaptive Logic
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="luxury-card p-10 bg-status-danger/5 border-status-danger/20 hover:border-status-danger/40 transition-all group">
+              <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-4 tracking-tight">
+                <Lock size={24} className="text-status-danger" />
+                Adaptive Logic Freeze
               </h3>
-              <p className="text-forest/70 text-sm mb-4">
-                Immediately disable all parameter updates. Requires on-chain voting override.
+              <p className="text-muted text-base mb-8 leading-relaxed font-medium">
+                Immediately suspend all automated parameter adjustments. Requires a supermajority consensus for reactivation.
               </p>
-              <button className="px-4 py-2 bg-red-50 text-red-700 border border-red-200 rounded-lg hover:bg-red-100 transition font-semibold text-sm">
-                Propose Freeze
+              <button className="w-full py-4 bg-status-danger text-white rounded-xl font-bold uppercase tracking-widest text-xs shadow-status-danger hover:scale-[1.02] transition-transform">
+                Propose Logic Suspension
               </button>
-            </button>
+            </div>
 
-            <button className="bg-white border-2 border-amber-200 rounded-lg p-6 hover:border-amber-400 transition text-left">
-              <h3 className="font-bold text-forest mb-2 flex items-center gap-2">
-                <Vote size={20} className="text-amber-600" />
-                Pause Trading
+            <div className="luxury-card p-10 bg-status-warning/5 border-status-warning/20 hover:border-status-warning/40 transition-all group">
+              <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-4 tracking-tight">
+                <Vote size={24} className="text-status-warning" />
+                Protocol Pause
               </h3>
-              <p className="text-forest/70 text-sm mb-4">
-                Trigger global trading pause if extreme volatility detected.
+              <p className="text-muted text-base mb-8 leading-relaxed font-medium">
+                Global circuit breaker for all token movements. To be utilized only during confirmed cryptographic anomalies.
               </p>
-              <button className="px-4 py-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg hover:bg-amber-100 transition font-semibold text-sm">
-                Initiate Vote
+              <button className="w-full py-4 bg-status-warning text-white rounded-xl font-bold uppercase tracking-widest text-xs shadow-status-warning hover:scale-[1.02] transition-transform">
+                Initiate Epoch Pause
               </button>
-            </button>
+            </div>
           </div>
         </div>
 
         {/* Active Proposals */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-forest mb-6 flex items-center gap-2">
-            <Vote size={24} />
-            Active Proposals
+        <div>
+          <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-5 tracking-tight">
+            <Vote size={32} className="text-gold" />
+            Consensus Queue
           </h2>
 
           {proposals.filter(p => p.status === 'active').length === 0 ? (
-            <div className="bg-forest/5 border-2 border-forest/20 rounded-lg p-6 text-center">
-              <p className="text-forest/60">No active proposals</p>
+            <div className="luxury-card p-16 text-center bg-secondary/20">
+              <p className="text-muted text-lg font-medium">Zero pending mandates in the current epoch.</p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="grid gap-8">
               {proposals.filter(p => p.status === 'active').map((proposal) => (
-                <div key={proposal.id} className="bg-white border-2 border-forest/20 rounded-lg p-6">
-                  <div className="mb-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="text-lg font-bold text-forest">{proposal.title}</h3>
-                      <div className={`px-3 py-1 rounded-full text-xs font-bold border ${getProposalColor(proposal.type)}`}>
-                        {proposal.type.toUpperCase()}
-                      </div>
+                <div key={proposal.id} className="luxury-card p-12 bg-secondary/20 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-8">
+                    <div className={`px-6 py-2 rounded-full text-[10px] font-bold tracking-[0.3em] border uppercase ${getProposalColor(proposal.type)}`}>
+                      {proposal.type}
                     </div>
-                    <p className="text-forest/70 text-sm">{proposal.description}</p>
                   </div>
 
-                  <div className="bg-forest/5 rounded-lg p-4 mb-4">
-                    <div className="mb-4">
-                      <div className="flex justify-between text-sm mb-2">
-                        <span className="font-semibold text-forest">For: {proposal.votesFor.toLocaleString()}</span>
-                        <span className="font-semibold text-forest">Against: {proposal.votesAgainst.toLocaleString()}</span>
+                  <div className="mb-10 max-w-2xl">
+                    <h3 className="text-3xl font-bold text-white mb-4 tracking-tight">{proposal.title}</h3>
+                    <p className="text-muted text-lg font-medium leading-relaxed">{proposal.description}</p>
+                  </div>
+
+                  <div className="bg-black/40 rounded-3xl p-10 border border-white/[0.03] mb-10 overflow-hidden relative">
+                    <div className="absolute inset-0 bg-gold/[0.01]" />
+                    <div className="relative z-10 mb-8">
+                      <div className="flex justify-between items-end mb-6 font-mono">
+                        <div className="space-y-1">
+                          <p className="text-[10px] text-status-success uppercase font-bold tracking-widest">Affirmative Vector</p>
+                          <p className="text-3xl font-bold text-white tracking-tighter">{proposal.votesFor.toLocaleString()}</p>
+                        </div>
+                        <div className="text-right space-y-1">
+                          <p className="text-[10px] text-status-danger uppercase font-bold tracking-widest">Negative Vector</p>
+                          <p className="text-3xl font-bold text-white tracking-tighter">{proposal.votesAgainst.toLocaleString()}</p>
+                        </div>
                       </div>
-                      <div className="w-full bg-forest/20 rounded-full h-3 flex overflow-hidden">
+                      <div className="w-full bg-secondary/50 rounded-full h-3 flex overflow-hidden p-0.5 border border-white/5">
                         <div
-                          className="bg-green-600 h-full"
+                          className="bg-status-success h-full rounded-full shadow-status-success transition-all duration-1000"
                           style={{
                             width: `${(proposal.votesFor / (proposal.votesFor + proposal.votesAgainst)) * 100}%`,
                           }}
                         />
-                        <div className="bg-red-600 h-full flex-1" />
+                        <div className="bg-status-danger h-full flex-1 rounded-full shadow-status-danger ml-0.5" />
                       </div>
                     </div>
 
-                    <div className="flex justify-between text-xs text-forest/60">
-                      <span>Deadline: {proposal.deadline}</span>
-                      <span>Approval: {((proposal.votesFor / (proposal.votesFor + proposal.votesAgainst)) * 100).toFixed(1)}%</span>
+                    <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-[0.2em] relative z-10">
+                      <span className="text-muted">Temporal Deadline: <span className="text-white">{proposal.deadline}</span></span>
+                      <span className="text-gold">Network Approval: <span className="text-white">{((proposal.votesFor / (proposal.votesFor + proposal.votesAgainst)) * 100).toFixed(1)}%</span></span>
                     </div>
                   </div>
 
-                  <div className="flex gap-3">
-                    <button className="flex-1 px-4 py-2 bg-green-50 text-green-700 border border-green-200 rounded-lg hover:bg-green-100 transition font-semibold">
-                      Vote For
+                  <div className="flex gap-6 relative z-10">
+                    <button className="flex-1 py-5 bg-status-success/[0.05] text-status-success border border-status-success/20 rounded-2xl hover:bg-status-success/10 transition-all font-bold uppercase tracking-widest text-xs">
+                      Sign Affirmative
                     </button>
-                    <button className="flex-1 px-4 py-2 bg-red-50 text-red-700 border border-red-200 rounded-lg hover:bg-red-100 transition font-semibold">
-                      Vote Against
+                    <button className="flex-1 py-5 bg-status-danger/[0.05] text-status-danger border border-status-danger/20 rounded-2xl hover:bg-status-danger/10 transition-all font-bold uppercase tracking-widest text-xs">
+                      Sign Negative
                     </button>
                   </div>
                 </div>
@@ -177,29 +185,29 @@ export default function GovernancePage({ params }: { params: { address: string }
           )}
         </div>
 
-        {/* Past Proposals & Execution Logs */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-forest mb-6 flex items-center gap-2">
-            <History size={24} />
-            Proposal History
+        {/* Historical Mandates */}
+        <div>
+          <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-5 tracking-tight">
+            <History size={32} className="text-gold" />
+            Consensus Logs
           </h2>
 
-          <div className="space-y-3">
+          <div className="grid gap-4">
             {proposals.filter(p => p.status !== 'active').map((proposal) => (
-              <div key={proposal.id} className="bg-white border border-forest/10 rounded-lg p-4 hover:border-forest/30 transition">
-                <div className="flex justify-between items-start">
+              <div key={proposal.id} className="luxury-card p-8 bg-secondary/10 hover:border-gold/30 transition-all duration-500 group">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                   <div className="flex-1">
-                    <h3 className="font-bold text-forest mb-1">{proposal.title}</h3>
-                    <p className="text-sm text-forest/60">{proposal.description}</p>
+                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-gold transition-colors tracking-tight">{proposal.title}</h3>
+                    <p className="text-muted text-sm font-medium">{proposal.description}</p>
                   </div>
-                  <div className="text-right">
-                    <div className={`px-3 py-1 rounded-full text-xs font-bold border mb-2 ${getStatusColor(proposal.status)}`}>
-                      {proposal.status.toUpperCase()}
+                  <div className="flex items-center gap-8">
+                    <div className={`px-4 py-1.5 rounded-full text-[9px] font-bold tracking-[0.2em] border uppercase ${getStatusColor(proposal.status)}`}>
+                      {proposal.status}
                     </div>
                     {proposal.executed && (
-                      <div className="flex items-center gap-1 text-green-600 text-xs">
-                        <CheckCircle size={14} />
-                        Executed
+                      <div className="flex items-center gap-3 text-status-success text-[10px] font-bold uppercase tracking-widest">
+                        <CheckCircle size={16} className="shadow-status-success" />
+                        Finalized
                       </div>
                     )}
                   </div>
@@ -209,44 +217,41 @@ export default function GovernancePage({ params }: { params: { address: string }
           </div>
         </div>
 
-        {/* Governance Parameters */}
-        <div className="bg-white border-2 border-forest/20 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-forest mb-6">Protocol Parameters</h2>
+        {/* Global Protocol Constants */}
+        <div className="luxury-card p-12 bg-secondary/20 relative overflow-hidden">
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold/[0.02] -ml-48 -mb-48 rounded-full blur-3xl" />
+          <h2 className="text-3xl font-bold text-white mb-12 tracking-tight">Protocol Constraints</h2>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-12 relative z-10">
             <div>
-              <h3 className="font-bold text-forest mb-4">Voting Rules</h3>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between p-3 bg-forest/5 rounded-lg">
-                  <span className="text-forest/70">Voting Period</span>
-                  <span className="font-bold text-forest">7 days</span>
-                </div>
-                <div className="flex justify-between p-3 bg-forest/5 rounded-lg">
-                  <span className="text-forest/70">Quorum Required</span>
-                  <span className="font-bold text-forest">40%</span>
-                </div>
-                <div className="flex justify-between p-3 bg-forest/5 rounded-lg">
-                  <span className="text-forest/70">Approval Threshold</span>
-                  <span className="font-bold text-forest">50%</span>
-                </div>
+              <h3 className="text-gold font-bold uppercase tracking-[0.3em] text-[10px] mb-8 opacity-60">Voting Directives</h3>
+              <div className="space-y-4">
+                {[
+                  { label: 'Temporal Period', value: '7 Epochs' },
+                  { label: 'Quorum Threshold', value: '40% Network' },
+                  { label: 'Approval Mandate', value: '50% Consensus' },
+                ].map((item, i) => (
+                  <div key={i} className="flex justify-between p-5 bg-black/40 rounded-2xl border border-white/[0.03]">
+                    <span className="text-sm font-medium text-muted">{item.label}</span>
+                    <span className="text-sm font-bold text-white font-mono">{item.value}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
             <div>
-              <h3 className="font-bold text-forest mb-4">Constraints</h3>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between p-3 bg-forest/5 rounded-lg">
-                  <span className="text-forest/70">Max Tax Adjustment</span>
-                  <span className="font-bold text-forest">±5% per vote</span>
-                </div>
-                <div className="flex justify-between p-3 bg-forest/5 rounded-lg">
-                  <span className="text-forest/70">Min Time Between Votes</span>
-                  <span className="font-bold text-forest">48 hours</span>
-                </div>
-                <div className="flex justify-between p-3 bg-forest/5 rounded-lg">
-                  <span className="text-forest/70">Emergency Freeze Cooldown</span>
-                  <span className="font-bold text-forest">24 hours</span>
-                </div>
+              <h3 className="text-gold font-bold uppercase tracking-[0.3em] text-[10px] mb-8 opacity-60">System Guardrails</h3>
+              <div className="space-y-4">
+                {[
+                  { label: 'Max Tax Delta', value: '±5.00%' },
+                  { label: 'Reset Cooldown', value: '48 Hours' },
+                  { label: 'Freeze Lockout', value: '24 Hours' },
+                ].map((item, i) => (
+                  <div key={i} className="flex justify-between p-5 bg-black/40 rounded-2xl border border-white/[0.03]">
+                    <span className="text-sm font-medium text-muted">{item.label}</span>
+                    <span className="text-sm font-bold text-white font-mono">{item.value}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, TrendingUp, Shield, AlertCircle } from 'lucide-react';
+import { ArrowLeft, TrendingUp, Shield, AlertCircle, CheckCircle } from 'lucide-react';
 import { useWeb3 } from '../../lib/hooks/useWeb3';
 
 interface WalletReputation {
@@ -40,133 +40,148 @@ export default function ReputationDashboard() {
   }, [wallet]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-transparent">
       {/* Header */}
-      <div className="border-b border-forest/10 bg-forest/5">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <Link href="/" className="text-forest/60 hover:text-forest transition flex items-center gap-2 mb-4">
-            <ArrowLeft size={18} />
-            Back to Home
-          </Link>
-          <h1 className="text-4xl font-bold text-forest mb-2">Reputation Dashboard</h1>
-          <p className="text-forest/60">
-            Your wallet-level reputation influences allocation multipliers and launch participation.
-          </p>
-        </div>
+      <div className="pb-12 border-b border-gold/[0.05]">
+        <Link href="/" className="text-muted/60 hover:text-gold transition-all flex items-center gap-3 mb-8 text-xs font-bold uppercase tracking-widest group">
+          <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+          Neural Core Home
+        </Link>
+        <h1 className="text-5xl font-bold text-white tracking-tight mb-4 flex items-baseline gap-4">
+          Neural <span className="text-gold italic font-serif">Reputation</span> Matrix
+        </h1>
+        <p className="text-muted text-lg max-w-2xl leading-relaxed">
+          Your wallet reputation governs allocation mandates, participant multipliers, and protocol governance weight.
+        </p>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="py-12">
         {!wallet ? (
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 flex items-start gap-4">
-            <AlertCircle className="text-amber-600 flex-shrink-0 mt-1" size={20} />
+          <div className="luxury-card p-10 bg-status-warning/5 border-status-warning/20 flex items-start gap-6">
+            <div className="w-12 h-12 rounded-xl bg-status-warning/10 flex items-center justify-center text-status-warning border border-status-warning/20">
+              <AlertCircle size={24} />
+            </div>
             <div className="flex-1">
-              <h3 className="font-bold text-amber-900 mb-2">Wallet Not Connected</h3>
-              <p className="text-amber-800 text-sm">
-                Connect your wallet to view your reputation score and allocation status.
+              <h3 className="text-xl font-bold text-white mb-2 tracking-tight">Identity Synchronization Required</h3>
+              <p className="text-muted text-base leading-relaxed">
+                Synchronize your institutional wallet to decrypt your reputation score and active allocation multipliers.
               </p>
             </div>
           </div>
         ) : loading ? (
-          <div className="text-center py-12 text-forest/60">Loading reputation data...</div>
+          <div className="flex flex-col items-center justify-center py-24 gap-6">
+            <div className="w-16 h-16 border-4 border-gold/20 border-t-gold rounded-full animate-spin" />
+            <p className="text-gold/60 font-bold uppercase tracking-[0.3em] text-xs animate-pulse">Scanning Neural Network...</p>
+          </div>
         ) : reputation ? (
-          <div className="space-y-8">
+          <div className="space-y-12">
             {/* Main Score Card */}
-            <div className="bg-gradient-to-br from-forest/10 to-sage/10 border-2 border-forest/20 rounded-lg p-12 text-center">
-              <div className="mb-6">
-                <div className="text-7xl font-bold text-forest mb-2">{reputation.score}</div>
-                <p className="text-xl text-forest/70">Reputation Score</p>
+            <div className="luxury-card p-16 text-center bg-secondary/20 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gold/[0.02] blur-3xl rounded-full scale-150 group-hover:bg-gold/[0.05] transition-colors duration-1000" />
+              
+              <div className="relative z-10 mb-10">
+                <p className="text-[10px] font-bold text-gold uppercase tracking-[0.4em] mb-6 opacity-60">Consensus Reputation Score</p>
+                <div className="text-9xl font-bold text-white tracking-tighter mb-4 shadow-gold-glow-large animate-gold-pulse">
+                  {reputation.score}
+                </div>
               </div>
 
-              <div className="flex justify-center gap-4 mb-6 flex-wrap">
-                <div className="px-6 py-3 bg-white rounded-full border-2 border-forest/20 font-semibold text-forest">
+              <div className="flex justify-center gap-6 mb-10 relative z-10">
+                <div className="px-8 py-3 bg-gold text-background rounded-full font-bold uppercase tracking-widest text-xs border border-gold shadow-gold-glow">
                   {reputation.category}
                 </div>
                 {reputation.launchEligibility && (
-                  <div className="px-6 py-3 bg-green-50 rounded-full border-2 border-green-200 font-semibold text-green-700 flex items-center gap-2">
-                    <Shield size={18} />
-                    Launch Eligible
+                  <div className="px-8 py-3 bg-status-success/10 rounded-full border border-status-success/30 font-bold text-status-success uppercase tracking-widest text-xs flex items-center gap-2">
+                    <Shield size={14} />
+                    Protocol Eligible
                   </div>
                 )}
               </div>
 
-              <p className="text-forest/70">
-                Your reputation multiplier gives you {(reputation.allocationMultiplier * 100 - 100).toFixed(0)}% more tokens on new launches
+              <p className="text-muted text-lg relative z-10 max-w-xl mx-auto leading-relaxed">
+                Your reputation multiplier grants you an institutional bonus of <span className="text-gold font-bold">{(reputation.allocationMultiplier * 100 - 100).toFixed(0)}%</span> on all primary token mandates.
               </p>
             </div>
 
-            {/* Key Metrics */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white border-2 border-forest/20 rounded-lg p-6">
-                <h3 className="text-lg font-bold text-forest mb-4 flex items-center gap-2">
-                  <TrendingUp size={20} className="text-growth" />
-                  Holding Behavior
+            {/* Key Metrics Matrix */}
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="luxury-card p-10 bg-secondary/10 hover:border-gold/30 transition-all duration-500">
+                <h3 className="text-xl font-bold text-white mb-8 flex items-center gap-4 tracking-tight">
+                  <TrendingUp size={24} className="text-gold" />
+                  Behavioral Analytics
                 </h3>
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-forest/60 text-sm mb-1">Category</p>
-                    <p className="font-bold text-forest">{reputation.holdingBehavior}</p>
+                <div className="space-y-8">
+                  <div className="p-6 bg-black/40 rounded-2xl border border-white/[0.03]">
+                    <p className="text-[9px] text-muted uppercase font-bold tracking-[0.3em] mb-2 opacity-60">Classification</p>
+                    <p className="text-xl font-bold text-white tracking-tight">{reputation.holdingBehavior}</p>
                   </div>
-                  <div>
-                    <p className="text-forest/60 text-sm mb-1">Dump Frequency</p>
-                    <p className="font-bold text-forest">{reputation.dumpFrequency} times in 90 days</p>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="p-6 bg-black/40 rounded-2xl border border-white/[0.03]">
+                      <p className="text-[9px] text-muted uppercase font-bold tracking-[0.3em] mb-2 opacity-60">Liquidation Freq</p>
+                      <p className="text-xl font-bold text-white tracking-tight">{reputation.dumpFrequency} <span className="text-[10px] text-muted font-normal lowercase tracking-normal">per epoch</span></p>
+                    </div>
                   </div>
-                  <div className="pt-4 border-t border-forest/10">
-                    <p className="text-xs text-forest/50 mb-2">Score Factors</p>
-                    <ul className="space-y-1 text-sm text-forest/70">
-                      <li>• Minimal selling during volatility</li>
-                      <li>• Long average holding period</li>
-                      <li>• Community participation verified</li>
+                  <div className="pt-8 border-t border-white/[0.03]">
+                    <p className="text-[9px] text-gold uppercase font-bold tracking-[0.3em] mb-4">Positive Vectors</p>
+                    <ul className="space-y-3">
+                      {['Resilient during market volatility', 'Sustained average holding epoch', 'Verified community attestation'].map((item, i) => (
+                        <li key={i} className="flex items-center gap-3 text-sm text-muted font-medium">
+                          <div className="w-1.5 h-1.5 rounded-full bg-gold shadow-gold-glow" />
+                          {item}
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white border-2 border-forest/20 rounded-lg p-6">
-                <h3 className="text-lg font-bold text-forest mb-4 flex items-center gap-2">
-                  <Shield size={20} className="text-expansion" />
-                  Allocation Multiplier
+              <div className="luxury-card p-10 bg-secondary/10 hover:border-gold/30 transition-all duration-500">
+                <h3 className="text-xl font-bold text-white mb-8 flex items-center gap-4 tracking-tight">
+                  <Shield size={24} className="text-gold" />
+                  Mandate Multiplier
                 </h3>
-                <div className="mb-6">
-                  <div className="text-4xl font-bold text-forest mb-2">{reputation.allocationMultiplier}x</div>
-                  <p className="text-forest/60 text-sm">Applied to all new token allocations</p>
+                <div className="text-center py-10 mb-8 bg-black/40 rounded-3xl border border-white/[0.03] relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-gold/[0.03] opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="text-7xl font-bold text-white tracking-tighter mb-2">{reputation.allocationMultiplier}<span className="text-2xl text-gold/40">x</span></div>
+                  <p className="text-gold/60 font-bold uppercase tracking-[0.3em] text-[10px]">Active Allocation Pulse</p>
                 </div>
 
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between p-2 bg-forest/5 rounded">
-                    <span className="text-forest/70">Base Allocation</span>
-                    <span className="font-bold text-forest">1.0x</span>
+                <div className="space-y-4">
+                  <div className="flex justify-between p-5 bg-white/[0.02] rounded-xl border border-white/[0.03]">
+                    <span className="text-[10px] text-muted uppercase font-bold tracking-widest">Base Multiplier</span>
+                    <span className="text-sm font-bold text-white">1.00x</span>
                   </div>
-                  <div className="flex justify-between p-2 bg-green-50 rounded border border-green-200">
-                    <span className="text-green-700">Your Bonus</span>
-                    <span className="font-bold text-green-700">+{((reputation.allocationMultiplier - 1) * 100).toFixed(0)}%</span>
+                  <div className="flex justify-between p-5 bg-status-success/5 rounded-xl border border-status-success/20">
+                    <span className="text-[10px] text-status-success uppercase font-bold tracking-widest">Reputation Bonus</span>
+                    <span className="text-sm font-bold text-status-success">+{((reputation.allocationMultiplier - 1) * 100).toFixed(0)}%</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Reputation History */}
-            <div className="bg-white border-2 border-forest/20 rounded-lg p-8">
-              <h3 className="text-lg font-bold text-forest mb-6">Score Breakdown</h3>
+            {/* Matrix Breakdown */}
+            <div className="luxury-card p-12 bg-secondary/20">
+              <h3 className="text-2xl font-bold text-white mb-10 tracking-tight">Computational Breakdown</h3>
 
-              <div className="space-y-4">
+              <div className="space-y-10">
                 {[
-                  { label: 'Holding Duration', value: 28, max: 40, desc: 'Months held average' },
-                  { label: 'No-Dump Ratio', value: 42, max: 50, desc: 'Launches not sold in 30 days' },
-                  { label: 'Community Score', value: 17, max: 10, desc: 'Gov votes & attestations' },
+                  { label: 'Holding Temporal Depth', value: 28, max: 40, desc: 'Average sequence duration' },
+                  { label: 'Mandate Retention Ratio', value: 42, max: 50, desc: '30-day post-launch stability' },
+                  { label: 'Neural Participation Score', value: 17, max: 10, desc: 'Governance & Network weight' },
                 ].map((metric, idx) => (
-                  <div key={idx}>
-                    <div className="flex justify-between mb-2">
+                  <div key={idx} className="group">
+                    <div className="flex justify-between items-end mb-4">
                       <div>
-                        <p className="font-semibold text-forest">{metric.label}</p>
-                        <p className="text-xs text-forest/60">{metric.desc}</p>
+                        <p className="text-lg font-bold text-white group-hover:text-gold transition-colors">{metric.label}</p>
+                        <p className="text-xs text-muted font-medium opacity-60 tracking-wide">{metric.desc}</p>
                       </div>
-                      <p className="font-bold text-forest">
-                        {metric.value}/{metric.max}
+                      <p className="text-xl font-bold text-white font-mono">
+                        {metric.value}<span className="text-muted/40 text-sm">/{metric.max}</span>
                       </p>
                     </div>
-                    <div className="w-full bg-forest/10 rounded-full h-2">
+                    <div className="w-full bg-black/40 rounded-full h-2.5 p-0.5 border border-white/5 overflow-hidden">
                       <div
-                        className="bg-forest/60 h-2 rounded-full"
+                        className="bg-gold h-full rounded-full transition-all duration-1000 shadow-gold-glow group-hover:scale-y-110"
                         style={{ width: `${(metric.value / metric.max) * 100}%` }}
                       />
                     </div>
@@ -175,23 +190,40 @@ export default function ReputationDashboard() {
               </div>
             </div>
 
-            {/* Category Info */}
-            <div className="bg-forest/5 border-2 border-forest/20 rounded-lg p-8">
-              <h3 className="text-lg font-bold text-forest mb-4">Your Category: Premium Holder</h3>
-              <p className="text-forest/70 mb-4">
-                Premium Holders demonstrate strong commitment to tokens and earn the highest allocation multiplier.
-                Your reputation helps launch creators identify reliable long-term supporters.
+            {/* Status Classification */}
+            <div className="luxury-card p-12 bg-gold/5 border-gold/20 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-gold/[0.05] -mr-48 -mt-48 rounded-full blur-3xl" />
+              <h3 className="text-2xl font-bold text-white mb-6 relative z-10 flex items-center gap-4">
+                Institutional Tier: <span className="text-gold italic font-serif tracking-tight">Premium Accumulator</span>
+              </h3>
+              <p className="text-muted text-lg mb-10 relative z-10 leading-relaxed max-w-3xl">
+                Premium Accumulators demonstrate the highest level of network fidelity. They are the bedrock of the EvoLaunch ecosystem, ensuring long-term token stability.
               </p>
 
-              <div className="bg-white border border-forest/10 rounded-lg p-4 text-sm">
-                <p className="font-bold text-forest mb-2">Benefits:</p>
-                <ul className="space-y-1 text-forest/70">
-                  <li>✓ 1.85x allocation multiplier on new launches</li>
-                  <li>✓ Early access to private launches (tier 4+)</li>
-                  <li>✓ Governance voting power boost</li>
-                  <li>✓ Featured in community leaderboard</li>
-                  <li>✓ Invitations to token founder calls</li>
-                </ul>
+              <div className="grid md:grid-cols-2 gap-6 relative z-10">
+                <div className="luxury-card p-8 bg-black/40 border-white/5">
+                  <p className="text-[10px] font-bold text-gold uppercase tracking-[0.3em] mb-6 opacity-60">Privileged Entitlements</p>
+                  <ul className="space-y-4">
+                    {[
+                      'Institutional 1.85x allocation multiplier',
+                      'Tier-1 Early Access to private mandates',
+                      'Governance weight amplification (2.5x)',
+                      'Priority Neural Support access',
+                      'Direct founder-level intelligence calls'
+                    ].map((benefit, i) => (
+                      <li key={i} className="flex items-center gap-4 text-sm text-white/80 font-medium">
+                        <CheckCircle size={16} className="text-status-success flex-shrink-0" />
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="p-8 rounded-3xl border border-gold/10 bg-gold/[0.02] flex items-center justify-center text-center">
+                  <div>
+                    <p className="text-gold font-bold italic text-lg mb-2">Maximum Protocol Trust</p>
+                    <p className="text-muted text-sm px-6">Your data is cryptographically signed and stored in the Neural Registry.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -98,264 +98,238 @@ export default function SystemStatusPage() {
       case 'operational':
       case 'healthy':
       case 'connected':
-        return 'bg-green-50 border-green-200 text-green-700';
+        return 'border-status-success/30 bg-status-success/5 text-status-success';
       case 'offline':
       case 'disconnected':
       case 'critical':
-        return 'bg-red-50 border-red-200 text-red-700';
+        return 'border-status-danger/30 bg-status-danger/5 text-status-danger';
       case 'slow':
       case 'degraded':
       case 'warning':
-        return 'bg-amber-50 border-amber-200 text-amber-700';
+        return 'border-status-warning/30 bg-status-warning/5 text-status-warning';
       default:
-        return 'bg-gray-50 border-gray-200 text-gray-700';
+        return 'border-muted/30 bg-muted/5 text-muted';
     }
   };
 
   const getStatusIcon = (status: string) => {
     if (['online', 'operational', 'healthy', 'connected'].includes(status)) {
-      return <CheckCircle size={18} className="text-green-600" />;
+      return <CheckCircle size={18} className="text-status-success animate-pulse" />;
     }
     if (['offline', 'disconnected', 'critical'].includes(status)) {
-      return <AlertCircle size={18} className="text-red-600" />;
+      return <AlertCircle size={18} className="text-status-danger" />;
     }
-    return <AlertCircle size={18} className="text-amber-600" />;
+    return <AlertCircle size={18} className="text-status-warning" />;
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-transparent">
       {/* Header */}
-      <div className="border-b border-forest/10 bg-forest/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <Link href="/" className="text-forest/60 hover:text-forest transition flex items-center gap-2 mb-4">
-            <ArrowLeft size={18} />
-            Back to Home
+      <div className="pb-12 border-b border-gold/[0.05] flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+        <div>
+          <Link href="/" className="text-muted/60 hover:text-gold transition-all flex items-center gap-3 mb-8 text-xs font-bold uppercase tracking-widest group">
+            <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+            Infrastructure Home
           </Link>
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-4xl font-bold text-forest mb-2">System Status</h1>
-              <p className="text-forest/60">
-                Real-time monitoring of EvoLaunch infrastructure. All systems must be operational for protocol safety.
-              </p>
-            </div>
-            <button
-              onClick={() => setAutoRefresh(!autoRefresh)}
-              className={`px-4 py-2 rounded-lg font-semibold transition ${
-                autoRefresh
-                  ? 'bg-forest text-white hover:bg-forest/90'
-                  : 'bg-forest/10 text-forest border border-forest/20 hover:bg-forest/20'
-              }`}
-            >
-              {autoRefresh ? '🔴 Live Refresh' : '⚪ Manual'}
-            </button>
-          </div>
+          <h1 className="text-5xl font-bold text-white tracking-tight mb-4 flex items-baseline gap-4">
+            System <span className="text-gold italic font-serif">Health</span> Matrix
+          </h1>
+          <p className="text-muted text-lg max-w-2xl leading-relaxed">
+            Real-time infrastructure monitoring for the EvoLaunch Neural Core. Cryptographic verification of hardware and network parameters.
+          </p>
         </div>
+        
+        <button
+          onClick={() => setAutoRefresh(!autoRefresh)}
+          className={`px-6 py-3 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 border ${
+            autoRefresh
+              ? 'bg-gold text-background border-gold shadow-gold-glow'
+              : 'bg-secondary/50 border-gold/10 text-muted hover:border-gold/30 hover:text-white'
+          }`}
+        >
+          {autoRefresh ? '🔴 Synchronized' : '⚪ Static Mode'}
+        </button>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="py-12 space-y-12">
         {/* Overall Status Badge */}
-        <div className="mb-8 p-6 bg-green-50 border-2 border-green-200 rounded-lg">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <CheckCircle className="text-green-600" size={32} />
+        <div className="luxury-card p-10 bg-status-success/5 border-status-success/20 overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-status-success/5 -mr-32 -mt-32 rounded-full blur-3xl" />
+          <div className="flex items-center justify-between relative z-10">
+            <div className="flex items-center gap-8">
+              <div className="w-20 h-20 rounded-[2rem] bg-status-success/10 flex items-center justify-center text-status-success border border-status-success/20 shadow-status-success">
+                <CheckCircle size={40} className="animate-pulse" />
+              </div>
               <div>
-                <h2 className="text-2xl font-bold text-green-900">All Systems Operational</h2>
-                <p className="text-green-800 text-sm">Protocol is fully functional and safe for transactions</p>
+                <h2 className="text-3xl font-bold text-white tracking-tight mb-2">Protocol Integrity: <span className="text-status-success uppercase">Optimal</span></h2>
+                <p className="text-muted text-base">All institutional nodes are operational and cryptographically verified.</p>
               </div>
             </div>
-            <div className="text-right">
-              <p className="text-sm text-green-700 font-mono">Status Page ID: ev0-1b4f</p>
-              <p className="text-xs text-green-600 mt-1">Last updated: 30 seconds ago</p>
+            <div className="text-right hidden md:block">
+              <p className="text-[10px] text-gold uppercase font-bold tracking-[0.3em] mb-2 opacity-60">Status ID: ev0-1b4f</p>
+              <div className="px-4 py-2 rounded-lg bg-black/40 border border-white/5 text-white/40 font-mono text-xs">
+                Uptime: {systemStatus.backendHealth.uptime}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* RPC Connection */}
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <div className={`border-2 rounded-lg p-6 ${getStatusColor(systemStatus.rpcConnection.status)}`}>
-            <div className="flex items-start justify-between mb-4">
-              <h3 className="font-bold text-lg flex items-center gap-2">
-                <Server size={20} />
-                RPC Connection (BSC Testnet)
+        {/* Core Infrastructure Grid */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* RPC Connection */}
+          <div className={`luxury-card p-10 transition-all duration-500 border-2 ${getStatusColor(systemStatus.rpcConnection.status)} shadow-luxury-soft`}>
+            <div className="flex items-start justify-between mb-8">
+              <h3 className="font-bold text-xl text-white flex items-center gap-4 tracking-tight">
+                <Server size={24} className="text-gold" />
+                BSC Network Protocol
               </h3>
               {getStatusIcon(systemStatus.rpcConnection.status)}
             </div>
 
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span>Status</span>
-                <span className="font-bold uppercase">{systemStatus.rpcConnection.status}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Latency</span>
-                <span className="font-bold font-mono">{systemStatus.rpcConnection.latency}ms</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Last Check</span>
-                <span className="font-mono">{systemStatus.rpcConnection.lastCheck}</span>
-              </div>
+            <div className="space-y-6">
+              {[
+                { label: 'Latency Index', val: `${systemStatus.rpcConnection.latency}ms`, mono: true },
+                { label: 'Connection Status', val: systemStatus.rpcConnection.status.toUpperCase(), b: true },
+                { label: 'Last Cryptographic Check', val: systemStatus.rpcConnection.lastCheck },
+              ].map((item, i) => (
+                <div key={i} className="flex justify-between items-end border-b border-white/[0.03] pb-4 last:border-0 last:pb-0">
+                  <span className="text-[10px] font-bold text-muted uppercase tracking-[0.2em]">{item.label}</span>
+                  <span className={`text-sm ${item.mono ? 'font-mono' : 'font-bold'} ${item.b ? 'text-status-success' : 'text-white'}`}>{item.val}</span>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Agent Service */}
-          <div className={`border-2 rounded-lg p-6 ${getStatusColor(systemStatus.agentService.status)}`}>
-            <div className="flex items-start justify-between mb-4">
-              <h3 className="font-bold text-lg flex items-center gap-2">
-                <Zap size={20} />
-                Agent Service
+          {/* Agent cluster */}
+          <div className={`luxury-card p-10 transition-all duration-500 border-2 ${getStatusColor(systemStatus.agentService.status)} shadow-luxury-soft`}>
+            <div className="flex items-start justify-between mb-8">
+              <h3 className="font-bold text-xl text-white flex items-center gap-4 tracking-tight">
+                <Zap size={24} className="text-gold" />
+                Neural Agent Cluster
               </h3>
               {getStatusIcon(systemStatus.agentService.status)}
             </div>
 
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span>Status</span>
-                <span className="font-bold uppercase">{systemStatus.agentService.status}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Active Agents</span>
-                <span className="font-bold">{systemStatus.agentService.activeAgents}/3</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Last Heartbeat</span>
-                <span className="font-mono">{systemStatus.agentService.lastHeartbeat}</span>
-              </div>
+            <div className="space-y-6">
+              {[
+                { label: 'Authorized Agents', val: `${systemStatus.agentService.activeAgents} / 3`, b: true },
+                { label: 'Cluster Status', val: systemStatus.agentService.status.toUpperCase(), b: true },
+                { label: 'Neural Heartbeat', val: systemStatus.agentService.lastHeartbeat },
+              ].map((item, i) => (
+                <div key={i} className="flex justify-between items-end border-b border-white/[0.03] pb-4 last:border-0 last:pb-0">
+                  <span className="text-[10px] font-bold text-muted uppercase tracking-[0.2em]">{item.label}</span>
+                  <span className={`text-sm font-bold ${item.b ? 'text-status-success' : 'text-white'}`}>{item.val}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* MSS Computation */}
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white border-2 border-forest/20 rounded-lg p-6">
-            <h3 className="font-bold text-lg text-forest mb-4 flex items-center gap-2">
-              <Activity size={20} />
-              MSS Computation
+        {/* Computational Analytics */}
+        <div className="grid lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-8 luxury-card p-10 bg-secondary/20">
+            <h3 className="font-bold text-2xl text-white mb-10 flex items-center gap-5 tracking-tight">
+              <Activity size={32} className="text-gold" />
+              MSS Real-time Computation
             </h3>
 
-            <div className="space-y-3">
-              <div>
-                <p className="text-forest/60 text-sm mb-1">Current MSS Value</p>
-                <p className="text-4xl font-bold text-forest">{systemStatus.mssComputation.mssValue}</p>
-              </div>
-              <div className="w-full bg-forest/10 rounded-full h-3">
-                <div
-                  className="bg-forest/60 h-3 rounded-full"
-                  style={{ width: `${systemStatus.mssComputation.mssValue}%` }}
-                />
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="space-y-8">
+                <div>
+                  <p className="text-[10px] font-bold text-muted uppercase tracking-[0.3em] mb-4">Neural Stability Floor</p>
+                  <p className="text-7xl font-bold text-white tracking-tighter group-hover:text-gold transition-colors">{systemStatus.mssComputation.mssValue}<span className="text-2xl text-gold/40">/100</span></p>
+                </div>
+                <div className="w-full bg-secondary rounded-full h-2 overflow-hidden border border-white/[0.03]">
+                  <div
+                    className="bg-gold h-full rounded-full transition-all duration-1000 shadow-gold-glow"
+                    style={{ width: `${systemStatus.mssComputation.mssValue}%` }}
+                  />
+                </div>
               </div>
 
-              <div className="border-t border-forest/10 pt-3">
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-forest/60">Last Run</span>
-                  <span className="text-forest">{systemStatus.mssComputation.lastRun}</span>
+              <div className="space-y-6 bg-black/40 p-8 rounded-2xl border border-white/[0.03]">
+                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest border-b border-white/5 pb-4">
+                  <span className="text-muted">Last Execution</span>
+                  <span className="text-gold">{systemStatus.mssComputation.lastRun}</span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-forest/60">Computation Time</span>
-                  <span className="text-forest font-mono">{systemStatus.mssComputation.computationTime}ms</span>
+                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
+                  <span className="text-muted">Computation Load</span>
+                  <span className="text-white font-mono">{systemStatus.mssComputation.computationTime}ms</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Backend Health */}
-          <div className={`border-2 rounded-lg p-6 ${getStatusColor(systemStatus.backendHealth.status)}`}>
-            <div className="flex items-start justify-between mb-4">
-              <h3 className="font-bold text-lg flex items-center gap-2">
-                <Database size={20} />
-                Backend Health
+          <div className={`lg:col-span-4 luxury-card p-10 transition-all duration-500 border-2 ${getStatusColor(systemStatus.backendHealth.status)}`}>
+            <div className="flex items-start justify-between mb-8">
+              <h3 className="font-bold text-xl text-white flex items-center gap-4 tracking-tight">
+                <Database size={24} className="text-gold" />
+                Backend Core
               </h3>
               {getStatusIcon(systemStatus.backendHealth.status)}
             </div>
 
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span>Status</span>
-                <span className="font-bold uppercase">{systemStatus.backendHealth.status}</span>
+            <div className="space-y-8 mt-12">
+              <div>
+                <p className="text-[9px] text-muted uppercase font-bold tracking-[0.3em] mb-2 opacity-60">Avg Response Latency</p>
+                <p className="text-4xl font-bold text-white tracking-tight font-mono">{systemStatus.backendHealth.responseTime}ms</p>
               </div>
-              <div className="flex justify-between">
-                <span>Uptime</span>
-                <span className="font-bold">{systemStatus.backendHealth.uptime}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Avg Response Time</span>
-                <span className="font-mono">{systemStatus.backendHealth.responseTime}ms</span>
+              <div className="p-4 rounded-xl bg-black/40 border border-white/5">
+                <p className="text-[9px] text-muted uppercase font-bold tracking-widest mb-1 opacity-60">Historical Uptime</p>
+                <p className="text-xs font-bold text-white/70 font-mono tracking-tighter">{systemStatus.backendHealth.uptime}</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Contract Connectivity */}
-        <div className={`border-2 rounded-lg p-8 mb-8 ${getStatusColor(systemStatus.contractConnectivity.status)}`}>
-          <div className="flex items-start justify-between mb-6">
-            <h3 className="font-bold text-2xl flex items-center gap-2">
-              <CheckCircle size={24} />
+        {/* Connectivity Mandate */}
+        <div className={`luxury-card p-12 overflow-hidden relative ${getStatusColor(systemStatus.contractConnectivity.status)}`}>
+           <div className="absolute top-0 right-0 w-96 h-96 bg-gold/[0.02] -mr-48 -mt-48 rounded-full blur-3xl opacity-50" />
+          <div className="flex items-center justify-between mb-12 relative z-10">
+            <h3 className="font-bold text-3xl text-white flex items-center gap-6 tracking-tight">
+              <CheckCircle size={36} className="text-gold" />
               Smart Contract Connectivity
             </h3>
             {getStatusIcon(systemStatus.contractConnectivity.status)}
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-12 relative z-10">
             <div>
-              <p className="text-sm opacity-75 mb-1">Connection Status</p>
-              <p className="text-2xl font-bold uppercase">{systemStatus.contractConnectivity.status}</p>
+              <p className="text-[10px] text-muted uppercase font-bold tracking-[0.3em] mb-3 opacity-60">Handshake Status</p>
+              <p className="text-3xl font-bold text-status-success uppercase tracking-widest">{systemStatus.contractConnectivity.status}</p>
             </div>
             <div>
-              <p className="text-sm opacity-75 mb-1">Last Interaction</p>
-              <p className="text-lg font-mono">{systemStatus.contractConnectivity.lastInteraction}</p>
+              <p className="text-[10px] text-muted uppercase font-bold tracking-[0.3em] mb-3 opacity-60">Last Interaction</p>
+              <p className="text-2xl font-mono text-white font-bold">{systemStatus.contractConnectivity.lastInteraction}</p>
             </div>
             <div>
-              <p className="text-sm opacity-75 mb-1">Success Rate</p>
-              <p className="text-2xl font-bold">{systemStatus.contractConnectivity.successRate}%</p>
+              <p className="text-[10px] text-muted uppercase font-bold tracking-[0.3em] mb-3 opacity-60">Interaction Success Rate</p>
+              <p className="text-5xl font-bold text-gold tracking-tighter">{systemStatus.contractConnectivity.successRate}<span className="text-xl text-gold/40">%</span></p>
             </div>
           </div>
         </div>
 
-        {/* Service Dependencies */}
-        <div className="bg-white border-2 border-forest/20 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-forest mb-6">Service Dependencies</h2>
+        {/* Service Dependencies Matrix */}
+        <div className="luxury-card p-12 bg-secondary/20">
+          <h2 className="text-3xl font-bold text-white mb-10 tracking-tight">Institutional Dependencies Matrix</h2>
 
-          <div className="space-y-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              {
-                name: 'PancakeSwap V3 Factory',
-                status: 'operational',
-                desc: 'Required for AMM pair creation and liquidity operations',
-              },
-              {
-                name: 'BSC Testnet RPC',
-                status: 'operational',
-                desc: 'Primary blockchain connection point',
-              },
-              {
-                name: 'ECDSA Signature Service',
-                status: 'operational',
-                desc: 'Verifies agent payloads and parameter updates',
-              },
-              {
-                name: 'Off-Chain Agent Cluster',
-                status: 'operational',
-                desc: 'Computes MSS and proposes parameter updates',
-              },
-              {
-                name: 'Event Indexer (Subgraph)',
-                status: 'operational',
-                desc: 'Aggregates contract events for dashboard display',
-              },
-              {
-                name: 'Price Oracle (Chainlink)',
-                status: 'operational',
-                desc: 'Provides reliable price feeds for MSS volatility calculation',
-              },
+              { name: 'PancakeSwap V3 Factory', status: 'OPERATIONAL', desc: 'AMM Matrix Operations' },
+              { name: 'BSC Testnet Node Cluster', status: 'OPERATIONAL', desc: 'Primary Blockchain Mandate' },
+              { name: 'ECDSA Signature Service', status: 'OPERATIONAL', desc: 'Neural Verification Core' },
+              { name: 'Neural Agent Cluster', status: 'OPERATIONAL', desc: 'Predictive Stability Scoring' },
+              { name: 'Protocol Indexer (EL-v1)', status: 'OPERATIONAL', desc: 'Aggregated Mandate Audit' },
+              { name: 'Neural Price Oracle', status: 'OPERATIONAL', desc: 'High-Fidelity Volatility Feeds' },
             ].map((dep, idx) => (
-              <div key={idx} className="flex items-center justify-between p-4 border border-forest/10 rounded-lg hover:border-forest/30 transition">
-                <div>
-                  <p className="font-bold text-forest">{dep.name}</p>
-                  <p className="text-sm text-forest/60">{dep.desc}</p>
+              <div key={idx} className="luxury-card p-6 bg-black/40 border-gold/10 hover:border-gold/40 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <p className="text-sm font-bold text-white group-hover:text-gold transition-colors">{dep.name}</p>
+                  <CheckCircle className="text-status-success shadow-gold-glow animate-pulse" size={16} />
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="text-green-600" size={20} />
-                  <span className="text-sm font-bold text-green-700">{dep.status}</span>
-                </div>
+                <p className="text-[10px] text-muted uppercase tracking-widest font-bold mb-4 opacity-60">{dep.desc}</p>
+                <span className="text-[9px] font-bold text-status-success/80 border border-status-success/20 px-3 py-1 rounded-full">{dep.status}</span>
               </div>
             ))}
           </div>

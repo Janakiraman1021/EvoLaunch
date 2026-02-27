@@ -16,25 +16,26 @@ const data = [
 export default function MSSChart({ mss }: { mss?: number }) {
     return (
         <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+            <AreaChart data={data} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
                 <defs>
                     <linearGradient id="colorMss" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#2d4a2b" stopOpacity={0.1} />
-                        <stop offset="95%" stopColor="#2d4a2b" stopOpacity={0} />
+                        <stop offset="5%" stopColor="#E6C07B" stopOpacity={0.1} />
+                        <stop offset="95%" stopColor="#E6C07B" stopOpacity={0} />
                     </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#2d4a2b" opacity={0.05} vertical={false} />
+                <CartesianGrid strokeDasharray="8 8" stroke="#ffffff" opacity={0.02} vertical={false} />
                 <XAxis
                     dataKey="time"
-                    stroke="#2d4a2b"
+                    stroke="#A1A1AA"
                     fontSize={10}
                     tickLine={false}
                     axisLine={false}
                     opacity={0.3}
+                    fontFamily="monospace"
                 />
                 <YAxis
                     domain={[0, 100]}
-                    stroke="#2d4a2b"
+                    stroke="#A1A1AA"
                     fontSize={10}
                     tickLine={false}
                     axisLine={false}
@@ -42,20 +43,28 @@ export default function MSSChart({ mss }: { mss?: number }) {
                     hide
                 />
                 <Tooltip
-                    contentStyle={{ backgroundColor: '#ffffff', border: '1px solid rgba(45, 74, 43, 0.1)', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
-                    itemStyle={{ color: '#2d4a2b', fontWeight: 'bold' }}
-                    cursor={{ stroke: '#2d4a2b', strokeWidth: 1, strokeDasharray: '4 4' }}
+                    contentStyle={{ 
+                        backgroundColor: '#1C1C21', 
+                        border: '1px solid rgba(230, 192, 123, 0.1)', 
+                        borderRadius: '16px', 
+                        boxShadow: '0 20px 40px rgba(0,0,0,0.8)',
+                        backdropFilter: 'blur(10px)'
+                    }}
+                    itemStyle={{ color: '#E6C07B', fontWeight: 'bold', fontSize: '12px' }}
+                    labelStyle={{ color: '#A1A1AA', fontSize: '10px', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px' }}
+                    cursor={{ stroke: '#E6C07B', strokeWidth: 1.5, strokeDasharray: '6 6', opacity: 0.3 }}
                 />
-                <ReferenceLine y={40} stroke="#8b3a3a" strokeDasharray="3 3" opacity={0.2} label={{ value: 'PROTECTIVE', position: 'insideBottomLeft', fill: '#8b3a3a', fontSize: 8, fontWeight: 'bold' }} />
-                <ReferenceLine y={70} stroke="#d4a373" strokeDasharray="3 3" opacity={0.2} label={{ value: 'GROWTH', position: 'insideBottomLeft', fill: '#d4a373', fontSize: 8, fontWeight: 'bold' }} />
+                <ReferenceLine y={40} stroke="#DC2626" strokeDasharray="4 4" opacity={0.2} label={{ value: 'CRITICAL', position: 'insideBottomLeft', fill: '#DC2626', fontSize: 9, fontWeight: 'bold', letterSpacing: '2px' }} />
+                <ReferenceLine y={70} stroke="#E6C07B" strokeDasharray="4 4" opacity={0.2} label={{ value: 'OPTIMAL', position: 'insideBottomLeft', fill: '#E6C07B', fontSize: 9, fontWeight: 'bold', letterSpacing: '2px' }} />
                 <Area
                     type="monotone"
                     dataKey="mss"
-                    stroke="#2d4a2b"
-                    strokeWidth={3}
+                    stroke="#E6C07B"
+                    strokeWidth={4}
                     fillOpacity={1}
                     fill="url(#colorMss)"
-                    animationDuration={2000}
+                    animationDuration={2500}
+                    strokeLinecap="round"
                 />
             </AreaChart>
         </ResponsiveContainer>

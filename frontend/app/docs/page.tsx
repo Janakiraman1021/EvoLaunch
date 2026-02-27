@@ -197,51 +197,49 @@ export default function DocsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-transparent">
       {/* Header */}
-      <div className="border-b border-forest/10 bg-forest/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <Link href="/" className="text-forest/60 hover:text-forest transition flex items-center gap-2 mb-4">
-            <ArrowLeft size={18} />
-            Back to Home
-          </Link>
-          <h1 className="text-4xl font-bold text-forest mb-2 flex items-center gap-2">
-            <BookOpen size={32} />
-            Documentation
-          </h1>
-          <p className="text-forest/60">
-            Technical reference for EvoLaunch Protocol. Clear specifications with no marketing fluff.
-          </p>
-        </div>
+      <div className="pb-12 border-b border-gold/[0.05]">
+        <Link href="/" className="text-muted/60 hover:text-gold transition-all flex items-center gap-3 mb-8 text-xs font-bold uppercase tracking-widest group">
+          <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+          Neural Core Home
+        </Link>
+        <h1 className="text-5xl font-bold text-white tracking-tight mb-4 flex items-center gap-6">
+          <BookOpen size={48} className="text-gold" />
+          Protocol <span className="text-gold italic font-serif">Reference</span>
+        </h1>
+        <p className="text-muted text-lg max-w-2xl leading-relaxed">
+          Technical specifications and cryptographic architecture of the EvoLaunch Protocol. Pure institutional intelligence.
+        </p>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="py-12 max-w-4xl mx-auto">
         <div className="space-y-6">
           {sections.map((section) => (
-            <div key={section.id} className="bg-white border-2 border-forest/20 rounded-lg overflow-hidden">
+            <div key={section.id} className="luxury-card overflow-hidden group">
               <button
                 onClick={() => setExpanded(expanded === section.id ? '' : section.id)}
-                className="w-full px-6 py-4 flex items-center justify-between hover:bg-forest/5 transition"
+                className="w-full px-10 py-8 flex items-center justify-between hover:bg-gold/[0.02] transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <div className="text-forest">{section.icon}</div>
-                  <h2 className="text-xl font-bold text-forest text-left">{section.title}</h2>
+                <div className="flex items-center gap-6">
+                  <div className="text-gold group-hover:scale-110 transition-transform duration-500">{section.icon}</div>
+                  <h2 className="text-2xl font-bold text-white tracking-tight text-left group-hover:text-gold transition-colors">{section.title}</h2>
                 </div>
-                <div className={`text-forest/60 transition ${expanded === section.id ? 'rotate-180' : ''}`}>
+                <div className={`text-gold/40 transition-transform duration-500 ${expanded === section.id ? 'rotate-180' : ''}`}>
                   ▼
                 </div>
               </button>
 
               {expanded === section.id && (
-                <div className="border-t border-forest/10 px-6 py-4 space-y-6">
-                  <p className="text-forest/70 leading-relaxed">{section.content}</p>
+                <div className="border-t border-gold/[0.05] px-10 py-10 space-y-10 bg-black/20">
+                  <p className="text-muted text-lg leading-relaxed font-medium">{section.content}</p>
 
                   {section.subsections && (
-                    <div className="space-y-6 mt-6 pt-6 border-t border-forest/10">
+                    <div className="space-y-10 mt-10 pt-10 border-t border-gold/[0.05]">
                       {section.subsections.map((sub, idx) => (
-                        <div key={idx}>
-                          <h3 className="font-bold text-forest mb-2">{sub.title}</h3>
-                          <p className="text-forest/70 leading-relaxed text-sm">{sub.content}</p>
+                        <div key={idx} className="luxury-card p-8 bg-black/40 border-gold/10 hover:border-gold/30 transition-all">
+                          <h3 className="text-[10px] font-bold text-gold uppercase tracking-[0.3em] mb-4">{sub.title}</h3>
+                          <p className="text-white/80 leading-relaxed text-sm font-medium">{sub.content}</p>
                         </div>
                       ))}
                     </div>
@@ -253,38 +251,39 @@ export default function DocsPage() {
         </div>
 
         {/* Key Takeaways */}
-        <div className="mt-12 bg-forest/5 border-2 border-forest/20 rounded-lg p-8">
-          <h3 className="text-2xl font-bold text-forest mb-6">Key Takeaways</h3>
-          <div className="grid md:grid-cols-2 gap-6">
+        <div className="mt-20 luxury-card p-12 bg-secondary/20 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gold/[0.02] -mr-32 -mt-32 rounded-full blur-3xl" />
+          <h3 className="text-3xl font-bold text-white mb-12 tracking-tight">Institutional Mandates</h3>
+          <div className="grid md:grid-cols-2 gap-8 relative z-10">
             {[
               {
-                title: 'Immutable Protection',
-                desc: 'Tax and limit bounds are set once at launch. No governance vote can exceed them.',
+                title: 'Immutable Bounds',
+                desc: 'Tax and limit boundaries are set during initialization. No mandate can exceed these constants.',
               },
               {
-                title: 'Transparent Evolution',
-                desc: 'Every phase transition and parameter update is logged on-chain and publicly visible.',
+                title: 'Mandate Transparency',
+                desc: 'Phase shifts and parameter resets are permanently recorded on the blockchain.',
               },
               {
-                title: 'Agent-Driven',
-                desc: 'Off-chain agents drive updates but all changes require cryptographic signatures.',
+                title: 'Neural Signatures',
+                desc: 'All off-chain intelligence requires valid ECDSA signatures for core state modification.',
               },
               {
-                title: 'Emergency Control',
-                desc: 'Governor can freeze logic temporarily. Requires governance vote for permanent changes.',
+                title: 'Override Latency',
+                desc: 'Governance can freeze logic with a 48-hour delay, ensuring stability during transitions.',
               },
               {
-                title: 'Progressive Unlocks',
-                desc: 'Liquidity releases in predictable tranches tied to MSS milestones and phases.',
+                title: 'Milestone Releases',
+                desc: 'Liquidity triggers are mathematically tied to MSS floors and temporal milestones.',
               },
               {
-                title: 'No Proxies',
-                desc: 'All contracts are immutable. No runtime code changes. Maximum security assurance.',
+                title: 'Hardcore Immutability',
+                desc: 'Non-upgradeable smart contracts. Code is law. Zero runtime logic volatility.',
               },
             ].map((item, idx) => (
-              <div key={idx} className="bg-white border border-forest/20 rounded-lg p-4">
-                <h4 className="font-bold text-forest mb-2">{item.title}</h4>
-                <p className="text-sm text-forest/70">{item.desc}</p>
+              <div key={idx} className="luxury-card p-8 bg-black/40 border-gold/10 hover:border-gold/30 group transition-all">
+                <h4 className="text-lg font-bold text-white mb-3 group-hover:text-gold transition-colors">{item.title}</h4>
+                <p className="text-sm text-muted font-medium leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>

@@ -3,41 +3,109 @@
 @tailwind utilities;
 
 :root {
-    --background: #faf9f6;
-    --foreground: #2d4a2b;
-    --forest: #2d4a2b;
-    --sage: #7d8471;
-    --olive: #a4ac86;
-    --ivory: #faf9f6;
+  --background: #0C0C0F;
+  --secondary: #141417;
+  --card: #1C1C21;
+  --gold: #E6C07B;
+  --gold-hover: #C6A75E;
+  --primary-text: #F5F5F4;
+  --secondary-text: #A1A1AA;
 }
 
 body {
-    color: #2d4a2b;
-    background: #faf9f6;
-    font-family: sans-serif;
-    margin: 0;
-    padding: 0;
+  color: var(--primary-text);
+  background: var(--background);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-attachment: fixed;
 }
 
-.forest-glass {
-    background: rgba(45, 74, 43, 0.05);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(45, 74, 43, 0.1);
+/* Luxury Components */
+.luxury-card {
+  @apply bg-card border border-gold/[0.08] rounded-2xl transition-all duration-500 overflow-hidden;
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.7);
 }
 
-.organic-card {
-    background: #ffffff;
-    border: 1px solid rgba(125, 132, 113, 0.2);
-    box-shadow: 0 4px 20px -10px rgba(45, 74, 43, 0.1);
-    border-radius: 2rem;
-    transition: all 0.3s ease;
+.luxury-card:hover {
+  @apply border-gold/20 backdrop-blur-md;
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.9), 0 0 30px rgba(230, 192, 123, 0.05);
+  transform: translateY(-2px);
 }
 
-.organic-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px -10px rgba(45, 74, 43, 0.15);
+.btn-primary {
+  @apply bg-gold text-[#0C0C0F] font-bold rounded-xl px-8 py-3.5 transition-all duration-500 tracking-wide uppercase text-xs;
+  box-shadow: 0 4px 15px rgba(230, 192, 123, 0.25);
 }
 
-.cyber-nature-bg {
-    background: #faf9f6;
+.btn-primary:hover {
+  @apply bg-gold-hover;
+  box-shadow: 0 0 30px rgba(230, 192, 123, 0.45);
+  transform: translateY(-2px);
 }
+
+.btn-secondary {
+  @apply bg-transparent border border-gold/40 text-gold font-bold rounded-xl px-8 py-3.5 transition-all duration-500 tracking-wide uppercase text-xs hover:bg-gold/10 hover:border-gold;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  @apply bg-[#141417]/70 backdrop-blur-2xl border border-gold/[0.08];
+}
+
+/* Interactive elements */
+.gold-glow-text {
+  text-shadow: 0 0 15px rgba(230, 192, 123, 0.4);
+}
+
+.gold-glow-border {
+  box-shadow: 0 0 20px rgba(230, 192, 123, 0.1);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: #2A2A30;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+/* Animation utilities */
+@keyframes gold-pulse {
+  0%, 100% { opacity: 0.05; transform: scale(1); }
+  50% { opacity: 0.15; transform: scale(1.1); }
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gold-pulse {
+  animation: gold-pulse 8s infinite ease-in-out;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #1C1C21 25%, #2A2A30 50%, #1C1C21 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 0.5rem;
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+

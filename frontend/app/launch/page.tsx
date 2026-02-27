@@ -151,267 +151,252 @@ export default function LaunchPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <div className="border-b border-forest/10 bg-forest/5">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <Link href="/" className="text-forest/60 hover:text-forest transition flex items-center gap-2 mb-4">
-            <ArrowLeft size={18} />
-            Back to Home
-          </Link>
-          <h1 className="text-4xl font-bold text-forest">Launch Your Token</h1>
-          <p className="text-forest/60 mt-2">
-            Deploy an adaptive token with dynamic taxes and market-responsive logic.
-          </p>
+    <div className="min-h-screen bg-background pb-20">
+      {/* Institutional Header */}
+      <div className="border-b border-gold/[0.05] glass-panel sticky top-0 z-30">
+        <div className="max-w-5xl mx-auto px-6 lg:px-12 py-8 flex justify-between items-center">
+          <div>
+            <Link href="/" className="text-muted/60 hover:text-gold transition-all flex items-center gap-3 mb-6 text-xs font-bold uppercase tracking-widest group">
+              <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+              Terminal Home
+            </Link>
+            <h1 className="text-5xl font-bold text-white tracking-tight flex items-baseline gap-4">
+              Initialize <span className="text-gold italic font-serif">Strategic Launch</span>
+            </h1>
+          </div>
+          
+          {isConnected && (
+            <div className="px-6 py-3 rounded-2xl bg-gold/5 border border-gold/10 flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-status-success animate-pulse shadow-gold-glow" />
+              <span className="text-gold font-mono text-[10px] font-bold tracking-widest">{wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}</span>
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Wallet Connection */}
-        {!isConnected ? (
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8 flex items-start gap-4">
-            <AlertCircle className="text-amber-600 flex-shrink-0 mt-1" size={20} />
+      <div className="max-w-5xl mx-auto px-6 lg:px-12 py-16">
+        {/* Connection Mandate */}
+        {!isConnected && (
+          <div className="luxury-card border-gold/20 p-12 mb-16 flex items-center gap-8 bg-secondary/80 backdrop-blur-xl">
+            <div className="w-20 h-20 rounded-[2rem] bg-gold/10 flex items-center justify-center text-gold">
+              <AlertCircle size={40} />
+            </div>
             <div className="flex-1">
-              <h3 className="font-bold text-amber-900 mb-2">Connect Wallet</h3>
-              <p className="text-amber-800 text-sm mb-4">
-                You must connect your wallet to deploy a token. Make sure you're on BSC Testnet.
+              <h3 className="text-2xl font-bold text-white mb-3">Institutional Mandate Required</h3>
+              <p className="text-muted text-base mb-6 max-w-xl">
+                Cryptographic authentication is required to access the deployment terminal. Please authorize your institutional wallet.
               </p>
               <button
                 onClick={connectWallet}
-                className="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition font-semibold"
+                className="btn-primary"
               >
-                Connect MetaMask
+                Authorize Wallet
               </button>
             </div>
           </div>
-        ) : (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-8 flex items-center gap-2">
-            <CheckCircle className="text-green-600" size={20} />
-            <span className="text-green-900 font-mono text-sm">Connected: {wallet.address}</span>
-          </div>
         )}
 
-        {/* Main Form */}
-        <div className="space-y-8">
-          {/* Basic Info */}
-          <div className="bg-white border-2 border-forest/20 rounded-lg p-8">
-            <h2 className="text-2xl font-bold text-forest mb-6">Token Information</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-forest font-semibold mb-2">Token Name</label>
-                <input
-                  type="text"
-                  value={form.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  className="w-full px-4 py-2 border border-forest/20 rounded-lg focus:outline-none focus:border-forest"
-                  placeholder="e.g., Sample Token"
-                />
-              </div>
-              <div>
-                <label className="block text-forest font-semibold mb-2">Symbol</label>
-                <input
-                  type="text"
-                  value={form.symbol}
-                  onChange={(e) => handleInputChange('symbol', e.target.value)}
-                  maxLength={10}
-                  className="w-full px-4 py-2 border border-forest/20 rounded-lg focus:outline-none focus:border-forest"
-                  placeholder="e.g., SMPL"
-                />
-              </div>
-              <div>
-                <label className="block text-forest font-semibold mb-2">Total Supply</label>
-                <input
-                  type="number"
-                  value={form.totalSupply}
-                  onChange={(e) => handleInputChange('totalSupply', e.target.value)}
-                  className="w-full px-4 py-2 border border-forest/20 rounded-lg focus:outline-none focus:border-forest"
-                  placeholder="e.g., 1000000"
-                />
-              </div>
-              <div>
-                <label className="block text-forest font-semibold mb-2">Initial Liquidity (tokens)</label>
-                <input
-                  type="number"
-                  value={form.initialLiquidity}
-                  onChange={(e) => handleInputChange('initialLiquidity', e.target.value)}
-                  className="w-full px-4 py-2 border border-forest/20 rounded-lg focus:outline-none focus:border-forest"
-                  placeholder="e.g., 10000"
-                />
+        {/* Deployment Matrix */}
+        <div className="space-y-12 opacity-0 animate-in fade-in slide-in-from-bottom-5 duration-1000 fill-mode-forwards" style={{ animationDelay: '200ms' }}>
+          
+          {/* Section: Core Parameters */}
+          <div className="grid lg:grid-cols-3 gap-12">
+            <div className="lg:col-span-1">
+              <h2 className="text-2xl font-bold text-white mb-4 tracking-tight">Core Identifiers</h2>
+              <p className="text-muted/60 text-sm leading-relaxed">
+                Define the primary cryptographic identifiers and issuance parameters for your strategic asset.
+              </p>
+            </div>
+            <div className="lg:col-span-2 space-y-8">
+              <div className="luxury-card p-10 bg-secondary/30">
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Token Name</label>
+                    <input
+                      type="text"
+                      value={form.name}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                      placeholder="e.g. EvoLaunch Prime"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Ticker Symbol</label>
+                    <input
+                      type="text"
+                      value={form.symbol}
+                      onChange={(e) => handleInputChange('symbol', e.target.value)}
+                      maxLength={10}
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium uppercase font-mono"
+                      placeholder="EVO"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Total Issuance</label>
+                    <input
+                      type="number"
+                      value={form.totalSupply}
+                      onChange={(e) => handleInputChange('totalSupply', e.target.value)}
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Initial Liquidity</label>
+                    <input
+                      type="number"
+                      value={form.initialLiquidity}
+                      onChange={(e) => handleInputChange('initialLiquidity', e.target.value)}
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Tax Configuration */}
-          <div className="bg-white border-2 border-forest/20 rounded-lg p-8">
-            <h2 className="text-2xl font-bold text-forest mb-2 flex items-center gap-2">
-              <Zap size={24} className="text-growth" />
-              Tax Configuration
-            </h2>
-            <p className="text-forest/60 text-sm mb-6">
-              Set initial taxes and bounds. All future updates will be constrained within min/max limits.
-            </p>
-
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div>
-                <label className="block text-forest font-semibold mb-2">Initial Sell Tax (%)</label>
-                <input
-                  type="number"
-                  value={form.initialSellTax}
-                  onChange={(e) => handleInputChange('initialSellTax', parseFloat(e.target.value))}
-                  min="0"
-                  max="100"
-                  className="w-full px-4 py-2 border border-forest/20 rounded-lg focus:outline-none focus:border-forest"
-                />
-              </div>
-              <div>
-                <label className="block text-forest font-semibold mb-2">Initial Buy Tax (%)</label>
-                <input
-                  type="number"
-                  value={form.initialBuyTax}
-                  onChange={(e) => handleInputChange('initialBuyTax', parseFloat(e.target.value))}
-                  min="0"
-                  max="100"
-                  className="w-full px-4 py-2 border border-forest/20 rounded-lg focus:outline-none focus:border-forest"
-                />
-              </div>
-              <div>
-                <label className="block text-forest font-semibold mb-2">Minimum Tax Bound (%)</label>
-                <input
-                  type="number"
-                  value={form.minTax}
-                  onChange={(e) => handleInputChange('minTax', parseFloat(e.target.value))}
-                  min="0"
-                  className="w-full px-4 py-2 border border-forest/20 rounded-lg focus:outline-none focus:border-forest"
-                />
-                <p className="text-xs text-forest/50 mt-1">Agents cannot lower tax below this</p>
-              </div>
-              <div>
-                <label className="block text-forest font-semibold mb-2">Maximum Tax Bound (%)</label>
-                <input
-                  type="number"
-                  value={form.maxTax}
-                  onChange={(e) => handleInputChange('maxTax', parseFloat(e.target.value))}
-                  max="100"
-                  className="w-full px-4 py-2 border border-forest/20 rounded-lg focus:outline-none focus:border-forest"
-                />
-                <p className="text-xs text-forest/50 mt-1">Agents cannot raise tax above this</p>
+          {/* Section: Adaptive Tax Engine */}
+          <div className="grid lg:grid-cols-3 gap-12">
+            <div className="lg:col-span-1">
+              <h2 className="text-2xl font-bold text-white mb-4 tracking-tight flex items-center gap-3">
+                <Zap size={22} className="text-gold" /> Tax Engine
+              </h2>
+              <p className="text-muted/60 text-sm leading-relaxed">
+                Configure the dynamic tax bounds. The Neural Core will optimize within these institutional limits.
+              </p>
+            </div>
+            <div className="lg:col-span-2">
+              <div className="luxury-card p-10 bg-secondary/30">
+                <div className="grid md:grid-cols-2 gap-x-10 gap-y-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Initial Sell Tax (%)</label>
+                    <input
+                      type="number"
+                      value={form.initialSellTax}
+                      onChange={(e) => handleInputChange('initialSellTax', parseFloat(e.target.value))}
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Initial Buy Tax (%)</label>
+                    <input
+                      type="number"
+                      value={form.initialBuyTax}
+                      onChange={(e) => handleInputChange('initialBuyTax', parseFloat(e.target.value))}
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Minimum Tax Floor</label>
+                    <input
+                      type="number"
+                      value={form.minTax}
+                      onChange={(e) => handleInputChange('minTax', parseFloat(e.target.value))}
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Maximum Tax Ceiling</label>
+                    <input
+                      type="number"
+                      value={form.maxTax}
+                      onChange={(e) => handleInputChange('maxTax', parseFloat(e.target.value))}
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Transaction Limits */}
-          <div className="bg-white border-2 border-forest/20 rounded-lg p-8">
-            <h2 className="text-2xl font-bold text-forest mb-2 flex items-center gap-2">
-              <Lock size={24} className="text-expansion" />
-              Transaction Limits
-            </h2>
-            <p className="text-forest/60 text-sm mb-6">
-              Prevent whale accumulation with per-transaction and per-wallet limits.
-            </p>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-forest font-semibold mb-2">Initial Max Tx Amount</label>
-                <input
-                  type="number"
-                  value={form.initialMaxTx}
-                  onChange={(e) => handleInputChange('initialMaxTx', e.target.value)}
-                  className="w-full px-4 py-2 border border-forest/20 rounded-lg focus:outline-none focus:border-forest"
-                />
-              </div>
-              <div>
-                <label className="block text-forest font-semibold mb-2">Initial Max Wallet</label>
-                <input
-                  type="number"
-                  value={form.initialMaxWallet}
-                  onChange={(e) => handleInputChange('initialMaxWallet', e.target.value)}
-                  className="w-full px-4 py-2 border border-forest/20 rounded-lg focus:outline-none focus:border-forest"
-                />
-              </div>
-              <div>
-                <label className="block text-forest font-semibold mb-2">Minimum Max Tx Bound</label>
-                <input
-                  type="number"
-                  value={form.minMaxTx}
-                  onChange={(e) => handleInputChange('minMaxTx', e.target.value)}
-                  className="w-full px-4 py-2 border border-forest/20 rounded-lg focus:outline-none focus:border-forest"
-                />
-                <p className="text-xs text-forest/50 mt-1">Prevents overconstrictive limits</p>
-              </div>
-              <div>
-                <label className="block text-forest font-semibold mb-2">Minimum Max Wallet Bound</label>
-                <input
-                  type="number"
-                  value={form.minMaxWallet}
-                  onChange={(e) => handleInputChange('minMaxWallet', e.target.value)}
-                  className="w-full px-4 py-2 border border-forest/20 rounded-lg focus:outline-none focus:border-forest"
-                />
-                <p className="text-xs text-forest/50 mt-1">Prevents overconstrictive limits</p>
+          {/* Section: Guardrails */}
+          <div className="grid lg:grid-cols-3 gap-12">
+            <div className="lg:col-span-1">
+              <h2 className="text-2xl font-bold text-white mb-4 tracking-tight flex items-center gap-3">
+                <Lock size={22} className="text-gold" /> Guardrails
+              </h2>
+              <p className="text-muted/60 text-sm leading-relaxed">
+                Mitigate whale concentration Risk through per-mandate transaction and wallet capacity limits.
+              </p>
+            </div>
+            <div className="lg:col-span-2">
+              <div className="luxury-card p-10 bg-secondary/30">
+                <div className="grid md:grid-cols-2 gap-x-10 gap-y-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Max Transaction Amt</label>
+                    <input
+                      type="number"
+                      value={form.initialMaxTx}
+                      onChange={(e) => handleInputChange('initialMaxTx', e.target.value)}
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] ml-2">Max Wallet Capacity</label>
+                    <input
+                      type="number"
+                      value={form.initialMaxWallet}
+                      onChange={(e) => handleInputChange('initialMaxWallet', e.target.value)}
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Fee Collector */}
-          <div className="bg-white border-2 border-forest/20 rounded-lg p-8">
-            <h2 className="text-2xl font-bold text-forest mb-4">Fee Collector Address</h2>
-            <input
-              type="text"
-              value={form.feeCollector}
-              onChange={(e) => handleInputChange('feeCollector', e.target.value)}
-              placeholder="0x..."
-              className="w-full px-4 py-2 border border-forest/20 rounded-lg focus:outline-none focus:border-forest font-mono text-sm"
-            />
-            <p className="text-xs text-forest/50 mt-2">Address that receives taxes from trading</p>
-          </div>
-
-          {/* Validation Warnings */}
+          {/* Institutional Warnings */}
           {validationWarnings.length > 0 && (
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
-              <h3 className="font-bold text-amber-900 mb-3 flex items-center gap-2">
+            <div className="luxury-card border-status-warning/20 p-8 bg-status-warning/5">
+              <h3 className="font-bold text-status-warning mb-4 flex items-center gap-3 tracking-tight">
                 <AlertCircle size={20} />
-                Validation Warnings
+                Strategic Validation Warnings
               </h3>
-              <ul className="space-y-2">
+              <ul className="grid md:grid-cols-2 gap-4">
                 {validationWarnings.map((warning, idx) => (
-                  <li key={idx} className="text-amber-800 text-sm">
-                    • {warning}
+                  <li key={idx} className="text-status-warning/80 text-xs font-bold uppercase tracking-widest flex items-center gap-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-status-warning" />
+                    {warning}
                   </li>
                 ))}
               </ul>
             </div>
           )}
 
-          {/* Error Message */}
-          {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-              <h3 className="font-bold text-red-900 mb-2 flex items-center gap-2">
+          {/* Action Terminal */}
+          <div className="pt-10 border-t border-gold/10">
+            {error && (
+              <div className="luxury-card border-status-danger/20 p-6 bg-status-danger/5 mb-8 flex items-center gap-4 text-status-danger">
                 <AlertCircle size={20} />
-                Deployment Error
-              </h3>
-              <p className="text-red-800 text-sm font-mono">{error}</p>
-            </div>
-          )}
+                <span className="text-sm font-bold uppercase tracking-widest leading-relaxed">{error}</span>
+              </div>
+            )}
 
-          {/* Transaction Status */}
-          {txHash && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-              <h3 className="font-bold text-green-900 mb-2 flex items-center gap-2">
-                <CheckCircle size={20} />
-                Transaction Submitted
-              </h3>
-              <p className="text-green-800 text-sm font-mono break-all">{txHash}</p>
-              <p className="text-green-800 text-sm mt-2">Waiting for confirmation...</p>
-            </div>
-          )}
+            {txHash && (
+              <div className="luxury-card border-gold/20 p-6 bg-gold/5 mb-8 flex flex-col gap-3">
+                <div className="flex items-center gap-4 text-gold">
+                  <CheckCircle size={20} />
+                  <span className="text-sm font-bold uppercase tracking-widest tracking-widest">Transaction Propagating</span>
+                </div>
+                <code className="text-[10px] text-gold/60 font-mono block truncate py-2 px-4 bg-background/50 rounded-lg">{txHash}</code>
+              </div>
+            )}
 
-          {/* Deploy Button */}
-          <button
-            onClick={handleDeploy}
-            disabled={loading || !isConnected || validationWarnings.length > 0}
-            className="w-full px-8 py-4 bg-forest text-white rounded-lg font-bold text-lg hover:bg-forest/90 transition disabled:bg-forest/50 disabled:cursor-not-allowed"
-          >
-            {loading ? 'Deploying...' : 'Deploy Token'}
-          </button>
+            <button
+              onClick={handleDeploy}
+              disabled={loading || !isConnected || validationWarnings.length > 0}
+              className="btn-primary w-full py-6 text-base tracking-[0.2em]"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-3">
+                  <div className="w-5 h-5 border-2 border-[#0C0C0F]/20 border-t-[#0C0C0F] rounded-full animate-spin" />
+                  Processing Mandate...
+                </span>
+              ) : 'Execute Deployment'}
+            </button>
+            <p className="text-[9px] text-muted/30 text-center font-bold uppercase tracking-[0.3em] mt-6">
+              Authenticated & Secured by EvoLaunch Institutional Core
+            </p>
+          </div>
         </div>
       </div>
     </div>

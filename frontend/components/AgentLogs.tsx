@@ -1,36 +1,37 @@
 import React from 'react';
-import { Leaf, ShieldCheck, AlertTriangle, Info, Zap } from 'lucide-react';
+import { Shield, ShieldAlert, AlertTriangle, Zap, CheckCircle } from 'lucide-react';
 
 const logs = [
-    { agent: 'Market-IA', type: 'info', msg: 'Root distribution stable. Nutrient flow entering Genesis peak.', time: '2m ago' },
-    { agent: 'Phase-EA', type: 'success', msg: 'MSS > 80. Photosynthesis optimization complete.', time: '5m ago' },
-    { agent: 'Liquidity-OA', type: 'warning', msg: 'Moisture variance detected. Staggering tranche hydrate.', time: '12m ago' },
+    { agent: 'Market-IA', type: 'info', msg: 'Root distribution stable. Flow entering Genesis peak.', time: '2m ago' },
+    { agent: 'Phase-EA', type: 'success', msg: 'MSS > 80. Liquidity optimization complete.', time: '5m ago' },
+    { agent: 'Liquidity-OA', type: 'warning', msg: 'Market variance detected. Staggering tranche hydrate.', time: '12m ago' },
     { agent: 'Reputation-RA', type: 'success', msg: 'Cultivated 42 new organic holder profiles.', time: '18m ago' },
     { agent: 'Neural-Core', type: 'info', msg: 'Neural signal verified via Root-DAO signature.', time: '20m ago' },
 ];
 
 export default function AgentLogs() {
     return (
-        <div className="space-y-4 font-sans text-sm overflow-y-auto max-h-[400px] pr-4 custom-scrollbar">
+        <div className="space-y-6 font-sans text-sm overflow-y-auto max-h-[500px] pr-4 custom-scrollbar">
             {logs.map((log, i) => (
-                <div key={i} className="flex gap-5 p-5 rounded-2xl bg-forest/5 border border-forest/5 items-start hover:bg-white/50 hover:shadow-lg transition-all duration-300 group">
-                    <div className={`mt-1 p-2 rounded-xl ${log.type === 'success' ? 'bg-expansion/10 text-expansion' :
-                            log.type === 'warning' ? 'bg-growth/10 text-growth' :
-                                'bg-forest/10 text-forest'
-                        }`}>
-                        {log.type === 'success' ? <ShieldCheck size={18} /> :
-                            log.type === 'warning' ? <AlertTriangle size={18} /> :
-                                <Leaf size={18} />}
+                <div key={i} className="flex gap-6 p-6 rounded-2xl bg-[#1C1C21] border border-gold/[0.05] items-start hover:border-gold/20 hover:bg-gold/[0.02] transition-all duration-500 group">
+                    <div className={`mt-1 p-3 rounded-xl border transition-all duration-300 ${
+                        log.type === 'success' ? 'bg-status-success/5 text-status-success border-status-success/20' :
+                        log.type === 'warning' ? 'bg-status-warning/5 text-status-warning border-status-warning/20' :
+                        'bg-gold/5 text-gold border-gold/10 group-hover:border-gold/30'
+                    }`}>
+                        {log.type === 'success' ? <CheckCircle size={20} /> :
+                            log.type === 'warning' ? <AlertTriangle size={20} /> :
+                                <Shield size={20} />}
                     </div>
                     <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-1">
-                            <span className="text-forest/30 text-[10px] font-bold uppercase tracking-widest">{log.agent}</span>
-                            <span className="w-1 h-1 rounded-full bg-forest/20" />
-                            <span className="text-[10px] text-forest/20 italic">{log.time}</span>
+                        <div className="flex items-center gap-4 mb-2">
+                            <span className="text-gold text-[10px] font-bold uppercase tracking-[0.2em]">{log.agent}</span>
+                            <span className="w-1 h-1 rounded-full bg-white/10" />
+                            <span className="text-[10px] text-muted/60 font-mono italic">{log.time}</span>
                         </div>
-                        <span className="text-forest/80 group-hover:text-forest transition font-medium leading-relaxed">{log.msg}</span>
+                        <span className="text-primary/90 group-hover:text-white transition-colors duration-300 font-medium leading-relaxed block text-[15px]">{log.msg}</span>
                     </div>
-                    <Zap size={14} className="text-forest/10 group-hover:text-sage transition-colors" />
+                    <Zap size={16} className="text-white/5 group-hover:text-gold/40 transition-colors duration-500" />
                 </div>
             ))}
         </div>
