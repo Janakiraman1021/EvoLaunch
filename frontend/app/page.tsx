@@ -1,13 +1,26 @@
-"use client";
+'use client';
 
-import React, { useState } from 'react';
-import { Activity, Shield, TrendingUp, Zap, Lock, Unlock, MessageSquare, Compass, Wind } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { 
+  Activity, 
+  Shield, 
+  TrendingUp, 
+  Zap, 
+  Lock, 
+  Unlock, 
+  MessageSquare, 
+  Compass, 
+  Wind,
+  LineChart,
+  Target,
+  ZapOff
+} from 'lucide-react';
 import MSSChart from '../components/MSSChart';
 import PhaseTimeline from '../components/PhaseTimeline';
 import AgentLogs from '../components/AgentLogs';
 
 export default function Dashboard() {
-    const [mss] = useState(82);
+    const [mss, setMss] = useState(82);
     const [phase] = useState('Growth');
     const [tokenStats] = useState({
         price: '0.0042 BNB',
@@ -16,117 +29,180 @@ export default function Dashboard() {
         holders: '1,240'
     });
 
+    // Simulated live MSS updates
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setMss(prev => {
+                const change = (Math.random() - 0.5) * 2;
+                return Math.min(Math.max(Number((prev + change).toFixed(1)), 70), 95);
+            });
+        }, 3000);
+        return () => clearInterval(interval);
+    }, []);
+
     return (
-        <div className="space-y-16 animate-in fade-in duration-1000 pt-8">
-            {/* Active Mandate Quick View */}
-            <div className="flex justify-end mb-8">
-                <div className="glass-panel px-8 py-5 rounded-2xl flex items-center gap-6 group hover:border-gold/30 transition-all duration-500 shadow-luxury-soft">
-                    <div className="icon-box-lg relative">
-                        <div className="absolute inset-0 bg-gold/20 blur-md rounded-2xl animate-pulse" />
-                        <TrendingUp size={28} className="relative z-10" />
-                    </div>
-                    <div>
-                        <div className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] mb-1">Active Mandate</div>
-                        <div className="text-3xl font-bold text-white tracking-tight">{phase} Mode</div>
-                    </div>
+        <div className="space-y-12 animate-in fade-in duration-1000 pt-6">
+            {/* Global Ecosystem Ticker - High End Institutional Feel */}
+            <div className="w-full h-8 glass-panel overflow-hidden border-y border-gold/10 flex items-center relative z-20">
+                <div className="flex whitespace-nowrap animate-marquee">
+                    {[1, 2, 3].map((_, i) => (
+                        <div key={i} className="flex gap-12 items-center px-12">
+                            <span className="text-[10px] font-bold text-gold uppercase tracking-[0.3em] flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-status-success shadow-gold-glow" /> SYSTEM_MSS: <span className="text-[var(--primary-text)]">{mss}/100</span>
+                            </span>
+                            <span className="text-[10px] font-bold text-muted uppercase tracking-[0.3em]">
+                                LIQUIDITY_DEPTH: <span className="text-[var(--primary-text)]">$420,129.42</span>
+                            </span>
+                            <span className="text-[10px] font-bold text-muted uppercase tracking-[0.3em]">
+                                AGENT_SYNC: <span className="text-status-success">OPTIMAL</span>
+                            </span>
+                            <span className="text-[10px] font-bold text-gold uppercase tracking-[0.3em]">
+                                MANDATE_GENESIS: <span className="text-[var(--primary-text)]">COMPLETED</span>
+                            </span>
+                             <span className="text-[10px] font-bold text-muted uppercase tracking-[0.3em]">
+                                POE_VALIDATION: <span className="text-[var(--primary-text)]">0.002s</span>
+                            </span>
+                        </div>
+                    ))}
                 </div>
             </div>
 
-            {/* Core Institutional Metrics */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {/* Core Institutional Metrics - Refined with hover effects */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
                 {[
-                    { label: 'MSS Stability', value: `${mss}/100`, icon: Activity, trend: '+2.4%' },
-                    { label: 'Market Index', value: tokenStats.price, icon: Compass, trend: 'Optimal' },
-                    { label: 'Total Value', value: tokenStats.marketCap, icon: Wind, trend: 'Growing' },
-                    { label: 'Institutional Trust', value: tokenStats.holders, icon: Shield, trend: 'Verified' },
+                    { label: 'MSS Stability', value: `${mss}/100`, icon: Activity, trend: '+2.4%', color: 'gold' },
+                    { label: 'Market Index', value: tokenStats.price, icon: Compass, trend: 'Optimal', color: 'blue' },
+                    { label: 'Total Value', value: tokenStats.marketCap, icon: Wind, trend: 'Growing', color: 'purple' },
+                    { label: 'Institutional Trust', value: tokenStats.holders, icon: Shield, trend: 'Verified', color: 'green' },
                 ].map((stat, i) => (
-                    <div key={i} className="luxury-card p-10 flex flex-col gap-8 group">
-                        <div className="flex justify-between items-start">
-                            <div className="icon-box-lg group-hover:border-gold/30">
-                                <stat.icon size={26} className="text-gold" />
+                    <div key={i} className="luxury-card p-8 flex flex-col gap-6 group hover:border-gold/30">
+                        <div className="shine-sweep" />
+                        <div className="flex justify-between items-start relative z-10">
+                            <div className="icon-box-lg group-hover:scale-110 transition-transform bg-gold/5 border-gold/10 text-gold shadow-gold-subtle">
+                                <stat.icon size={26} />
                             </div>
-                            <span className="text-[10px] font-bold text-muted uppercase tracking-[0.2em]">{stat.label}</span>
+                            <div className="flex flex-col items-end">
+                                <span className="text-[9px] font-bold text-muted uppercase tracking-[0.3em]">{stat.label}</span>
+                                <div className="text-2xl font-bold text-[var(--primary-text)] mt-1 tracking-tight group-hover:text-gold transition-colors">{stat.value}</div>
+                            </div>
                         </div>
-                        <div>
-                            <div className="text-4xl font-bold text-white mb-2 tracking-tight group-hover:text-gold transition-colors duration-500">{stat.value}</div>
-                            <div className="text-xs font-bold text-status-success tracking-wide flex items-center gap-1">
-                                <span className="w-1 h-1 rounded-full bg-status-success" />
-                                {stat.trend}
+                        <div className="flex items-center justify-between relative z-10">
+                            <div className="h-1 flex-1 bg-[var(--primary-text)]/5 rounded-full overflow-hidden mr-4">
+                                <div className="h-full bg-gold/40 w-[70%] group-hover:w-[85%] transition-all duration-1000" />
                             </div>
+                            <span className="text-[10px] font-bold text-status-success tracking-widest">{stat.trend}</span>
                         </div>
                     </div>
                 ))}
             </div>
 
             {/* Analytical & Execution Layer */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                <div className="lg:col-span-8 space-y-12">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                <div className="lg:col-span-8 space-y-10">
                     {/* MSS Evolution Intel */}
-                    <div className="luxury-card p-12 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-gold/[0.02] -mr-32 -mt-32 rounded-full blur-3xl" />
-                        <div className="flex justify-between items-center mb-12 relative z-10">
+                    <div className="luxury-card p-10 relative overflow-hidden group">
+                        <div className="shine-sweep" />
+                        <div className="absolute top-0 right-0 w-96 h-96 bg-gold/[0.03] -mr-48 -mt-48 rounded-full blur-[100px] pointer-events-none" />
+                        <div className="flex flex-wrap justify-between items-center mb-10 relative z-10 gap-6">
                             <div>
-                                <h2 className="text-3xl font-bold text-white flex items-center gap-4 tracking-tight">
-                                    Strategic Intel <span className="w-2.5 h-2.5 rounded-full bg-gold animate-pulse shadow-gold-glow" />
-                                </h2>
-                                <p className="text-muted text-base mt-2">Real-time adaptive market stability score tracking</p>
+                                <h1 className="text-3xl font-bold text-primary flex items-center gap-4 tracking-tight">
+                                    Strategic Intel <span className="w-2.5 h-2.5 rounded-full bg-status-success animate-pulse shadow-gold-glow" />
+                                </h1>
+                                <p className="text-muted text-sm mt-2 font-body">Real-time adaptive market stability score (MSS) matrix visualization</p>
                             </div>
                             <div className="flex gap-4">
-                                <div className="px-4 py-2 rounded-xl bg-secondary text-muted text-[10px] font-bold tracking-[0.1em] border border-white/5">LIVE-FEED</div>
-                                <div className="px-4 py-2 rounded-xl bg-gold text-[#0C0C0F] text-[10px] font-bold tracking-[0.1em]">ENCRYPTED</div>
+                                <div className="px-5 py-2.5 rounded-xl bg-white/[0.03] text-muted text-[10px] font-bold tracking-[0.2em] border border-white/5 hover:border-gold/20 transition-all cursor-pointer">
+                                    EXPORT_JSON
+                                </div>
+                                <div className="px-5 py-2.5 rounded-xl bg-gold text-[#0C0C0F] text-[10px] font-bold tracking-[0.2em] shadow-gold-glow hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                                    LIVE_UPDATE
+                                </div>
                             </div>
                         </div>
-                        <div className="h-[450px] w-full relative z-10">
+                        <div className="h-[400px] w-full relative z-10">
                             <MSSChart />
                         </div>
                     </div>
 
-                    {/* Agent Decisions Audit */}
-                    <div className="luxury-card p-12">
-                        <h2 className="text-3xl font-bold text-white mb-10 flex items-center gap-5 tracking-tight">
-                            <MessageSquare className="text-gold" size={32} /> Audit Command Trail
-                        </h2>
-                        <AgentLogs />
+                    {/* Performance Audit Metrics */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                         <div className="luxury-card p-8 group">
+                            <div className="flex items-center gap-5 mb-8">
+                                <div className="icon-box bg-gold/10 border-gold/20 text-gold shadow-gold-subtle">
+                                    <Target size={20} />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-bold text-primary tracking-tight italic">Adaptive Target</h3>
+                                    <div className="text-[10px] text-muted font-bold uppercase tracking-widest">MSS Threshold: 75.0</div>
+                                </div>
+                            </div>
+                            <div className="space-y-6">
+                                <div className="flex justify-between items-end">
+                                    <span className="text-[10px] text-muted font-bold uppercase tracking-widest">Stability Buffer</span>
+                                    <span className="text-sm font-bold text-gold">8.2%</span>
+                                </div>
+                                <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                     <div className="h-full bg-gold shadow-gold-glow w-[65%]" />
+                                </div>
+                            </div>
+                         </div>
+
+                         <div className="luxury-card p-8 group">
+                            <div className="flex items-center gap-5 mb-8">
+                                <div className="icon-box bg-status-success/10 border-status-success/20 text-status-success">
+                                    <LineChart size={20} />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-bold text-primary tracking-tight italic">Yield Velocity</h3>
+                                    <div className="text-[10px] text-muted font-bold uppercase tracking-widest">Efficiency: 94.2%</div>
+                                </div>
+                            </div>
+                            <div className="space-y-6">
+                                <div className="flex justify-between items-end">
+                                    <span className="text-[10px] text-muted font-bold uppercase tracking-widest">Network Load</span>
+                                    <span className="text-sm font-bold text-status-success">Low</span>
+                                </div>
+                                <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                     <div className="h-full bg-status-success shadow-[0_0_10px_#15803D] w-[30%]" />
+                                </div>
+                            </div>
+                         </div>
                     </div>
                 </div>
 
-                <div className="lg:col-span-4 space-y-12">
+                <div className="lg:col-span-4 space-y-10">
                     {/* Evolutionary Timeline */}
-                    <div className="luxury-card p-12 bg-secondary border-gold/20">
-                        <h2 className="text-3xl font-bold text-white mb-12 flex items-center gap-5 tracking-tight">
-                            <Zap className="text-gold" size={32} /> Progress
+                    <div className="luxury-card p-10 bg-secondary border-gold/20 relative group overflow-hidden">
+                        <div className="noise-overlay" />
+                        <h2 className="text-2xl font-bold text-primary mb-10 flex items-center gap-5 tracking-tight relative z-10 italic">
+                            <Zap className="text-gold" size={28} /> Growth Phase Timeline
                         </h2>
-                        <PhaseTimeline />
+                        <div className="relative z-10">
+                            <PhaseTimeline />
+                        </div>
                     </div>
 
-                    {/* Asset Lock Management */}
-                    <div className="luxury-card p-12 shadow-luxury-soft">
-                        <h2 className="text-3xl font-bold text-white mb-10 flex items-center gap-5 tracking-tight">
-                            <Lock className="text-gold" size={32} /> Tranches
+                    {/* Agent Decisions Audit */}
+                    <div className="luxury-card p-10 shadow-luxury-soft">
+                        <h2 className="text-2xl font-bold text-primary mb-8 flex items-center gap-5 tracking-tight italic">
+                            <MessageSquare className="text-gold" size={28} /> Audit Command Trail
                         </h2>
-                        <div className="space-y-8">
-                            {[
-                                { label: 'Genesis Tranche', amount: '100k ALP', status: 'Active', icon: Unlock, active: true },
-                                { label: 'Growth Tranche', amount: '150k ALP', status: 'Dormant', icon: Lock, active: false },
-                                { label: 'Maturity Tranche', amount: '250k ALP', status: 'Dormant', icon: Lock, active: false },
-                            ].map((t, i) => (
-                                <div key={i} className={`flex justify-between items-center p-6 rounded-2xl transition-all duration-500 border group ${t.active ? 'bg-gold/[0.03] border-gold/20 shadow-[inset_0_0_20px_rgba(230,192,123,0.02)]' : 'bg-secondary border-white/[0.03] opacity-60 hover:opacity-100 hover:border-white/10'}`}>
-                                    <div className="flex items-center gap-5">
-                                        <div className={`p-3 rounded-xl border transition-all duration-500 ${t.active ? 'bg-gold/10 text-gold border-gold/30' : 'bg-background text-muted/30 border-white/5'}`}>
-                                            <t.icon size={22} />
-                                        </div>
-                                        <div>
-                                            <div className={`text-base font-bold tracking-tight ${t.active ? 'text-white' : 'text-muted'}`}>{t.label}</div>
-                                            <div className="text-[10px] text-muted/60 font-mono tracking-widest uppercase mt-1">{t.amount}</div>
-                                        </div>
-                                    </div>
-                                    <span className={`text-[10px] font-bold tracking-[0.2em] uppercase ${t.active ? 'text-gold' : 'text-muted/30'}`}>{t.status}</span>
-                                </div>
-                            ))}
+                        <div className="max-h-[520px] overflow-y-auto no-scrollbar pr-2">
+                             <AgentLogs />
                         </div>
                     </div>
                 </div>
             </div>
+
+            <style jsx global>{`
+                @keyframes marquee {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                }
+                .animate-marquee {
+                    animation: marquee 30s linear infinite;
+                }
+            `}</style>
         </div>
     );
 }

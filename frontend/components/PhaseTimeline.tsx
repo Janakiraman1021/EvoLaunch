@@ -24,7 +24,7 @@ export default function PhaseTimeline() {
                                 <Circle size={24} />}
                     </div>
                     <div className="transition-all duration-500 group-hover:translate-x-2">
-                        <div className={`text-2xl font-bold tracking-tight mb-2 ${p.status === 'current' ? 'text-gold' : 'text-white'}`}>
+                        <div className={`text-2xl font-bold tracking-tight mb-2 ${p.status === 'current' ? 'text-gold' : 'text-primary'}`}>
                             {p.title}
                         </div>
                         <div className="text-sm text-muted/60 font-medium">{p.subtitle}</div>

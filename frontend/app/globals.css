@@ -12,11 +12,28 @@
   --status-warning: #F59E0B;
   --status-danger: #DC2626;
   --muted: #A1A1AA;
+  --primary-text: #F5F5F4;
+  --particle-color: 230, 192, 123;
+}
+
+html[data-theme='light'] {
+  --background: #FDFDFB !important;
+  --secondary: #F4F4F0 !important;
+  --card: #FFFFFF !important;
+  --gold: #A6804A !important;
+  --gold-hover: #8D6D3F !important;
+  --status-success: #166534 !important;
+  --status-warning: #B45309 !important;
+  --status-danger: #991B1B !important;
+  --muted: #64748B !important;
+  --primary-text: #0F172A !important;
+  --particle-color: 0, 0, 0 !important;
 }
 
 body {
-  color: #F5F5F4;
+  color: var(--primary-text);
   background: var(--background);
+  transition: background-color 0.5s ease, color 0.5s ease;
   font-family: var(--font-outfit), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -32,65 +49,212 @@ h1, h2, h3, h4, h5, h6 {
   background-size: 40px 40px;
 }
 
-@layer components {
-  .luxury-card {
-    @apply bg-card/60 backdrop-blur-xl border border-white/[0.05] rounded-[2rem] shadow-2xl relative overflow-hidden transition-all duration-500;
-  }
+.luxury-card {
+  background-color: color-mix(in srgb, var(--card), transparent 40%);
+  backdrop-filter: blur(24px);
+  border: 1px solid color-mix(in srgb, var(--primary-text), transparent 95%);
+  border-radius: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-  /* Glowing Edge Effect from Image */
-  .luxury-card::before {
-    content: '';
-    @apply absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent opacity-50;
-  }
+.luxury-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--gold), transparent 70%), transparent);
+  opacity: 0.5;
+}
 
-  .luxury-card:hover {
-    @apply border-gold/20;
-    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.9), 0 0 30px rgba(230, 192, 123, 0.05);
-    transform: translateY(-2px);
-  }
+.luxury-card:hover {
+  border-color: color-mix(in srgb, var(--gold), transparent 80%);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.9), 0 0 30px color-mix(in srgb, var(--gold), transparent 95%);
+}
 
-  /* Icon Box style from Image */
-  .icon-box {
-    @apply w-10 h-10 flex items-center justify-center rounded-xl bg-white/[0.03] border border-white/[0.05] text-muted hover:text-gold hover:border-gold/30 hover:bg-gold/5 transition-all duration-500;
-  }
+.icon-box {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background-color: color-mix(in srgb, var(--primary-text), transparent 97%);
+  border: 1px solid color-mix(in srgb, var(--primary-text), transparent 95%);
+  color: var(--muted);
+  transition: all 0.5s ease;
+}
 
-  .icon-box-lg {
-    @apply w-14 h-14 flex items-center justify-center rounded-2xl bg-white/[0.03] border border-white/[0.05] text-gold hover:border-gold/30 hover:bg-gold/5 transition-all duration-500 shadow-luxury-soft;
-  }
+.icon-box:hover {
+  color: var(--gold);
+  border-color: color-mix(in srgb, var(--gold), transparent 70%);
+  background-color: color-mix(in srgb, var(--gold), transparent 95%);
+}
 
-  .noise-overlay {
-    background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
-    @apply absolute inset-0 pointer-events-none opacity-[0.03];
-  }
+.sidebar-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background-color: color-mix(in srgb, var(--primary-text), transparent 98%);
+  border: 1px solid color-mix(in srgb, var(--primary-text), transparent 95%);
+  color: var(--muted);
+  transition: all 0.3s ease;
+}
 
-  .glass-panel {
-    @apply bg-[#0C0C0F]/60 backdrop-blur-2xl border border-white/[0.05] shadow-luxury-soft;
-  }
+.icon-box-lg {
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  background-color: color-mix(in srgb, var(--primary-text), transparent 97%);
+  border: 1px solid color-mix(in srgb, var(--primary-text), transparent 95%);
+  color: var(--gold);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+  transition: all 0.5s ease;
+}
 
-  .btn-primary {
-    @apply px-8 py-3.5 bg-gold text-[#0C0C0F] rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-gold-glow hover:scale-[1.05] active:scale-[0.98] transition-all duration-500;
-  }
+.glass-panel {
+  background-color: color-mix(in srgb, var(--background), transparent 20%);
+  backdrop-filter: blur(40px);
+  border: 1px solid color-mix(in srgb, var(--primary-text), transparent 92%);
+  box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.3);
+}
 
-  /* PERSISTENT CONTRACT BAR */
-  .contract-bar {
-    @apply flex items-center gap-4 px-6 py-2 bg-white/[0.03] backdrop-blur-xl border border-white/[0.05] rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-muted hover:border-gold/30 transition-all cursor-default;
-  }
+.floating-sidebar {
+  height: 90vh;
+  margin: 5vh 0;
+  border-radius: 9999px;
+  width: 5rem;
+  left: 1.5rem;
+}
 
-  .contract-bar .address {
-    @apply text-gold font-mono tracking-normal lowercase text-xs;
-  }
+.btn-primary {
+  padding: 0.875rem 2rem;
+  background-color: var(--gold);
+  color: #0C0C0F;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.625rem;
+  box-shadow: 0 0 15px color-mix(in srgb, var(--gold), transparent 65%);
+  transition: all 0.5s ease;
+  border: none;
+  cursor: pointer;
+}
 
-  /* Connect Wallet Button */
-  .connect-btn {
-    @apply flex items-center gap-3 px-6 py-2.5 bg-white/[0.03] border border-white/[0.05] rounded-xl text-[10px] font-bold uppercase tracking-widest text-white hover:border-gold/50 hover:text-gold transition-all duration-300;
-  }
+.btn-primary:hover {
+  transform: scale(1.05);
+}
 
-  .skeleton {
-    @apply bg-white/5 relative overflow-hidden rounded-lg;
-    background: linear-gradient(90deg, #1C1C21 25%, #2A2A30 50%, #1C1C21 75%);
-    background-size: 200% 100%;
-    animation: skeleton-loading 1.5s infinite;
-  }
+.contract-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1.5rem;
+  background-color: color-mix(in srgb, var(--primary-text), transparent 97%);
+  backdrop-filter: blur(24px);
+  border: 1px solid color-mix(in srgb, var(--primary-text), transparent 95%);
+  border-radius: 9999px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  transition: all 0.5s ease;
+}
+
+.contract-bar:hover {
+  border-color: color-mix(in srgb, var(--gold), transparent 70%);
+}
+
+.contract-bar .address {
+  color: var(--gold);
+  font-family: monospace;
+  text-transform: lowercase;
+  font-size: 0.75rem;
+  letter-spacing: 0;
+}
+
+.connect-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 1.5rem;
+  background-color: color-mix(in srgb, var(--primary-text), transparent 97%);
+  border: 1px solid color-mix(in srgb, var(--primary-text), transparent 93%);
+  border-radius: 0.75rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary-text);
+  transition: all 0.3s ease;
+}
+
+.connect-btn:hover {
+  border-color: color-mix(in srgb, var(--gold), transparent 50%);
+  color: var(--gold);
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--card) 25%, color-mix(in srgb, var(--card), var(--primary-text) 10%) 50%, var(--card) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+  z-index: 1;
+}
+
+.luxury-card:hover .shine-sweep {
+  transform: translateX(200%);
+  transition: all 1500ms ease;
+}
+
+.shine-sweep {
+  position: absolute;
+  inset: 0;
+  transform: translateX(-150%) skewX(-20deg);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--gold), transparent 90%), transparent);
+  width: 50%;
+  z-index: 5;
+}
+
+.neural-scan {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--gold), transparent 60%), transparent);
+  opacity: 0;
+  animation: scanning-pulse 8s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes scanning-pulse {
+  0% { top: -10%; opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.5; }
+  100% { top: 110%; opacity: 0; }
 }
 
 @keyframes skeleton-loading {
@@ -137,11 +301,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1C1C21;
+  background: var(--secondary);
   border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--primary-text), transparent 90%);
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--gold);
 }
-

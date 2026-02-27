@@ -7,20 +7,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "#0C0C0F",
-        secondary: "#141417",
-        card: "#1C1C21",
+        background: "var(--background)",
+        secondary: "var(--secondary)",
+        card: "var(--card)",
         gold: {
-          DEFAULT: "#E6C07B",
-          hover: "#C6A75E",
-          bronze: "#B08D57",
+          DEFAULT: "var(--gold)",
+          hover: "var(--gold-hover)",
         },
-        primary: "#F5F5F4",
-        muted: "#A1A1AA",
+        primary: "var(--primary-text)",
+        muted: "var(--muted)",
         status: {
-          success: "#15803D",
-          warning: "#F59E0B",
-          danger: "#DC2626",
+          success: "var(--status-success)",
+          warning: "var(--status-warning)",
+          danger: "var(--status-danger)",
         },
       },
       fontFamily: {

@@ -32,10 +32,10 @@ export default function Header() {
   };
 
   return (
-    <header className="flex items-center justify-between mb-12 sticky top-0 z-30 py-6 px-1 border-b border-gold/10 bg-[#0C0C0F]/80 backdrop-blur-2xl overflow-hidden">
+    <header className="flex items-center justify-between mb-12 sticky top-0 z-30 py-6 px-1 border-b border-gold/10 bg-[var(--background)]/80 backdrop-blur-2xl overflow-hidden transition-colors duration-500">
       <div className="noise-overlay" />
       <div className="flex flex-col relative z-10">
-        <h2 className="text-3xl font-bold text-white tracking-tighter fade-in group cursor-default">
+        <h2 className="text-3xl font-bold text-primary tracking-tighter fade-in group cursor-default">
           {getPageTitle()}
           <span className="block h-0.5 w-0 group-hover:w-full bg-gold transition-all duration-700" />
         </h2>
@@ -61,7 +61,7 @@ export default function Header() {
         {/* Network Indicator */}
         <div className="flex items-center gap-3 px-4 py-2 bg-secondary/40 border border-white/[0.05] rounded-xl">
           <div className="w-2 h-2 rounded-full bg-status-warning shadow-gold-glow animate-pulse" />
-          <span className="text-[10px] font-bold text-white uppercase tracking-widest flex items-center gap-2">
+          <span className="text-[10px] font-bold text-primary uppercase tracking-widest flex items-center gap-2">
             <Globe size={12} className="text-muted" />
             {CONTRACT_ADDRESSES.CHAIN_NAME}
           </span>

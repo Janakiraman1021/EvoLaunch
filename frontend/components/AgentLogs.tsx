@@ -13,7 +13,7 @@ export default function AgentLogs() {
     return (
         <div className="space-y-6 font-sans text-sm overflow-y-auto max-h-[500px] pr-4 custom-scrollbar">
             {logs.map((log, i) => (
-                <div key={i} className="flex gap-6 p-6 rounded-2xl bg-[#1C1C21] border border-gold/[0.05] items-start hover:border-gold/20 hover:bg-gold/[0.02] transition-all duration-500 group">
+                <div key={i} className="flex gap-6 p-6 rounded-2xl bg-secondary/30 border border-gold/[0.05] items-start hover:border-gold/20 hover:bg-gold/[0.02] transition-all duration-500 group">
                     <div className={`mt-1 p-3 rounded-xl border transition-all duration-300 ${
                         log.type === 'success' ? 'bg-status-success/5 text-status-success border-status-success/20' :
                         log.type === 'warning' ? 'bg-status-warning/5 text-status-warning border-status-warning/20' :
@@ -26,12 +26,12 @@ export default function AgentLogs() {
                     <div className="flex-1">
                         <div className="flex items-center gap-4 mb-2">
                             <span className="text-gold text-[10px] font-bold uppercase tracking-[0.2em]">{log.agent}</span>
-                            <span className="w-1 h-1 rounded-full bg-white/10" />
+                            <span className="w-1 h-1 rounded-full bg-primary/10" />
                             <span className="text-[10px] text-muted/60 font-mono italic">{log.time}</span>
                         </div>
-                        <span className="text-primary/90 group-hover:text-white transition-colors duration-300 font-medium leading-relaxed block text-[15px]">{log.msg}</span>
+                        <span className="text-primary/90 group-hover:text-primary transition-colors duration-300 font-medium leading-relaxed block text-[15px]">{log.msg}</span>
                     </div>
-                    <Zap size={16} className="text-white/5 group-hover:text-gold/40 transition-colors duration-500" />
+                    <Zap size={16} className="text-primary/5 group-hover:text-gold/40 transition-colors duration-500" />
                 </div>
             ))}
         </div>
