@@ -225,15 +225,27 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Agent Decisions Audit */}
-                    <div className="luxury-card p-10 shadow-luxury-soft">
-                        <h2 className="text-2xl font-bold text-primary mb-8 flex items-center gap-5 tracking-tight">
+                </div>
+            </div>
+
+            {/* Agent Decisions Audit - Full Width Container */}
+            <div className="luxury-card overflow-hidden w-full relative z-10">
+                <div className="p-10 border-b border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 className="text-2xl font-bold text-primary flex items-center gap-4 tracking-tight">
                             <MessageSquare className="text-gold" size={28} /> Audit Command Trail
                         </h2>
+<<<<<<< HEAD
                         <div className="max-h-[520px] overflow-y-auto no-scrollbar pr-2">
                             <AgentLogs logs={agentLogs} />
                         </div>
+=======
+                        <p className="text-muted text-sm mt-2 uppercase tracking-widest font-bold">Live Execution Matrix</p>
+>>>>>>> d475b0ad5b3502058dfe17b1afed54db44c104b8
                     </div>
+                </div>
+                <div className="w-full bg-secondary/10">
+                     <AgentLogs />
                 </div>
             </div>
 
