@@ -17,26 +17,11 @@ export default function Dashboard() {
     });
 
     return (
-        <div className="space-y-16 animate-in fade-in duration-1000">
-            {/* Elite Header Section */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 pb-8 border-b border-gold/[0.05]">
-                <div>
-                    <h1 className="text-7xl font-bold tracking-tight mb-4 flex items-baseline gap-4">
-                        <span className="text-white">Protocol</span>
-                        <span className="text-gold italic font-serif">Orchestra</span>
-                    </h1>
-                    <div className="flex items-center gap-4">
-                        <p className="text-muted text-lg font-medium">
-                            Institutional Market Intelligence for
-                        </p>
-                        <code className="text-gold/80 bg-gold/5 px-4 py-1.5 rounded-lg border border-gold/10 font-mono text-sm hover:border-gold/30 transition-all cursor-pointer">
-                            0xEVO...3f2a
-                        </code>
-                    </div>
-                </div>
-                
+        <div className="space-y-16 animate-in fade-in duration-1000 pt-8">
+            {/* Active Mandate Quick View */}
+            <div className="flex justify-end mb-8">
                 <div className="glass-panel px-8 py-5 rounded-2xl flex items-center gap-6 group hover:border-gold/30 transition-all duration-500 shadow-luxury-soft">
-                    <div className="w-14 h-14 bg-gold/10 rounded-2xl flex items-center justify-center text-gold relative">
+                    <div className="icon-box-lg relative">
                         <div className="absolute inset-0 bg-gold/20 blur-md rounded-2xl animate-pulse" />
                         <TrendingUp size={28} className="relative z-10" />
                     </div>
@@ -57,7 +42,7 @@ export default function Dashboard() {
                 ].map((stat, i) => (
                     <div key={i} className="luxury-card p-10 flex flex-col gap-8 group">
                         <div className="flex justify-between items-start">
-                            <div className="p-4 rounded-2xl bg-secondary border border-gold/10 group-hover:border-gold/30 transition-all duration-500">
+                            <div className="icon-box-lg group-hover:border-gold/30">
                                 <stat.icon size={26} className="text-gold" />
                             </div>
                             <span className="text-[10px] font-bold text-muted uppercase tracking-[0.2em]">{stat.label}</span>

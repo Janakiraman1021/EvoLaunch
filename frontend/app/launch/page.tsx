@@ -151,30 +151,8 @@ export default function LaunchPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
-      {/* Institutional Header */}
-      <div className="border-b border-gold/[0.05] glass-panel sticky top-0 z-30">
-        <div className="max-w-5xl mx-auto px-6 lg:px-12 py-8 flex justify-between items-center">
-          <div>
-            <Link href="/" className="text-muted/60 hover:text-gold transition-all flex items-center gap-3 mb-6 text-xs font-bold uppercase tracking-widest group">
-              <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-              Terminal Home
-            </Link>
-            <h1 className="text-5xl font-bold text-white tracking-tight flex items-baseline gap-4">
-              Initialize <span className="text-gold italic font-serif">Strategic Launch</span>
-            </h1>
-          </div>
-          
-          {isConnected && (
-            <div className="px-6 py-3 rounded-2xl bg-gold/5 border border-gold/10 flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-status-success animate-pulse shadow-gold-glow" />
-              <span className="text-gold font-mono text-[10px] font-bold tracking-widest">{wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}</span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="max-w-5xl mx-auto px-6 lg:px-12 py-16">
+    <div className="min-h-screen bg-transparent pb-20 pt-8">
+      <div className="max-w-5xl mx-auto">
         {/* Connection Mandate */}
         {!isConnected && (
           <div className="luxury-card border-gold/20 p-12 mb-16 flex items-center gap-8 bg-secondary/80 backdrop-blur-xl">

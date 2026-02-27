@@ -13,35 +13,13 @@ export default function LandingPage() {
         <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-gold/5 blur-[100px] rounded-full" />
       </div>
 
-      {/* Navigation */}
-      <nav className="border-b border-gold/[0.05] sticky top-0 z-50 bg-background/80 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-8 py-6 flex items-center justify-between">
-          <div className="text-3xl font-bold text-white tracking-tighter flex items-center gap-3">
-            <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center shadow-gold-glow">
-              <Anchor size={20} className="text-black" />
-            </div>
-            EVO<span className="text-gold italic font-serif">LAUNCH</span>
-          </div>
-          <div className="flex gap-10 items-center">
-            <Link href="/docs" className="text-[10px] font-bold text-muted uppercase tracking-[0.3em] hover:text-gold transition-all">
-              Protocol Reference
-            </Link>
-            <Link href="/system" className="text-[10px] font-bold text-muted uppercase tracking-[0.3em] hover:text-gold transition-all">
-              System Health
-            </Link>
-            <Link href="/launch" className="px-8 py-3 bg-gold text-black rounded-full font-bold uppercase tracking-widest text-[10px] shadow-gold-glow hover:scale-[1.05] transition-transform">
-              Deploy Mandate
-            </Link>
-          </div>
-        </div>
-      </nav>
-
-      <div className="max-w-7xl mx-auto px-8 py-32">
-        {/* Hero Section */}
-        <div className="text-center mb-40 animate-in fade-in slide-in-from-bottom-12 duration-1000">
-          <h1 className="text-8xl md:text-9xl font-bold text-white mb-10 leading-[0.9] tracking-tighter">
+      {/* Hero Section */}
+      <div className="max-w-7xl mx-auto px-8 pt-32 pb-48 relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold/5 blur-[120px] rounded-full pointer-events-none" />
+        <div className="text-center mb-40 animate-in fade-in slide-in-from-bottom-12 duration-1000 relative z-10">
+          <h1 className="text-8xl md:text-9xl font-bold text-white mb-10 leading-[0.9] tracking-tighter shadow-gold-glow">
             Adaptive <span className="text-gold italic font-serif">Tokenomics</span> <br />
-            Orchestrated by Intelligence.
+            <span className="text-white/90">Orchestrated by Intelligence.</span>
           </h1>
           <p className="text-2xl text-muted max-w-3xl mx-auto mb-16 leading-relaxed font-medium">
             Evolutionary cryptographic deployment. Real-time neural agents synchronizing market-responsive tax vectors and liquidity depth.

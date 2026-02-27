@@ -24,8 +24,9 @@ module.exports = {
         },
       },
       fontFamily: {
-        heading: ["Inter", "sans-serif"],
-        body: ["Inter", "sans-serif"],
+        heading: ["var(--font-playfair)", "serif"],
+        body: ["var(--font-outfit)", "sans-serif"],
+        serif: ["var(--font-playfair)", "serif"],
       },
       backgroundImage: {
         "gold-gradient": "linear-gradient(135deg, #E6C07B, #C6A75E)",

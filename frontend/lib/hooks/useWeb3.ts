@@ -24,24 +24,48 @@ export const useWeb3 = () => {
 
     try {
       const provider = new BrowserProvider(window.ethereum);
+      let network = await provider.getNetwork();
+
+      if (network.chainId !== BigInt(97)) {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x61' }], // BSC Testnet
+          });
+          // Refresh provider/network after switch
+          const newProvider = new BrowserProvider(window.ethereum);
+          network = await newProvider.getNetwork();
+        } catch (switchError: any) {
+          if (switchError.code === 4902) {
+            await window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [
+                {
+                  chainId: '0x61',
+                  chainName: 'BSC Testnet',
+                  rpcUrls: ['https://data-seed-prebsc-1-b.binance.org:8545'],
+                  nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+                  blockExplorerUrls: ['https://testnet.bscscan.com'],
+                },
+              ],
+            });
+          } else {
+            throw switchError;
+          }
+        }
+      }
+
       const signer = await provider.getSigner();
       const address = await signer.getAddress();
-      const network = await provider.getNetwork();
-
-      if (network.chainId !== 97) {
-        // BSC Testnet chain ID
-        setError('Please switch to BSC Testnet');
-        setIsConnecting(false);
-        return;
-      }
 
       setWallet({
         address,
-        chainId: network.chainId,
+        chainId: Number(network.chainId),
         provider,
         signer,
       });
     } catch (err: any) {
+      console.error('Connection Error:', err);
       setError(err.message);
     } finally {
       setIsConnecting(false);
