@@ -204,7 +204,7 @@ export default function DocsPage() {
           <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
           Neural Core Home
         </Link>
-        <h1 className="text-5xl font-bold text-white tracking-tight mb-4 flex items-center gap-6">
+        <h1 className="text-5xl font-bold text-primary tracking-tight mb-4 flex items-center gap-6">
           <BookOpen size={48} className="text-gold" />
           Protocol <span className="text-gold italic font-serif">Reference</span>
         </h1>
@@ -223,7 +223,7 @@ export default function DocsPage() {
               >
                 <div className="flex items-center gap-6">
                   <div className="text-gold group-hover:scale-110 transition-transform duration-500">{section.icon}</div>
-                  <h2 className="text-2xl font-bold text-white tracking-tight text-left group-hover:text-gold transition-colors">{section.title}</h2>
+                  <h2 className="text-2xl font-bold text-primary tracking-tight text-left group-hover:text-gold transition-colors">{section.title}</h2>
                 </div>
                 <div className={`text-gold/40 transition-transform duration-500 ${expanded === section.id ? 'rotate-180' : ''}`}>
                   ▼
@@ -239,7 +239,7 @@ export default function DocsPage() {
                       {section.subsections.map((sub, idx) => (
                         <div key={idx} className="luxury-card p-8 bg-black/40 border-gold/10 hover:border-gold/30 transition-all">
                           <h3 className="text-[10px] font-bold text-gold uppercase tracking-[0.3em] mb-4">{sub.title}</h3>
-                          <p className="text-white/80 leading-relaxed text-sm font-medium">{sub.content}</p>
+                          <p className="text-primary leading-relaxed text-sm font-medium">{sub.content}</p>
                         </div>
                       ))}
                     </div>
@@ -253,7 +253,7 @@ export default function DocsPage() {
         {/* Key Takeaways */}
         <div className="mt-20 luxury-card p-12 bg-secondary/20 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-gold/[0.02] -mr-32 -mt-32 rounded-full blur-3xl" />
-          <h3 className="text-3xl font-bold text-white mb-12 tracking-tight">Institutional Mandates</h3>
+          <h3 className="text-3xl font-bold text-primary mb-12 tracking-tight">Institutional Mandates</h3>
           <div className="grid md:grid-cols-2 gap-8 relative z-10">
             {[
               {
@@ -282,7 +282,7 @@ export default function DocsPage() {
               },
             ].map((item, idx) => (
               <div key={idx} className="luxury-card p-8 bg-black/40 border-gold/10 hover:border-gold/30 group transition-all">
-                <h4 className="text-lg font-bold text-white mb-3 group-hover:text-gold transition-colors">{item.title}</h4>
+                <h4 className="text-lg font-bold text-primary mb-3 group-hover:text-gold transition-colors">{item.title}</h4>
                 <p className="text-sm text-muted font-medium leading-relaxed">{item.desc}</p>
               </div>
             ))}

@@ -160,7 +160,7 @@ export default function LaunchPage() {
               <AlertCircle size={40} />
             </div>
             <div className="flex-1">
-              <h3 className="text-2xl font-bold text-white mb-3">Institutional Mandate Required</h3>
+              <h3 className="text-2xl font-bold text-primary mb-3">Institutional Mandate Required</h3>
               <p className="text-muted text-base mb-6 max-w-xl">
                 Cryptographic authentication is required to access the deployment terminal. Please authorize your institutional wallet.
               </p>
@@ -180,7 +180,7 @@ export default function LaunchPage() {
           {/* Section: Core Parameters */}
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-1">
-              <h2 className="text-2xl font-bold text-white mb-4 tracking-tight">Core Identifiers</h2>
+              <h2 className="text-2xl font-bold text-primary mb-4 tracking-tight">Core Identifiers</h2>
               <p className="text-muted/60 text-sm leading-relaxed">
                 Define the primary cryptographic identifiers and issuance parameters for your strategic asset.
               </p>
@@ -194,7 +194,7 @@ export default function LaunchPage() {
                       type="text"
                       value={form.name}
                       onChange={(e) => handleInputChange('name', e.target.value)}
-                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-primary font-medium"
                       placeholder="e.g. EvoLaunch Prime"
                     />
                   </div>
@@ -205,7 +205,7 @@ export default function LaunchPage() {
                       value={form.symbol}
                       onChange={(e) => handleInputChange('symbol', e.target.value)}
                       maxLength={10}
-                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium uppercase font-mono"
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-primary font-medium uppercase font-mono"
                       placeholder="EVO"
                     />
                   </div>
@@ -215,7 +215,7 @@ export default function LaunchPage() {
                       type="number"
                       value={form.totalSupply}
                       onChange={(e) => handleInputChange('totalSupply', e.target.value)}
-                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-primary font-medium"
                     />
                   </div>
                   <div className="space-y-3">
@@ -224,7 +224,7 @@ export default function LaunchPage() {
                       type="number"
                       value={form.initialLiquidity}
                       onChange={(e) => handleInputChange('initialLiquidity', e.target.value)}
-                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-primary font-medium"
                     />
                   </div>
                 </div>
@@ -235,7 +235,7 @@ export default function LaunchPage() {
           {/* Section: Adaptive Tax Engine */}
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-1">
-              <h2 className="text-2xl font-bold text-white mb-4 tracking-tight flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-primary mb-4 tracking-tight flex items-center gap-3">
                 <Zap size={22} className="text-gold" /> Tax Engine
               </h2>
               <p className="text-muted/60 text-sm leading-relaxed">
@@ -251,7 +251,7 @@ export default function LaunchPage() {
                       type="number"
                       value={form.initialSellTax}
                       onChange={(e) => handleInputChange('initialSellTax', parseFloat(e.target.value))}
-                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-primary font-medium"
                     />
                   </div>
                   <div className="space-y-3">
@@ -260,7 +260,7 @@ export default function LaunchPage() {
                       type="number"
                       value={form.initialBuyTax}
                       onChange={(e) => handleInputChange('initialBuyTax', parseFloat(e.target.value))}
-                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-primary font-medium"
                     />
                   </div>
                   <div className="space-y-3">
@@ -269,7 +269,7 @@ export default function LaunchPage() {
                       type="number"
                       value={form.minTax}
                       onChange={(e) => handleInputChange('minTax', parseFloat(e.target.value))}
-                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-primary font-medium"
                     />
                   </div>
                   <div className="space-y-3">
@@ -278,7 +278,7 @@ export default function LaunchPage() {
                       type="number"
                       value={form.maxTax}
                       onChange={(e) => handleInputChange('maxTax', parseFloat(e.target.value))}
-                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-primary font-medium"
                     />
                   </div>
                 </div>
@@ -289,7 +289,7 @@ export default function LaunchPage() {
           {/* Section: Guardrails */}
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-1">
-              <h2 className="text-2xl font-bold text-white mb-4 tracking-tight flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-primary mb-4 tracking-tight flex items-center gap-3">
                 <Lock size={22} className="text-gold" /> Guardrails
               </h2>
               <p className="text-muted/60 text-sm leading-relaxed">
@@ -305,7 +305,7 @@ export default function LaunchPage() {
                       type="number"
                       value={form.initialMaxTx}
                       onChange={(e) => handleInputChange('initialMaxTx', e.target.value)}
-                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-primary font-medium"
                     />
                   </div>
                   <div className="space-y-3">
@@ -314,7 +314,7 @@ export default function LaunchPage() {
                       type="number"
                       value={form.initialMaxWallet}
                       onChange={(e) => handleInputChange('initialMaxWallet', e.target.value)}
-                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-white font-medium"
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-primary font-medium"
                     />
                   </div>
                 </div>

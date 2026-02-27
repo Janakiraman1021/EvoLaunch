@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Zap, Shield, TrendingUp, Gauge, Lock, Anchor } from 'lucide-react';
+import { ArrowRight, Zap, Shield, TrendingUp, Gauge, Lock, Anchor, Activity } from 'lucide-react';
 
 export default function LandingPage() {
   return (
@@ -14,188 +14,114 @@ export default function LandingPage() {
       </div>
 
       {/* Hero Section */}
-      <div className="max-w-7xl mx-auto px-8 pt-32 pb-48 relative">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="max-w-7xl mx-auto px-8 pt-40 pb-32 relative">
         <div className="text-center mb-40 animate-in fade-in slide-in-from-bottom-12 duration-1000 relative z-10">
-          <h1 className="text-8xl md:text-9xl font-bold text-white mb-10 leading-[0.9] tracking-tighter shadow-gold-glow">
+          <div className="inline-block px-5 py-2 bg-gold/10 border border-gold/20 rounded-full text-[10px] font-bold text-gold uppercase tracking-[0.4em] mb-12 shadow-gold-glow">
+            Institutional Grade Protocol
+          </div>
+          <h1 className="text-7xl md:text-9xl font-bold text-primary mb-10 leading-[0.85] tracking-tighter">
             Adaptive <span className="text-gold italic font-serif">Tokenomics</span> <br />
-            <span className="text-white/90">Orchestrated by Intelligence.</span>
+            <span className="opacity-90">Orchestrated by AI.</span>
           </h1>
-          <p className="text-2xl text-muted max-w-3xl mx-auto mb-16 leading-relaxed font-medium">
-            Evolutionary cryptographic deployment. Real-time neural agents synchronizing market-responsive tax vectors and liquidity depth.
+          <p className="text-xl text-muted max-w-2xl mx-auto mb-16 leading-relaxed">
+            Revolutionary cryptographic deployment. Neural agents synchronizing market-responsive tax vectors and institutional liquidity depth.
           </p>
-          <div className="flex gap-8 justify-center flex-wrap">
+          <div className="flex gap-6 justify-center flex-wrap">
             <Link
               href="/launch"
-              className="px-12 py-5 bg-gold text-black rounded-full font-bold uppercase tracking-[0.2em] text-xs shadow-gold-glow hover:scale-[1.05] transition-transform flex items-center gap-3"
+              className="btn-primary flex items-center gap-3 px-12"
             >
-              Initialize Deployment <ArrowRight size={18} />
+              Start Deployment <ArrowRight size={18} />
             </Link>
             <Link
               href="/explore"
-              className="px-12 py-5 border border-gold/20 text-gold rounded-full font-bold uppercase tracking-[0.2em] text-xs hover:bg-gold/5 hover:border-gold/40 transition-all flex items-center gap-3"
+              className="px-12 py-3.5 border border-gold/20 text-gold rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-gold/5 transition-all flex items-center gap-3"
             >
-              Access Explorer <ArrowRight size={18} />
+              Access Explorer
             </Link>
           </div>
         </div>
 
-        {/* Core Methodology */}
-        <div className="grid lg:grid-cols-2 gap-20 mb-40">
-          <div className="space-y-12">
-            <h2 className="text-5xl font-bold text-white tracking-tight">Ecosystem methodology</h2>
-            <div className="space-y-8 text-muted text-lg leading-relaxed font-medium">
-              <p>
-                EvoLaunch is a high-fidelity smart contract protocol facilitating token deployments with integrated adaptive governance.
-              </p>
-              <p>
-                Unlike static architectures, EvoLaunch protocols dynamically synchronize critical vectors:
-              </p>
-              <div className="grid gap-6">
-                {[
-                  { title: 'Taxation Matrix', desc: 'Real-time Buy/Sell tax optimization based on volatility' },
-                  { title: 'Transaction Guardrails', desc: 'Institutional TX limits preventing large-scale displacement' },
-                  { title: 'Temporal Phases', desc: 'Protective → Growth → Expansion → Governance evolution' },
-                ].map((item, i) => (
-                  <div key={i} className="flex gap-6 items-start group">
-                    <div className="w-1.5 h-1.5 bg-gold rounded-full mt-3 shadow-gold-glow group-hover:scale-150 transition-transform" />
-                    <div>
-                      <h4 className="text-white font-bold text-xl mb-1">{item.title}</h4>
-                      <p className="text-muted/60 text-base">{item.desc}</p>
-                    </div>
+        {/* Core Methodology Grid */}
+        <div className="grid lg:grid-cols-3 gap-8 mb-40 relative z-10">
+          {[
+            { 
+              title: 'Neural Monitoring', 
+              icon: Gauge, 
+              desc: 'Agents compute the Stability Score (MSS) by decrypting liquidity depth and concentration.' 
+            },
+            { 
+              title: 'Recalibration', 
+              icon: Zap, 
+              desc: 'Based on active MSS, the controller recalibrates tax rates and transaction limits.' 
+            },
+            { 
+              title: 'Verified Security', 
+              icon: Shield, 
+              desc: 'Every pulse must include a verified ECDSA signature, ensuring institutional-grade safety.' 
+            }
+          ].map((item, i) => (
+            <div key={i} className="luxury-card p-10 group hover:translate-y-[-8px] transition-all duration-500">
+              <div className="shine-sweep" />
+              <div className="icon-box-lg mb-8 group-hover:bg-gold/10 transition-colors">
+                <item.icon size={28} className="text-gold" />
+              </div>
+              <h3 className="text-2xl font-bold text-primary mb-4 tracking-tight group-hover:text-gold transition-colors">{item.title}</h3>
+              <p className="text-muted text-sm leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Intelligence Architecture Section */}
+        <div className="mb-40">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl font-bold text-primary mb-6 tracking-tight">Intelligence Architecture</h2>
+            <div className="w-24 h-1 bg-gold/30 mx-auto rounded-full" />
+          </div>
+          
+          <div className="luxury-card p-1 bg-secondary/20 relative overflow-hidden">
+             <div className="grid md:grid-cols-2 gap-1 px-1">
+                <div className="p-12 space-y-8 flex flex-col justify-center">
+                  <h3 className="text-4xl font-bold text-primary tracking-tight italic">Autonomous <br/>Signal Integrity</h3>
+                  <p className="text-muted text-lg leading-relaxed">
+                    EvoLaunch agents process petabytes of on-chain signals every millisecond, transforming raw data into verified protocol mandates.
+                  </p>
+                  <div className="flex items-center gap-4 text-gold text-[10px] font-bold uppercase tracking-widest">
+                    <span className="w-2 h-2 rounded-full bg-status-success shadow-gold-glow" /> 
+                    Live Node Synchronization Active
                   </div>
-                ))}
-              </div>
-              <p className="pt-6 border-t border-white/5 italic font-serif text-gold/60">
-                All algorithmic adjustments are verified through cryptographically-secured neural signals.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid gap-8">
-            <div className="luxury-card p-12 bg-secondary/10 hover:border-gold/30 transition-all duration-700 group">
-              <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-5 tracking-tight group-hover:text-gold transition-colors">
-                <Gauge size={32} className="text-gold" />
-                01. Neural Monitoring
-              </h3>
-              <p className="text-muted text-base leading-relaxed font-medium">
-                Agents compute the Stability Score (MSS) by decrypting liquidity depth, holder concentration, and buy/sell ratios.
-              </p>
-            </div>
-
-            <div className="luxury-card p-12 bg-secondary/10 hover:border-gold/30 transition-all duration-700 group">
-              <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-5 tracking-tight group-hover:text-gold transition-colors">
-                <Zap size={32} className="text-gold" />
-                02. Dynamic Recalibration
-              </h3>
-              <p className="text-muted text-base leading-relaxed font-medium">
-                Based on active MSS, the controller recalibrates tax rates, transaction limits, and fee distribution vectors.
-              </p>
-            </div>
-
-            <div className="luxury-card p-12 bg-secondary/10 hover:border-gold/30 transition-all duration-700 group">
-              <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-5 tracking-tight group-hover:text-gold transition-colors">
-                <Shield size={32} className="text-gold" />
-                03. Cryptographic Execution
-              </h3>
-              <p className="text-muted text-base leading-relaxed font-medium">
-                Every recalibration pulse must include a verified ECDSA signature, ensuring institutional-grade security.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Phase Evolution Matrix */}
-        <div className="mb-40">
-          <h2 className="text-5xl font-bold text-white mb-16 text-center tracking-tight">Phase Evolution Matrix</h2>
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              {
-                name: 'Protective',
-                num: 0,
-                desc: 'Maximum taxation, restricted transaction capacity. Deployment stabilization.',
-                mss: '0-25',
-              },
-              {
-                name: 'Growth',
-                num: 1,
-                desc: 'Balanced taxation, expanded transaction limits. Targeted volume expansion.',
-                mss: '25-50',
-              },
-              {
-                name: 'Expansion',
-                num: 2,
-                desc: 'Optimized low-taxation. High-velocity ecosystem scaling.',
-                mss: '50-75',
-              },
-              {
-                name: 'Governance',
-                num: 3,
-                desc: 'Consensus-controlled architecture. Minimal protocol restrictions.',
-                mss: '75-100',
-              },
-            ].map((phase) => (
-              <div key={phase.num} className="luxury-card p-10 bg-secondary/10 hover:border-gold/40 transition-all duration-700 group">
-                <div className="inline-block px-5 py-2 bg-gold/10 text-gold font-bold rounded-full text-[9px] uppercase tracking-[0.2em] mb-8 border border-gold/20 shadow-gold-glow group-hover:bg-gold group-hover:text-black transition-all">
-                  Mandate Phase {phase.num}
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-4 tracking-tighter group-hover:text-gold transition-colors">{phase.name}</h3>
-                <p className="text-muted font-medium text-base mb-8 leading-relaxed">{phase.desc}</p>
-                <div className="flex justify-between items-center pt-6 border-t border-white/5">
-                  <span className="text-[10px] text-muted font-bold uppercase tracking-widest opacity-40">MSS Range</span>
-                  <span className="text-xl font-bold text-white/50 font-mono tracking-tighter">{phase.mss}</span>
+                <div className="bg-secondary/40 p-12 rounded-[1.8rem] m-2 border border-white/5 space-y-8">
+                   {[
+                     { label: 'MSS Precision', value: '0.0001', icon: TrendingUp },
+                     { label: 'Network Latency', value: '2ms', icon: Activity },
+                     { label: 'Asset Protection', value: 'Tier 1', icon: Lock },
+                   ].map((node, i) => (
+                     <div key={i} className="flex justify-between items-center group cursor-default">
+                        <div className="flex items-center gap-4">
+                           <div className="w-8 h-8 rounded-lg bg-gold/5 flex items-center justify-center border border-gold/10 group-hover:border-gold/30 transition-all">
+                              <node.icon size={14} className="text-gold" />
+                           </div>
+                           <span className="text-[10px] text-muted font-bold uppercase tracking-widest">{node.label}</span>
+                        </div>
+                        <span className="text-sm font-mono text-primary font-bold">{node.value}</span>
+                     </div>
+                   ))}
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Intelligence Architecture */}
-        <div className="mb-40">
-          <h2 className="text-5xl font-bold text-white mb-16 text-center tracking-tight">Neural Intelligence Architecture</h2>
-          <div className="luxury-card p-16 bg-secondary/10 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gold/[0.01]" />
-            <p className="text-muted text-xl mb-16 leading-relaxed text-center max-w-4xl mx-auto font-medium">
-              Autonomous agents analyzing real-time on-chain data streams and submitting cryptographically-secured recalibration pulses to the primary controller.
-            </p>
-            <div className="grid md:grid-cols-3 gap-12 relative z-10">
-              {[
-                {
-                  name: 'Liquidity Intelligence',
-                  role: 'Decrypting LP depth and rebalancing protocols.',
-                  icon: Anchor
-                },
-                {
-                  name: 'Market Intelligence',
-                  role: 'Analyzing price displacement and volume vectors.',
-                  icon: TrendingUp
-                },
-                {
-                  name: 'Reputation Intelligence',
-                  role: 'Mapping holder dynamics and stability scoring.',
-                  icon: Shield
-                },
-              ].map((agent) => (
-                <div key={agent.name} className="p-10 bg-black/40 border border-white/[0.03] rounded-3xl hover:border-gold/30 transition-all group">
-                  <agent.icon size={32} className="text-gold mb-8 opacity-40 group-hover:opacity-100 transition-opacity" />
-                  <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">{agent.name}</h3>
-                  <p className="text-muted text-base leading-relaxed font-medium">{agent.role}</p>
-                </div>
-              ))}
-            </div>
+             </div>
           </div>
         </div>
 
         {/* Institutional CTA */}
-        <div className="text-center py-20 border-t border-white/5 relative">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-gold/10 blur-[150px] rounded-full -translate-y-1/2 pointer-events-none" />
-          <h2 className="text-6xl font-bold text-white mb-10 tracking-tight">Initialize Your Mandate.</h2>
-          <p className="text-2xl text-muted/60 mb-16 max-w-2xl mx-auto font-medium">
-            Deploy your adaptive neural token today. Advanced protocol recalibration, institutional security, and algorithmic transparency.
+        <div className="text-center py-20 relative">
+          <div className="absolute inset-0 bg-gold/5 blur-[120px] rounded-full pointer-events-none" />
+          <h2 className="text-5xl md:text-6xl font-bold text-primary mb-10 tracking-tight italic">Initialize Your Mandate.</h2>
+          <p className="text-xl text-muted/60 mb-16 max-w-xl mx-auto">
+            Deploy your adaptive neural token today. Advanced protocol recalibration and algorithmic transparency.
           </p>
           <Link
             href="/launch"
-            className="px-16 py-6 bg-gold text-black rounded-full font-bold uppercase tracking-[0.3em] text-xs shadow-gold-glow hover:scale-[1.1] transition-transform inline-flex items-center gap-4"
+            className="btn-primary px-16 py-5 inline-flex items-center gap-4"
           >
             Deploy Alpha Mandate <ArrowRight size={20} />
           </Link>

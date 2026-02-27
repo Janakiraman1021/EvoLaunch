@@ -17,14 +17,14 @@ export default function PhaseTimeline() {
                     <div className={`absolute left-0 p-3 rounded-2xl z-10 transition-all duration-700 glass-panel border-2 ${
                         p.status === 'completed' ? 'text-gold border-gold/40' :
                         p.status === 'current' ? 'text-gold border-gold shadow-gold-glow animate-pulse' :
-                        'text-muted/20 border-white/5 bg-secondary'
+                        'text-muted/40 border-[var(--primary-text)]/10 bg-[var(--secondary)]'
                     }`}>
                         {p.status === 'completed' ? <CheckCircle2 size={24} /> :
                             p.status === 'current' ? <Sparkles size={24} /> :
                                 <Circle size={24} />}
                     </div>
                     <div className="transition-all duration-500 group-hover:translate-x-2">
-                        <div className={`text-2xl font-bold tracking-tight mb-2 ${p.status === 'current' ? 'text-gold' : 'text-white'}`}>
+                        <div className={`text-2xl font-bold tracking-tight mb-2 ${p.status === 'current' ? 'text-gold' : 'text-primary'}`}>
                             {p.title}
                         </div>
                         <div className="text-sm text-muted/60 font-medium">{p.subtitle}</div>

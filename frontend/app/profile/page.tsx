@@ -1,223 +1,158 @@
 'use client';
 
-import { useState } from 'react';
-import { Copy, LogOut, Settings, Bell, Lock, User } from 'lucide-react';
-import Link from 'next/link';
+import React from 'react';
+import { 
+  ShieldCheck, 
+  Wallet, 
+  Cpu, 
+  History, 
+  Award,
+  ExternalLink,
+  ChevronRight,
+  Fingerprint,
+  Activity
+} from 'lucide-react';
 
 export default function ProfilePage() {
-  const [copied, setCopied] = useState(false);
-
-  const mockProfile = {
-    address: '0x7D02fD90716722221277D8CA750B3611Ca51dAB9',
-    username: 'EvoTrader42',
-    reputation: 85,
-    category: 'Premium Holder',
-    joinDate: 'Jan 15, 2024',
-    totalTrades: 342,
-    totalVolume: '125.5 BNB',
-    wins: 287,
-    losses: 55,
-  };
-
-  const handleCopyAddress = () => {
-    navigator.clipboard.writeText(mockProfile.address);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const profileData = {
+    address: '0x742d...44e',
+    rank: 'Institutional Tier 1',
+    reputation: 980,
+    mandates: 12,
+    successRate: '94%',
+    verified: true
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
-      {/* Header */}
-      <div className="bg-slate-800/50 border-b border-emerald-500/20 sticky top-0 z-10 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <h1 className="text-3xl font-bold text-white">
-            My <span className="text-emerald-400">Profile</span>
-          </h1>
-          <p className="text-slate-400 mt-1">Monitor your trading history and account settings</p>
+    <div className="space-y-12 animate-in fade-in duration-1000 pt-8 max-w-6xl mx-auto">
+      {/* Premium Profile Header Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 luxury-card p-10 relative group">
+          <div className="shine-sweep" />
+          <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
+            <div className="relative">
+              <div className="w-40 h-40 rounded-[2.5rem] bg-gold-gradient p-[1px] relative overflow-hidden">
+                <div className="w-full h-full rounded-[2.5rem] bg-background flex items-center justify-center overflow-hidden border border-black/50 relative">
+                   <div className="absolute inset-0 bg-gold/5 animate-pulse" />
+                   <Fingerprint size={80} className="text-gold opacity-40" />
+                </div>
+              </div>
+              <div className="absolute -bottom-2 -right-2 bg-status-success p-2 rounded-xl shadow-gold-glow border-2 border-background">
+                <ShieldCheck size={20} className="text-white" />
+              </div>
+            </div>
+
+            <div className="flex-1 text-center md:text-left space-y-4">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                <h1 className="text-4xl font-bold text-primary tracking-tight">{profileData.rank}</h1>
+                <div className="px-3 py-1 bg-gold/10 border border-gold/20 rounded-full text-[10px] font-bold text-gold uppercase tracking-widest">
+                  Verified Entity
+                </div>
+              </div>
+              <div className="flex items-center justify-center md:justify-start gap-3 bg-[var(--primary-text)]/[0.03] w-fit px-4 py-2 rounded-xl border border-white/5">
+                <Wallet size={14} className="text-gold" />
+                <span className="text-sm font-mono text-muted">{profileData.address}</span>
+                <ExternalLink size={14} className="text-muted/40 cursor-pointer hover:text-gold transition-colors" />
+              </div>
+              <p className="text-muted max-w-md leading-relaxed">
+                Primary institutional mandate participant authorized for high-stability token launches and ecosystem governance.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Reputation Analytics Card */}
+        <div className="luxury-card p-10 flex flex-col justify-between items-center text-center relative group overflow-hidden">
+          <div className="shine-sweep" />
+          <div className="absolute inset-0 bg-gold/5 blur-[80px] rounded-full scale-50 group-hover:scale-100 transition-transform duration-1000" />
+          <div className="relative z-10 space-y-4">
+            <Award size={40} className="text-gold mx-auto mb-2" />
+            <div className="text-[10px] font-bold text-muted uppercase tracking-[0.3em]">Protocol Reputation</div>
+            <div className="text-6xl font-black text-primary tracking-tighter shadow-gold-glow-text">
+              {profileData.reputation}
+            </div>
+            <div className="text-xs font-bold text-status-success tracking-widest uppercase">Expert Tier</div>
+          </div>
+          <button className="w-full mt-6 py-3 rounded-xl bg-secondary border border-gold/20 text-gold text-[10px] font-bold uppercase tracking-widest hover:bg-gold hover:text-background transition-all duration-500">
+            View Credentials
+          </button>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Profile Card */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Account Info */}
-            <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-white">Account Information</h2>
-                <User className="w-8 h-8 text-emerald-400" />
-              </div>
+      {/* Institutional Activity & Tranches */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {[
+          { label: 'Mandates Completed', value: profileData.mandates, icon: ShieldCheck, sub: 'All clusters' },
+          { label: 'Success Velocity', value: profileData.successRate, icon: Activity, sub: 'Above average' },
+          { label: 'Ecosystem Points', value: '42,900', icon: Cpu, sub: 'Convertible' },
+        ].map((stat, i) => (
+          <div key={i} className="luxury-card p-8 flex flex-col gap-6 group">
+             <div className="flex items-center gap-4">
+               <div className="icon-box-lg group-hover:scale-110 transition-transform">
+                 <stat.icon size={24} className="text-gold" />
+               </div>
+               <div>
+                 <div className="text-lg font-bold text-primary tracking-tight">{stat.value}</div>
+                 <div className="text-[10px] text-muted font-bold uppercase tracking-widest">{stat.label}</div>
+               </div>
+             </div>
+             <div className="h-[1px] w-full bg-white/5" />
+             <div className="text-[10px] text-gold font-bold uppercase opacity-60 tracking-widest">{stat.sub}</div>
+          </div>
+        ))}
+      </div>
 
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm text-slate-400 mb-2">Username</label>
-                  <input
-                    type="text"
-                    value={mockProfile.username}
-                    className="w-full bg-slate-700/50 border border-slate-600 rounded px-3 py-2 text-white focus:border-emerald-400 focus:outline-none"
-                    readOnly
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm text-slate-400 mb-2">Wallet Address</label>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={mockProfile.address}
-                      className="flex-1 bg-slate-700/50 border border-slate-600 rounded px-3 py-2 text-white focus:outline-none text-sm"
-                      readOnly
-                    />
-                    <button
-                      onClick={handleCopyAddress}
-                      className="bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/50 rounded px-3 py-2 transition"
-                    >
-                      <Copy className="w-5 h-5 text-emerald-400" />
-                    </button>
-                  </div>
-                  {copied && <p className="text-emerald-400 text-sm mt-1">✓ Copied!</p>}
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm text-slate-400 mb-2">Member Since</label>
-                    <input
-                      type="text"
-                      value={mockProfile.joinDate}
-                      className="w-full bg-slate-700/50 border border-slate-600 rounded px-3 py-2 text-white"
-                      readOnly
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm text-slate-400 mb-2">Category</label>
-                    <div className="bg-emerald-500/10 border border-emerald-400/50 rounded px-3 py-2 text-emerald-300 font-semibold">
-                      {mockProfile.category}
+      {/* Transaction History / Detailed Trail */}
+      <div className="luxury-card overflow-hidden">
+        <div className="p-10 border-b border-white/5 flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-primary flex items-center gap-3 tracking-tight">
+              <History className="text-gold" size={24} /> Audit Trail History
+            </h2>
+            <p className="text-muted text-sm mt-1 uppercase tracking-widest text-[9px] font-bold">Transaction Ledger for 0x742d...44e</p>
+          </div>
+          <button className="text-gold text-[10px] font-bold uppercase tracking-widest hover:underline flex items-center gap-2">
+            Export Ledger <ChevronRight size={14} />
+          </button>
+        </div>
+        <div className="p-0">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="bg-white/[0.02] text-[10px] font-bold text-muted uppercase tracking-[0.2em]">
+                <th className="px-10 py-5">Event Identifier</th>
+                <th className="px-10 py-5">Mandate</th>
+                <th className="px-10 py-5 text-right">Magnitude</th>
+                <th className="px-10 py-5 text-right">Temporal State</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {[
+                { id: 'MND-3921-X', type: 'Liquidity Injection', amt: '+12.5 BNB', time: '2 hours ago' },
+                { id: 'GOV-AF90-A', type: 'Governance Vote', amt: '1,200 POW', time: '5 hours ago' },
+                { id: 'MND-3882-K', type: 'Tranche Unlock', amt: '+50,000 POW', time: '1 day ago' },
+                { id: 'SYS-LOG-01', type: 'Reputation Gain', amt: '+25 REP', time: '3 days ago' },
+                { id: 'SYS-LOG-02', type: 'Tier Upgrade', amt: 'TIER 1', time: '1 week ago' },
+              ].map((row, i) => (
+                <tr key={i} className="hover:bg-gold/[0.02] transition-colors group">
+                  <td className="px-10 py-6">
+                    <div className="flex flex-col">
+                      <span className="text-xs font-mono text-gold font-bold">{row.id}</span>
+                      <span className="text-xs text-primary/40">{row.type}</span>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Trading Stats */}
-            <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg p-6">
-              <h2 className="text-2xl font-bold text-white mb-6">Trading Statistics</h2>
-
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600/50">
-                  <p className="text-slate-400 text-sm mb-2">Total Trades</p>
-                  <p className="text-2xl font-bold text-emerald-400">{mockProfile.totalTrades}</p>
-                </div>
-
-                <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600/50">
-                  <p className="text-slate-400 text-sm mb-2">Win Rate</p>
-                  <p className="text-2xl font-bold text-emerald-400">{Math.round((mockProfile.wins / mockProfile.totalTrades) * 100)}%</p>
-                </div>
-
-                <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600/50">
-                  <p className="text-slate-400 text-sm mb-2">Volume Traded</p>
-                  <p className="text-2xl font-bold text-emerald-400">{mockProfile.totalVolume}</p>
-                </div>
-
-                <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600/50">
-                  <p className="text-slate-400 text-sm mb-2">Reputation</p>
-                  <p className="text-2xl font-bold text-emerald-400">{mockProfile.reputation}/100</p>
-                </div>
-              </div>
-
-              <div className="mt-6 pt-6 border-t border-slate-600/50">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p className="text-slate-400 text-sm">Wins</p>
-                    <p className="text-xl font-bold text-emerald-400">{mockProfile.wins}</p>
-                  </div>
-                  <div className="w-32 bg-slate-700/30 rounded-full h-2">
-                    <div
-                      className="h-full bg-emerald-400 rounded-full"
-                      style={{ width: `${(mockProfile.wins / mockProfile.totalTrades) * 100}%` }}
-                    />
-                  </div>
-                  <div>
-                    <p className="text-slate-400 text-sm">Losses</p>
-                    <p className="text-xl font-bold text-red-400">{mockProfile.losses}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Settings Menu */}
-            <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg p-6">
-              <h2 className="text-lg font-bold text-white mb-4">Settings</h2>
-
-              <div className="space-y-3">
-                <button className="w-full flex items-center gap-3 p-3 rounded bg-slate-700/30 hover:bg-slate-700/50 transition text-slate-300">
-                  <Settings className="w-5 h-5 text-emerald-400" />
-                  <span>Account Settings</span>
-                </button>
-
-                <button className="w-full flex items-center gap-3 p-3 rounded bg-slate-700/30 hover:bg-slate-700/50 transition text-slate-300">
-                  <Bell className="w-5 h-5 text-emerald-400" />
-                  <span>Notifications</span>
-                </button>
-
-                <button className="w-full flex items-center gap-3 p-3 rounded bg-slate-700/30 hover:bg-slate-700/50 transition text-slate-300">
-                  <Lock className="w-5 h-5 text-emerald-400" />
-                  <span>Security</span>
-                </button>
-
-                <button className="w-full flex items-center gap-3 p-3 rounded bg-red-500/10 hover:bg-red-500/20 transition text-red-400">
-                  <LogOut className="w-5 h-5" />
-                  <span>Disconnect</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Reputation Tier */}
-            <div className="bg-gradient-to-br from-emerald-500/10 to-emerald-600/10 border border-emerald-400/50 rounded-lg p-6">
-              <h3 className="text-lg font-bold text-emerald-300 mb-2">Premium Status</h3>
-              <p className="text-sm text-slate-300 mb-4">You have premium member benefits</p>
-
-              <ul className="space-y-2 text-sm text-slate-300">
-                <li className="flex items-center gap-2">
-                  <span className="text-emerald-400">✓</span> Early access to new tokens
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-emerald-400">✓</span> Lower trading fees
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="text-emerald-400">✓</span> Priority support
-                </li>
-              </ul>
-            </div>
-
-            {/* Quick Links */}
-            <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg p-6">
-              <h2 className="text-lg font-bold text-white mb-4">Quick Links</h2>
-
-              <div className="space-y-2">
-                <Link
-                  href="/explore"
-                  className="block p-3 rounded bg-slate-700/30 hover:bg-slate-700/50 text-slate-300 transition"
-                >
-                  Browse Launches
-                </Link>
-                <Link
-                  href="/reputation"
-                  className="block p-3 rounded bg-slate-700/30 hover:bg-slate-700/50 text-slate-300 transition"
-                >
-                  View Reputation
-                </Link>
-                <Link
-                  href="/docs"
-                  className="block p-3 rounded bg-slate-700/30 hover:bg-slate-700/50 text-slate-300 transition"
-                >
-                  Documentation
-                </Link>
-              </div>
-            </div>
-          </div>
+                  </td>
+                  <td className="px-10 py-6">
+                    <span className="px-3 py-1 rounded-lg bg-secondary text-muted text-[10px] font-bold border border-white/5 uppercase tracking-widest group-hover:border-gold/30 transition-all">Alpha Cluster</span>
+                  </td>
+                  <td className="px-10 py-6 text-right">
+                    <span className="text-sm font-bold text-primary tracking-tight">{row.amt}</span>
+                  </td>
+                  <td className="px-10 py-6 text-right">
+                    <span className="text-xs text-muted/60">{row.time}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

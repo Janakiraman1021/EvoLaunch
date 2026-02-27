@@ -47,7 +47,7 @@ export default function ReputationDashboard() {
           <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
           Neural Core Home
         </Link>
-        <h1 className="text-5xl font-bold text-white tracking-tight mb-4 flex items-baseline gap-4">
+        <h1 className="text-5xl font-bold text-primary tracking-tight mb-4 flex items-baseline gap-4">
           Neural <span className="text-gold italic font-serif">Reputation</span> Matrix
         </h1>
         <p className="text-muted text-lg max-w-2xl leading-relaxed">
@@ -62,7 +62,7 @@ export default function ReputationDashboard() {
               <AlertCircle size={24} />
             </div>
             <div className="flex-1">
-              <h3 className="text-xl font-bold text-white mb-2 tracking-tight">Identity Synchronization Required</h3>
+              <h3 className="text-xl font-bold text-primary mb-2 tracking-tight">Identity Synchronization Required</h3>
               <p className="text-muted text-base leading-relaxed">
                 Synchronize your institutional wallet to decrypt your reputation score and active allocation multipliers.
               </p>
@@ -81,7 +81,7 @@ export default function ReputationDashboard() {
               
               <div className="relative z-10 mb-10">
                 <p className="text-[10px] font-bold text-gold uppercase tracking-[0.4em] mb-6 opacity-60">Consensus Reputation Score</p>
-                <div className="text-9xl font-bold text-white tracking-tighter mb-4 shadow-gold-glow-large animate-gold-pulse">
+                <div className="text-9xl font-bold text-primary tracking-tighter mb-4 shadow-gold-glow-large animate-gold-pulse">
                   {reputation.score}
                 </div>
               </div>
@@ -106,19 +106,19 @@ export default function ReputationDashboard() {
             {/* Key Metrics Matrix */}
             <div className="grid md:grid-cols-2 gap-8">
               <div className="luxury-card p-10 bg-secondary/10 hover:border-gold/30 transition-all duration-500">
-                <h3 className="text-xl font-bold text-white mb-8 flex items-center gap-4 tracking-tight">
+                <h3 className="text-xl font-bold text-primary mb-8 flex items-center gap-4 tracking-tight">
                   <TrendingUp size={24} className="text-gold" />
                   Behavioral Analytics
                 </h3>
                 <div className="space-y-8">
                   <div className="p-6 bg-black/40 rounded-2xl border border-white/[0.03]">
                     <p className="text-[9px] text-muted uppercase font-bold tracking-[0.3em] mb-2 opacity-60">Classification</p>
-                    <p className="text-xl font-bold text-white tracking-tight">{reputation.holdingBehavior}</p>
+                    <p className="text-xl font-bold text-primary tracking-tight">{reputation.holdingBehavior}</p>
                   </div>
                   <div className="grid grid-cols-2 gap-6">
                     <div className="p-6 bg-black/40 rounded-2xl border border-white/[0.03]">
                       <p className="text-[9px] text-muted uppercase font-bold tracking-[0.3em] mb-2 opacity-60">Liquidation Freq</p>
-                      <p className="text-xl font-bold text-white tracking-tight">{reputation.dumpFrequency} <span className="text-[10px] text-muted font-normal lowercase tracking-normal">per epoch</span></p>
+                      <p className="text-xl font-bold text-primary tracking-tight">{reputation.dumpFrequency} <span className="text-[10px] text-muted font-normal lowercase tracking-normal">per epoch</span></p>
                     </div>
                   </div>
                   <div className="pt-8 border-t border-white/[0.03]">
@@ -136,20 +136,20 @@ export default function ReputationDashboard() {
               </div>
 
               <div className="luxury-card p-10 bg-secondary/10 hover:border-gold/30 transition-all duration-500">
-                <h3 className="text-xl font-bold text-white mb-8 flex items-center gap-4 tracking-tight">
+                <h3 className="text-xl font-bold text-primary mb-8 flex items-center gap-4 tracking-tight">
                   <Shield size={24} className="text-gold" />
                   Mandate Multiplier
                 </h3>
                 <div className="text-center py-10 mb-8 bg-black/40 rounded-3xl border border-white/[0.03] relative overflow-hidden group">
                   <div className="absolute inset-0 bg-gold/[0.03] opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="text-7xl font-bold text-white tracking-tighter mb-2">{reputation.allocationMultiplier}<span className="text-2xl text-gold/40">x</span></div>
+                  <div className="text-7xl font-bold text-primary tracking-tighter mb-2">{reputation.allocationMultiplier}<span className="text-2xl text-gold/40">x</span></div>
                   <p className="text-gold/60 font-bold uppercase tracking-[0.3em] text-[10px]">Active Allocation Pulse</p>
                 </div>
 
                 <div className="space-y-4">
                   <div className="flex justify-between p-5 bg-white/[0.02] rounded-xl border border-white/[0.03]">
                     <span className="text-[10px] text-muted uppercase font-bold tracking-widest">Base Multiplier</span>
-                    <span className="text-sm font-bold text-white">1.00x</span>
+                    <span className="text-sm font-bold text-primary">1.00x</span>
                   </div>
                   <div className="flex justify-between p-5 bg-status-success/5 rounded-xl border border-status-success/20">
                     <span className="text-[10px] text-status-success uppercase font-bold tracking-widest">Reputation Bonus</span>
@@ -161,7 +161,7 @@ export default function ReputationDashboard() {
 
             {/* Matrix Breakdown */}
             <div className="luxury-card p-12 bg-secondary/20">
-              <h3 className="text-2xl font-bold text-white mb-10 tracking-tight">Computational Breakdown</h3>
+              <h3 className="text-2xl font-bold text-primary mb-10 tracking-tight">Computational Breakdown</h3>
 
               <div className="space-y-10">
                 {[
@@ -172,10 +172,10 @@ export default function ReputationDashboard() {
                   <div key={idx} className="group">
                     <div className="flex justify-between items-end mb-4">
                       <div>
-                        <p className="text-lg font-bold text-white group-hover:text-gold transition-colors">{metric.label}</p>
+                        <p className="text-lg font-bold text-primary group-hover:text-gold transition-colors">{metric.label}</p>
                         <p className="text-xs text-muted font-medium opacity-60 tracking-wide">{metric.desc}</p>
                       </div>
-                      <p className="text-xl font-bold text-white font-mono">
+                      <p className="text-xl font-bold text-primary font-mono">
                         {metric.value}<span className="text-muted/40 text-sm">/{metric.max}</span>
                       </p>
                     </div>
@@ -193,7 +193,7 @@ export default function ReputationDashboard() {
             {/* Status Classification */}
             <div className="luxury-card p-12 bg-gold/5 border-gold/20 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-96 h-96 bg-gold/[0.05] -mr-48 -mt-48 rounded-full blur-3xl" />
-              <h3 className="text-2xl font-bold text-white mb-6 relative z-10 flex items-center gap-4">
+              <h3 className="text-2xl font-bold text-primary mb-6 relative z-10 flex items-center gap-4">
                 Institutional Tier: <span className="text-gold italic font-serif tracking-tight">Premium Accumulator</span>
               </h3>
               <p className="text-muted text-lg mb-10 relative z-10 leading-relaxed max-w-3xl">
@@ -211,7 +211,7 @@ export default function ReputationDashboard() {
                       'Priority Neural Support access',
                       'Direct founder-level intelligence calls'
                     ].map((benefit, i) => (
-                      <li key={i} className="flex items-center gap-4 text-sm text-white/80 font-medium">
+                      <li key={i} className="flex items-center gap-4 text-sm text-primary/80 font-medium">
                         <CheckCircle size={16} className="text-status-success flex-shrink-0" />
                         {benefit}
                       </li>
