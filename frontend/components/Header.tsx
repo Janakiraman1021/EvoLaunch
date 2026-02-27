@@ -32,8 +32,9 @@ export default function Header() {
   };
 
   return (
-    <header className="flex items-center justify-between mb-12 sticky top-0 z-30 py-6 px-1 border-b border-gold/10 bg-[#0C0C0F]/80 backdrop-blur-2xl">
-      <div className="flex flex-col">
+    <header className="flex items-center justify-between mb-12 sticky top-0 z-30 py-6 px-1 border-b border-gold/10 bg-[#0C0C0F]/80 backdrop-blur-2xl overflow-hidden">
+      <div className="noise-overlay" />
+      <div className="flex flex-col relative z-10">
         <h2 className="text-3xl font-bold text-white tracking-tighter fade-in group cursor-default">
           {getPageTitle()}
           <span className="block h-0.5 w-0 group-hover:w-full bg-gold transition-all duration-700" />

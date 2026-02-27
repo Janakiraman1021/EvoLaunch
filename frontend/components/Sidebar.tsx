@@ -29,7 +29,8 @@ export default function Sidebar() {
   ];
 
   return (
-    <nav className="fixed left-0 top-0 h-screen w-20 flex flex-col items-center py-6 glass-panel z-50 border-r border-gold/10">
+    <nav className="fixed left-0 top-0 h-screen w-20 flex flex-col items-center py-6 glass-panel z-50 border-r border-gold/10 overflow-hidden">
+      <div className="noise-overlay" />
       {/* Premium Logo Section */}
       <Link href="/" className="mb-6 relative group">
         <div className="absolute inset-0 bg-gold/20 blur-xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-700 opacity-50" />

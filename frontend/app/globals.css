@@ -17,9 +17,19 @@
 body {
   color: #F5F5F4;
   background: var(--background);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-outfit), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-playfair), serif;
+  letter-spacing: -0.02em;
+}
+
+.neural-grid {
+  background-image: radial-gradient(circle at 1px 1px, rgba(230,192,123,0.05) 1px, transparent 0);
+  background-size: 40px 40px;
 }
 
 @layer components {
@@ -46,6 +56,15 @@ body {
 
   .icon-box-lg {
     @apply w-14 h-14 flex items-center justify-center rounded-2xl bg-white/[0.03] border border-white/[0.05] text-gold hover:border-gold/30 hover:bg-gold/5 transition-all duration-500 shadow-luxury-soft;
+  }
+
+  .noise-overlay {
+    background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+    @apply absolute inset-0 pointer-events-none opacity-[0.03];
+  }
+
+  .glass-panel {
+    @apply bg-[#0C0C0F]/60 backdrop-blur-2xl border border-white/[0.05] shadow-luxury-soft;
   }
 
   .btn-primary {
