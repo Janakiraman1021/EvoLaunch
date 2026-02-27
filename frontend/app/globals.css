@@ -8,80 +8,70 @@
   --card: #1C1C21;
   --gold: #E6C07B;
   --gold-hover: #C6A75E;
-  --primary-text: #F5F5F4;
-  --secondary-text: #A1A1AA;
+  --status-success: #15803D;
+  --status-warning: #F59E0B;
+  --status-danger: #DC2626;
+  --muted: #A1A1AA;
 }
 
 body {
-  color: var(--primary-text);
+  color: #F5F5F4;
   background: var(--background);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-attachment: fixed;
 }
 
-/* Luxury Components */
-.luxury-card {
-  @apply bg-card border border-gold/[0.08] rounded-2xl transition-all duration-500 overflow-hidden;
-  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.7);
-}
+@layer components {
+  .luxury-card {
+    @apply bg-card/60 backdrop-blur-xl border border-white/[0.05] rounded-[2rem] shadow-2xl relative overflow-hidden transition-all duration-500;
+  }
 
-.luxury-card:hover {
-  @apply border-gold/20 backdrop-blur-md;
-  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.9), 0 0 30px rgba(230, 192, 123, 0.05);
-  transform: translateY(-2px);
-}
+  /* Glowing Edge Effect from Image */
+  .luxury-card::before {
+    content: '';
+    @apply absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent opacity-50;
+  }
 
-.btn-primary {
-  @apply bg-gold text-[#0C0C0F] font-bold rounded-xl px-8 py-3.5 transition-all duration-500 tracking-wide uppercase text-xs;
-  box-shadow: 0 4px 15px rgba(230, 192, 123, 0.25);
-}
+  .luxury-card:hover {
+    @apply border-gold/20;
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.9), 0 0 30px rgba(230, 192, 123, 0.05);
+    transform: translateY(-2px);
+  }
 
-.btn-primary:hover {
-  @apply bg-gold-hover;
-  box-shadow: 0 0 30px rgba(230, 192, 123, 0.45);
-  transform: translateY(-2px);
-}
+  /* Icon Box style from Image */
+  .icon-box {
+    @apply w-10 h-10 flex items-center justify-center rounded-xl bg-white/[0.03] border border-white/[0.05] text-muted hover:text-gold hover:border-gold/30 hover:bg-gold/5 transition-all duration-500;
+  }
 
-.btn-secondary {
-  @apply bg-transparent border border-gold/40 text-gold font-bold rounded-xl px-8 py-3.5 transition-all duration-500 tracking-wide uppercase text-xs hover:bg-gold/10 hover:border-gold;
-}
+  .icon-box-lg {
+    @apply w-14 h-14 flex items-center justify-center rounded-2xl bg-white/[0.03] border border-white/[0.05] text-gold hover:border-gold/30 hover:bg-gold/5 transition-all duration-500 shadow-luxury-soft;
+  }
 
-/* Glassmorphism utility */
-.glass-panel {
-  @apply bg-[#141417]/70 backdrop-blur-2xl border border-gold/[0.08];
-}
+  .btn-primary {
+    @apply px-8 py-3.5 bg-gold text-[#0C0C0F] rounded-xl font-bold uppercase tracking-widest text-[10px] shadow-gold-glow hover:scale-[1.05] active:scale-[0.98] transition-all duration-500;
+  }
 
-/* Interactive elements */
-.gold-glow-text {
-  text-shadow: 0 0 15px rgba(230, 192, 123, 0.4);
-}
+  /* PERSISTENT CONTRACT BAR */
+  .contract-bar {
+    @apply flex items-center gap-4 px-6 py-2 bg-white/[0.03] backdrop-blur-xl border border-white/[0.05] rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-muted hover:border-gold/30 transition-all cursor-default;
+  }
 
-.gold-glow-border {
-  box-shadow: 0 0 20px rgba(230, 192, 123, 0.1);
-}
+  .contract-bar .address {
+    @apply text-gold font-mono tracking-normal lowercase text-xs;
+  }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
-::-webkit-scrollbar-thumb {
-  background: #2A2A30;
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--gold);
-}
+  /* Connect Wallet Button */
+  .connect-btn {
+    @apply flex items-center gap-3 px-6 py-2.5 bg-white/[0.03] border border-white/[0.05] rounded-xl text-[10px] font-bold uppercase tracking-widest text-white hover:border-gold/50 hover:text-gold transition-all duration-300;
+  }
 
-/* Animation utilities */
-@keyframes gold-pulse {
-  0%, 100% { opacity: 0.05; transform: scale(1); }
-  50% { opacity: 0.15; transform: scale(1.1); }
+  .skeleton {
+    @apply bg-white/5 relative overflow-hidden rounded-lg;
+    background: linear-gradient(90deg, #1C1C21 25%, #2A2A30 50%, #1C1C21 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+  }
 }
 
 @keyframes skeleton-loading {
@@ -89,15 +79,13 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-.animate-gold-pulse {
-  animation: gold-pulse 8s infinite ease-in-out;
+@keyframes gold-pulse {
+  0%, 100% { opacity: 0.1; transform: scale(1); }
+  50% { opacity: 0.25; transform: scale(1.05); }
 }
 
-.skeleton {
-  background: linear-gradient(90deg, #1C1C21 25%, #2A2A30 50%, #1C1C21 75%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
-  border-radius: 0.5rem;
+.animate-gold-pulse {
+  animation: gold-pulse 6s infinite ease-in-out;
 }
 
 .fade-in {
@@ -107,5 +95,34 @@ body {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+.shadow-gold-glow {
+  box-shadow: 0 10px 30px -10px rgba(230, 192, 123, 0.3);
+}
+
+.shadow-gold-glow-large {
+  box-shadow: 0 0 50px -10px rgba(230, 192, 123, 0.2);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1C1C21;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
 }
 

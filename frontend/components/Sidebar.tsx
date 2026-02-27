@@ -49,10 +49,10 @@ export default function Sidebar() {
               className="relative flex flex-col items-center group transition-all duration-300"
             >
               <div 
-                className={`relative p-3 rounded-xl transition-all duration-500 ${
+                className={`icon-box ${
                   isActive 
-                  ? 'bg-gold/10 text-gold shadow-[inset_0_0_20px_rgba(230,192,123,0.1)] border border-gold/30' 
-                  : 'text-muted/60 hover:text-gold hover:bg-gold/5 border border-transparent'
+                  ? 'text-gold bg-gold/5 border-gold/30 shadow-[0_0_20px_rgba(230,192,123,0.1)]' 
+                  : ''
                 }`}
               >
                 {isActive && (
