@@ -45,7 +45,7 @@ export default function ReputationDashboard() {
           <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Neural Core Home
         </Link>
         <h1 className="text-5xl font-bold text-primary tracking-tight mb-4 flex items-baseline gap-4">Neural <span className="text-gold">Reputation</span> Matrix</h1>
-        <p className="text-muted text-lg max-w-2xl leading-relaxed">Your wallet reputation governs allocation mandates, participant multipliers, and protocol governance weight.</p>
+        <p className="text-muted text-lg max-w-2xl leading-relaxed">Your cryptographic reputation governs allocation mandates, participant multipliers, and protocol governance weight.</p>
       </div>
 
       <div className="py-12">
@@ -71,7 +71,7 @@ export default function ReputationDashboard() {
                 <div className="px-8 py-3 bg-gold text-background rounded-full font-bold uppercase tracking-widest text-xs border border-gold shadow-gold-glow">{reputation.category}</div>
                 {reputation.launchEligibility && (<div className="px-8 py-3 bg-status-success/10 rounded-full border border-status-success/30 font-bold text-status-success uppercase tracking-widest text-xs flex items-center gap-2"><Shield size={14} /> Protocol Eligible</div>)}
               </div>
-              <p className="text-muted text-lg relative z-10 max-w-xl mx-auto leading-relaxed">Your reputation multiplier grants you an institutional bonus of <span className="text-gold font-bold">{(reputation.allocationMultiplier * 100 - 100).toFixed(0)}%</span> on all primary token mandates.</p>
+              <p className="text-muted text-lg relative z-10 max-w-xl mx-auto leading-relaxed">Your reputation multiplier grants you an institutional bonus of <span className="text-gold font-bold">{(reputation.allocationMultiplier * 100 - 100).toFixed(0)}%</span> on all primary agent mandates.</p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">

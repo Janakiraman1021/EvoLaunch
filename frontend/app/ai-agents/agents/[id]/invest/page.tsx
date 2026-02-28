@@ -1,13 +1,20 @@
 "use client";
 import { useState } from 'react';
 // TODO: Adjust the import path if needed, or define mockAgents here if the file does not exist.
-import { mockAgents } from '../../../../../components/agents/mockData';
-// If the above path is still incorrect, you can temporarily define mockAgents below for development:
-// const mockAgents = [{ id: '1', nav: 100000, tokenSupply: 10000 }];
+import { mockAgents, Agent } from '../../../../../components/agents/mockData';
 
 export default function AgentInvest({ params }: { params: { id: string } }) {
-  // Mock NAV and ownership calculation
-  const agent = mockAgents.find(a => a.id === params.id) || { nav: 100000, tokenSupply: 10000 };
+  const fallbackAgent: Agent = {
+    id: params.id,
+    name: 'Unknown Agent',
+    strategy: 'N/A',
+    status: 'Initalizing',
+    aum: '$0',
+    returns: '0%',
+    nav: 100000,
+    tokenSupply: 10000
+  };
+  const agent = mockAgents.find(a => a.id === params.id) || fallbackAgent;
   const [amount, setAmount] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [success, setSuccess] = useState(false);

@@ -27,7 +27,7 @@ export default function ModeSelector({ onSelect, isOpen }: ModeSelectorProps) {
 
   return (
     <div className={`fixed inset-0 z-[100] flex items-center justify-center transition-all duration-700 ${isOpen ? 'opacity-100 backdrop-blur-xl bg-background/80' : 'opacity-0 backdrop-blur-none bg-transparent pointer-events-none'}`}>
-      
+
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 animate-pulse" />
@@ -37,7 +37,7 @@ export default function ModeSelector({ onSelect, isOpen }: ModeSelectorProps) {
       </div>
 
       <div className={`relative z-10 max-w-5xl w-full px-6 transition-all duration-700 transform ${isOpen ? 'translate-y-0 scale-100' : 'translate-y-12 scale-95 opacity-0'}`}>
-        
+
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 mb-6 backdrop-blur-md">
             <Shield size={14} className="text-gold" />
@@ -52,7 +52,7 @@ export default function ModeSelector({ onSelect, isOpen }: ModeSelectorProps) {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6 relative">
-          
+
           {/* VS Divider */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-4 hidden md:flex">
             <div className="w-[1px] h-24 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
@@ -70,23 +70,21 @@ export default function ModeSelector({ onSelect, isOpen }: ModeSelectorProps) {
             }}
             onMouseEnter={() => setHoveredMode('human')}
             onMouseLeave={() => setHoveredMode(null)}
-            className={`group relative overflow-hidden rounded-3xl p-8 text-left transition-all duration-500 luxury-card ${
-              hoveredMode === 'ai' ? 'opacity-40 scale-[0.98]' : 'hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(52,211,153,0.15)]'
-            }`}
+            className={`group relative overflow-hidden rounded-3xl p-8 text-left transition-all duration-500 luxury-card ${hoveredMode === 'ai' ? 'opacity-40 scale-[0.98]' : 'hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(52,211,153,0.15)]'
+              }`}
             style={{
               borderColor: hoveredMode === 'human' ? 'rgba(52, 211, 153, 0.3)' : 'rgba(255, 255, 255, 0.05)',
             }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            
+
             <div className="relative z-10">
               <div className="flex justify-between items-start mb-12">
                 <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-background transition-all duration-500 shadow-[0_0_20px_rgba(52,211,153,0.2)]">
                   <User size={32} />
                 </div>
-                <div className={`px-3 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-widest transition-colors duration-500 ${
-                  hoveredMode === 'human' ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10' : 'border-white/10 text-white/30 bg-white/5'
-                }`}>
+                <div className={`px-3 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-widest transition-colors duration-500 ${hoveredMode === 'human' ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10' : 'border-white/10 text-white/30 bg-white/5'
+                  }`}>
                   Current Meta
                 </div>
               </div>
@@ -109,7 +107,7 @@ export default function ModeSelector({ onSelect, isOpen }: ModeSelectorProps) {
                 Initialize Human Mode <ArrowRight size={16} className="animate-pulse" />
               </div>
             </div>
-            
+
             {/* Scanline Effect */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-0 group-hover:opacity-50 group-hover:-translate-y-full transition-all duration-1000 ease-in-out" style={{ boxShadow: '0 0 20px rgba(52,211,153,0.5)' }} />
           </button>
@@ -118,27 +116,25 @@ export default function ModeSelector({ onSelect, isOpen }: ModeSelectorProps) {
           <button
             onClick={() => {
               onSelect('ai');
-              router.push('/ai/dashboard');
+              router.push('/ai-agents');
             }}
             onMouseEnter={() => setHoveredMode('ai')}
             onMouseLeave={() => setHoveredMode(null)}
-            className={`group relative overflow-hidden rounded-3xl p-8 text-left transition-all duration-500 luxury-card ${
-              hoveredMode === 'human' ? 'opacity-40 scale-[0.98]' : 'hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(201,168,76,0.15)]'
-            }`}
+            className={`group relative overflow-hidden rounded-3xl p-8 text-left transition-all duration-500 luxury-card ${hoveredMode === 'human' ? 'opacity-40 scale-[0.98]' : 'hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(201,168,76,0.15)]'
+              }`}
             style={{
               borderColor: hoveredMode === 'ai' ? 'rgba(201, 168, 76, 0.3)' : 'rgba(255, 255, 255, 0.05)',
             }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            
+
             <div className="relative z-10">
               <div className="flex justify-between items-start mb-12">
                 <div className="w-16 h-16 rounded-2xl bg-gold/10 border border-gold/20 flex items-center justify-center text-gold group-hover:scale-110 group-hover:bg-gold group-hover:text-background transition-all duration-500 shadow-[0_0_20px_rgba(201,168,76,0.2)]">
                   <Cpu size={32} />
                 </div>
-                <div className={`px-3 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-widest transition-colors duration-500 ${
-                  hoveredMode === 'ai' ? 'border-gold/30 text-gold bg-gold/10' : 'border-white/10 border-dashed text-white/30 bg-transparent'
-                }`}>
+                <div className={`px-3 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-widest transition-colors duration-500 ${hoveredMode === 'ai' ? 'border-gold/30 text-gold bg-gold/10' : 'border-white/10 border-dashed text-white/30 bg-transparent'
+                  }`}>
                   <span className="mr-1 inline-block w-1.5 h-1.5 rounded-full bg-gold animate-pulse" /> Experimental
                 </div>
               </div>
@@ -163,7 +159,7 @@ export default function ModeSelector({ onSelect, isOpen }: ModeSelectorProps) {
             </div>
 
             {/* Shine Sweep Effect */}
-            <div className="absolute inset-0 transform -translate-x-[150%] skew-x-[-20deg] bg-gradient-to-r from-transparent via-gold/20 to-transparent w-1/2 group-hover:translate-x-[250%] transition-transform duration-[1.5s] ease-out z-20 pointer-events-none" />
+            <div className="absolute inset-0 transform -translate-x-[150%] skew-x-[-20deg] bg-gradient-to-r from-transparent via-gold/20 to-transparent w-1/2 group-hover:translate-x-[250%] transition-transform duration-1500 ease-out z-20 pointer-events-none" />
           </button>
         </div>
       </div>

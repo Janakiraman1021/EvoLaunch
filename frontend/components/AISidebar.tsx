@@ -44,16 +44,13 @@ export default function AISidebar({ onSwitchMode }: AISidebarProps) {
   };
 
   const links = [
-    { href: '/ai/dashboard', icon: LayoutDashboard, label: 'AI Dashboard' },
-    { href: '/ai/launch', icon: Bot, label: 'Launch Agent' },
-    { href: '/ai/explore', icon: Compass, label: 'Agent Explorer' },
-    // Only show Agent Terminal if there's an active address (for AI, might use a different logic, for now static route sample)
-    { href: '/ai/analytics', icon: BarChart3, label: 'AI Analytics' },
-    { href: '/ai/governance', icon: ShieldAlert, label: 'AI Governance' },
-    { href: '/ai/strategies', icon: TrendingUp, label: 'Strategies' },
-    { href: '/ai/treasury', icon: Cpu, label: 'Treasury' },
-    { href: '/ai/docs', icon: FileText, label: 'AI Docs' },
-    { href: '/ai/system', icon: Activity, label: 'System Status' },
+    { href: '/ai-agents', icon: LayoutDashboard, label: 'Neural Core' },
+    { href: '/ai-agents/launch', icon: Bot, label: 'Agent Genesis' },
+    { href: '/ai-agents/explore', icon: Compass, label: 'Agent Registry' },
+    { href: '/ai-agents/reputation', icon: Activity, label: 'Neural Reputation' },
+    { href: '/ai-agents/agents', icon: Bot, label: 'Agent Command' },
+    { href: '/ai-agents/docs', icon: FileText, label: 'Protocol Reference' },
+    { href: '/ai-agents/system', icon: Activity, label: 'System Status' },
   ];
 
   const getScaleClass = (index: number) => {
@@ -87,12 +84,12 @@ export default function AISidebar({ onSwitchMode }: AISidebarProps) {
               key={link.href}
               href={link.href}
               onMouseEnter={() => setHoveredIndex(index)}
-              className={`relative flex flex-col items-center group transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${getScaleClass(index)}`}
+              className={`relative flex flex-col items-center group transition-all duration-500 ease-elegant ${getScaleClass(index)}`}
             >
               <div
                 className={`sidebar-icon ${isActive
-                    ? 'text-gold bg-gold/5 border-gold/30 shadow-[0_0_20px_rgba(230,192,123,0.1)]'
-                    : 'hover:text-gold hover:border-gold/20'
+                  ? 'text-gold bg-gold/5 border-gold/30 shadow-[0_0_20px_rgba(230,192,123,0.1)]'
+                  : 'hover:text-gold hover:border-gold/20'
                   }`}
               >
                 {isActive && (
@@ -113,7 +110,7 @@ export default function AISidebar({ onSwitchMode }: AISidebarProps) {
 
       {/* Bottom Utility Actions */}
       <div className="flex flex-col items-center gap-4 w-full pt-6 border-t border-gold/[0.05]">
-        
+
         {/* Switch Mode Button */}
         {onSwitchMode && (
           <button

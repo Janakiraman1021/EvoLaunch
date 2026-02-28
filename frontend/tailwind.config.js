@@ -56,23 +56,29 @@ module.exports = {
           'to': { transform: 'rotate(360deg)' }
         },
         'elegant-pulse': {
-          '0%, 100%': { 
-            opacity: '0.6', 
+          '0%, 100%': {
+            opacity: '0.6',
             transform: 'scale(1)'
           },
-          '50%': { 
-            opacity: '1', 
+          '50%': {
+            opacity: '1',
             transform: 'scale(1.02)'
           }
         },
         'luxury-glow': {
-          '0%, 100%': { 
-            boxShadow: '0 0 15px rgba(230, 192, 123, 0.2)' 
+          '0%, 100%': {
+            boxShadow: '0 0 15px rgba(230, 192, 123, 0.2)'
           },
-          '50%': { 
-            boxShadow: '0 0 25px rgba(230, 192, 123, 0.4), 0 0 35px rgba(230, 192, 123, 0.2)' 
+          '50%': {
+            boxShadow: '0 0 25px rgba(230, 192, 123, 0.4), 0 0 35px rgba(230, 192, 123, 0.2)'
           }
         }
+      },
+      transitionDuration: {
+        '1500': '1500ms',
+      },
+      transitionTimingFunction: {
+        'elegant': 'cubic-bezier(0.23, 1, 0.32, 1)',
       },
     },
   },

@@ -1,3 +1,4 @@
+'use client';
 
 import PerformanceChart from '../../../../../components/agents/PerformanceChart';
 import { mockPerformanceData } from '../../../../../components/agents/mockData';

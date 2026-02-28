@@ -104,12 +104,12 @@ export default function Sidebar({ onSwitchMode }: SidebarProps) {
               key={link.href}
               href={link.href}
               onMouseEnter={() => setHoveredIndex(index)}
-              className={`relative flex flex-col items-center group transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${getScaleClass(index)}`}
+              className={`relative flex flex-col items-center group transition-all duration-500 ease-elegant ${getScaleClass(index)}`}
             >
               <div
                 className={`sidebar-icon ${isActive
-                    ? 'text-gold bg-gold/5 border-gold/30 shadow-[0_0_20px_rgba(230,192,123,0.1)]'
-                    : 'hover:text-gold hover:border-gold/20'
+                  ? 'text-gold bg-gold/5 border-gold/30 shadow-[0_0_20px_rgba(230,192,123,0.1)]'
+                  : 'hover:text-gold hover:border-gold/20'
                   }`}
               >
                 {isActive && (

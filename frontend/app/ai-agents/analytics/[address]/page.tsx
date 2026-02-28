@@ -44,7 +44,7 @@ export default function AnalyticsPage({ params }: { params: { address: string } 
           <p className="text-muted text-base mb-10 font-medium">Real-time liquidity distribution across the primary AMM mandate.</p>
           <div className="bg-black/40 rounded-2xl p-8 border border-white/[0.03] overflow-hidden">
             <table className="w-full text-sm border-collapse">
-              <thead><tr className="border-b border-white/5"><th className="text-left py-6 px-4 text-gold/40 text-[10px] font-bold uppercase tracking-[0.3em]">Temporal Price (BNB)</th><th className="text-left py-6 px-4 text-gold/40 text-[10px] font-bold uppercase tracking-[0.3em]">Depth Capacity (Tokens)</th><th className="text-left py-6 px-4 text-gold/40 text-[10px] font-bold uppercase tracking-[0.3em]">Volume Weight</th></tr></thead>
+              <thead><tr className="border-b border-white/5"><th className="text-left py-6 px-4 text-gold/40 text-[10px] font-bold uppercase tracking-[0.3em]">Temporal Price (BNB)</th><th className="text-left py-6 px-4 text-gold/40 text-[10px] font-bold uppercase tracking-[0.3em]">Depth Capacity (Mandates)</th><th className="text-left py-6 px-4 text-gold/40 text-[10px] font-bold uppercase tracking-[0.3em]">Neural Weight</th></tr></thead>
               <tbody className="divide-y divide-white/[0.02]">
                 {analytics.liquidityDepthCurve.map((point, idx) => {
                   const maxDepth = Math.max(...analytics.liquidityDepthCurve.map(p => p.depth));

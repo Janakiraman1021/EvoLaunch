@@ -76,7 +76,7 @@ export default function AgentControlPanel() {
           <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Neural Core Home
         </Link>
         <h1 className="text-5xl font-bold text-primary tracking-tight mb-4 flex items-baseline gap-4">Agent <span className="text-gold">Command</span> Center</h1>
-        <p className="text-muted text-lg max-w-2xl leading-relaxed">Monitor registered neural agents, verify cryptographic signatures, and inspect real-time stability score parameters.</p>
+        <p className="text-muted text-lg max-w-2xl leading-relaxed">Authorize and monitor neural agents, verify cryptographic signatures, and inspect real-time autonomous mandates.</p>
       </div>
 
       <div className="py-12 space-y-16">

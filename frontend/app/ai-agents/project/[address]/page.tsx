@@ -86,9 +86,9 @@ export default function ProjectDashboard({ params }: { params: { address: string
         }));
 
         const projectData: ProjectData = {
-          symbol: launch.symbol || 'UNK', name: launch.name || 'Unknown Token',
+          symbol: launch.symbol || 'UNK', name: launch.name || 'Unknown Agent',
           currentPhase: launch.phaseName || 'Genesis', mssValue: mss || 50,
-          phaseDescription: `Token is operating in ${launch.phaseName || 'Genesis'} phase. Dynamic bounds active.`,
+          phaseDescription: `Agent is operating in ${launch.phaseName || 'Genesis'} epoch. Dynamic bounds active.`,
           lastAgentUpdateTime: formattedLogs.length > 0 ? formattedLogs[0].timestamp : 'Waiting for telemetry...',
           tokenInfo: { address: launch.tokenAddress, totalSupply: launch.totalSupply || '0', holders: metricsData?.holders || 0 },
           liquidityInfo: {
@@ -187,9 +187,9 @@ export default function ProjectDashboard({ params }: { params: { address: string
               <div className="luxury-card p-10 bg-secondary/10 hover:border-gold/30 transition-all duration-500">
                 <h3 className="text-xl font-bold text-primary mb-8 tracking-tight">Ecosystem Intelligence</h3>
                 <div className="space-y-6">
-                  <div className="flex justify-between items-center p-6 bg-black/40 rounded-2xl border border-white/[0.03]"><span className="text-xs text-muted uppercase font-bold tracking-widest">Temporal Address</span><span className="font-mono text-sm text-gold font-bold">{project.tokenInfo.address}</span></div>
+                  <div className="flex justify-between items-center p-6 bg-black/40 rounded-2xl border border-white/[0.03]"><span className="text-xs text-muted uppercase font-bold tracking-widest">Temporal Signature</span><span className="font-mono text-sm text-gold font-bold">{project.tokenInfo.address}</span></div>
                   <div className="flex justify-between items-center p-6 bg-black/40 rounded-2xl border border-white/[0.03]"><span className="text-xs text-muted uppercase font-bold tracking-widest">Consensus Supply</span><span className="font-bold text-primary text-xl tracking-tighter">{project.tokenInfo.totalSupply}</span></div>
-                  <div className="flex justify-between items-center p-6 bg-black/40 rounded-2xl border border-white/[0.03]"><span className="text-xs text-muted uppercase font-bold tracking-widest">Network Participants</span><span className="font-bold text-primary text-xl tracking-tighter">{project.tokenInfo.holders.toLocaleString()}</span></div>
+                  <div className="flex justify-between items-center p-6 bg-black/40 rounded-2xl border border-white/[0.03]"><span className="text-xs text-muted uppercase font-bold tracking-widest">Neural Participants</span><span className="font-bold text-primary text-xl tracking-tighter">{project.tokenInfo.holders.toLocaleString()}</span></div>
                 </div>
               </div>
               <div className="luxury-card p-10 bg-secondary/10 hover:border-gold/30 transition-all duration-500">

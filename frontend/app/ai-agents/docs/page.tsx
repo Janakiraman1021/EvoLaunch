@@ -73,8 +73,8 @@ export default function DocsPage() {
         <Link href="/ai-agents" className="text-muted/60 hover:text-gold transition-all flex items-center gap-3 mb-8 text-xs font-bold uppercase tracking-widest group">
           <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Neural Core Home
         </Link>
-        <h1 className="text-5xl font-bold text-primary tracking-tight mb-4 flex items-center gap-6"><BookOpen size={48} className="text-gold" /> Protocol <span className="text-gold">Reference</span></h1>
-        <p className="text-muted text-lg max-w-2xl leading-relaxed">Technical specifications and cryptographic architecture of the EvoLaunch Protocol. Pure institutional intelligence.</p>
+        <h1 className="text-5xl font-bold text-primary tracking-tight mb-4 flex items-center gap-6"><BookOpen size={48} className="text-gold" /> System <span className="text-gold">Intelligence</span></h1>
+        <p className="text-muted text-lg max-w-2xl leading-relaxed">Technical specifications and cryptographic architecture of the Agentic Infrastructure. Pure silicon-driven logic.</p>
       </div>
 
       <div className="py-12 max-w-4xl mx-auto">

@@ -1,7 +1,18 @@
-// Centralized mock data for agents UI
-export const mockAgents = [
-  { id: '1', name: 'Alpha Arbitrage', strategy: 'MEV Optimization', status: 'Active', aum: '$1.2M', returns: '+12.4%' },
-  { id: '2', name: 'Beta Liquidity', strategy: 'LP Management', status: 'Active', aum: '$840K', returns: '+8.2%' },
+export interface Agent {
+  id: string;
+  name: string;
+  strategy: string;
+  status: string;
+  aum: string;
+  returns: string;
+  nav: number;
+  tokenSupply: number;
+  [key: string]: any;
+}
+
+export const mockAgents: Agent[] = [
+  { id: '1', name: 'Alpha Arbitrage', strategy: 'MEV Optimization', status: 'Active', aum: '$1.2M', returns: '+12.4%', nav: 1200000, tokenSupply: 1000000 },
+  { id: '2', name: 'Beta Liquidity', strategy: 'LP Management', status: 'Active', aum: '$840K', returns: '+8.2%', nav: 840000, tokenSupply: 840000 },
 ];
 
 export const mockPerformanceData = {

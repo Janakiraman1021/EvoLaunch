@@ -24,8 +24,8 @@ export default function ExplorePage() {
           <h1 className="text-4xl font-bold text-primary tracking-tight">Ecosystem Explorer</h1>
           <p className="text-muted text-lg font-body">
             {launches.length > 0
-              ? `${launches.length} token${launches.length > 1 ? 's' : ''} launched via EvoLaunch Factory`
-              : loading ? 'Scanning blockchain...' : 'No tokens launched yet'}
+              ? `${launches.length} agent${launches.length > 1 ? 's' : ''} initialized via Neural Factory`
+              : loading ? 'Scanning neural registry...' : 'No agents registered yet'}
           </p>
         </div>
 
@@ -33,7 +33,7 @@ export default function ExplorePage() {
           <Search className="text-muted ml-4" size={20} />
           <input
             type="text"
-            placeholder="Search tokens by name or symbol..."
+            placeholder="Search agents by signature or identifier..."
             className="bg-transparent border-none outline-none text-primary text-sm w-full py-3 px-2 placeholder:text-muted/30"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
@@ -56,12 +56,12 @@ export default function ExplorePage() {
           <div className="w-20 h-20 rounded-2xl bg-gold/10 flex items-center justify-center text-gold mx-auto mb-8">
             <Rocket size={40} />
           </div>
-          <h3 className="text-2xl font-bold text-primary mb-4">No Tokens Launched Yet</h3>
+          <h3 className="text-2xl font-bold text-primary mb-4">No Agents Initialized</h3>
           <p className="text-muted text-sm max-w-md mx-auto mb-8">
-            Be the first to launch an adaptive token through the EvoLaunch Factory.
+            Be the first to authorize a neural agent through the EvoLaunch Factory.
           </p>
           <Link href="/ai-agents/launch" className="btn-primary inline-block">
-            Launch Token
+            Initialize Agent
           </Link>
         </div>
       )}
