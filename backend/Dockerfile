@@ -18,7 +18,10 @@ RUN npm install --production
 
 # Copy Python requirements and install
 COPY src/agents/python/requirements.txt ./python_requirements.txt
-RUN pip3 install --no-cache-dir -r python_requirements.txt
+RUN python3 -m venv /opt/venv \
+    && . /opt/venv/bin/activate \
+    && pip install --no-cache-dir -r python_requirements.txt
+ENV PATH="/opt/venv/bin:$PATH"
 
 # Copy the rest of the application
 COPY . .
