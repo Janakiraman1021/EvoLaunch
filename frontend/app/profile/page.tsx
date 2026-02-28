@@ -1,27 +1,91 @@
 'use client';
 
-import React from 'react';
-import { 
-  ShieldCheck, 
-  Wallet, 
-  Cpu, 
-  History, 
+import React, { useState, useEffect } from 'react';
+import {
+  ShieldCheck,
+  Wallet,
+  Cpu,
+  History,
   Award,
   ExternalLink,
   ChevronRight,
   Fingerprint,
-  Activity
+  Activity,
+  AlertCircle
 } from 'lucide-react';
+import { useWeb3 } from '../../lib/hooks/useWeb3';
+import api from '../../lib/api';
 
 export default function ProfilePage() {
-  const profileData = {
-    address: '0x742d...44e',
-    rank: 'Institutional Tier 1',
-    reputation: 980,
-    mandates: 12,
-    successRate: '94%',
-    verified: true
-  };
+  const { wallet } = useWeb3();
+  const [profileData, setProfileData] = useState({
+    address: '0x0000...000',
+    rank: 'Unverified Entity',
+    reputation: 0,
+    mandates: 0,
+    successRate: '0%',
+    verified: false,
+    loading: true,
+    history: [] as Array<{
+      id: string;
+      type: string;
+      cluster?: string;
+      amount: string | number;
+      timestamp: string;
+    }>
+  });
+
+  useEffect(() => {
+    if (!wallet) {
+      setProfileData(prev => ({ ...prev, loading: false }));
+      return;
+    }
+
+    api.getReputation(wallet.address).then(data => {
+      const score = data.score || 50;
+      setProfileData({
+        address: `${wallet.address.slice(0, 6)}...${wallet.address.slice(-4)}`,
+        rank: score >= 80 ? 'Institutional Tier 1' : score >= 60 ? 'Standard Tier 2' : 'New Participant',
+        reputation: score,
+        mandates: data.dumpCount > 0 ? 3 : 12, // example correlation
+        successRate: score >= 60 ? '94%' : '65%',
+        verified: score >= 60,
+        loading: false,
+        history: data.history || []
+      });
+    }).catch(() => {
+      setProfileData(prev => ({
+        ...prev,
+        address: `${wallet.address.slice(0, 6)}...${wallet.address.slice(-4)}`,
+        loading: false,
+        history: []
+      }));
+    });
+  }, [wallet]);
+
+  if (profileData.loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
+        <div className="w-16 h-16 border-4 border-gold/20 border-t-gold rounded-full animate-spin" />
+        <p className="text-gold/60 font-bold uppercase tracking-[0.3em] text-xs animate-pulse">Scanning Identity Matrix...</p>
+      </div>
+    );
+  }
+
+  if (!wallet) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 max-w-2xl mx-auto text-center">
+        <div className="w-20 h-20 rounded-2xl bg-status-warning/10 flex items-center justify-center text-status-warning border border-status-warning/20">
+          <AlertCircle size={40} />
+        </div>
+        <h3 className="text-2xl font-bold text-primary tracking-tight">Identity Synchronization Required</h3>
+        <p className="text-muted text-lg leading-relaxed">
+          Please connect your Web3 wallet to access your institutional profile,
+          view your reputation matrix, and interact with the ecosystem.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-12 animate-in fade-in duration-1000 pt-8 max-w-6xl mx-auto">
@@ -33,8 +97,8 @@ export default function ProfilePage() {
             <div className="relative">
               <div className="w-40 h-40 rounded-[2.5rem] bg-gold-gradient p-[1px] relative overflow-hidden">
                 <div className="w-full h-full rounded-[2.5rem] bg-background flex items-center justify-center overflow-hidden border border-black/50 relative">
-                   <div className="absolute inset-0 bg-gold/5 animate-pulse" />
-                   <Fingerprint size={80} className="text-gold opacity-40" />
+                  <div className="absolute inset-0 bg-gold/5 animate-pulse" />
+                  <Fingerprint size={80} className="text-gold opacity-40" />
                 </div>
               </div>
               <div className="absolute -bottom-2 -right-2 bg-status-success p-2 rounded-xl shadow-gold-glow border-2 border-background">
@@ -87,17 +151,17 @@ export default function ProfilePage() {
           { label: 'Ecosystem Points', value: '42,900', icon: Cpu, sub: 'Convertible' },
         ].map((stat, i) => (
           <div key={i} className="luxury-card p-8 flex flex-col gap-6 group">
-             <div className="flex items-center gap-4">
-               <div className="icon-box-lg group-hover:scale-110 transition-transform">
-                 <stat.icon size={24} className="text-gold" />
-               </div>
-               <div>
-                 <div className="text-lg font-bold text-primary tracking-tight">{stat.value}</div>
-                 <div className="text-xs text-muted font-bold uppercase tracking-widest">{stat.label}</div>
-               </div>
-             </div>
-             <div className="h-[1px] w-full bg-white/5" />
-             <div className="text-xs text-gold font-bold uppercase opacity-60 tracking-widest">{stat.sub}</div>
+            <div className="flex items-center gap-4">
+              <div className="icon-box-lg group-hover:scale-110 transition-transform">
+                <stat.icon size={24} className="text-gold" />
+              </div>
+              <div>
+                <div className="text-lg font-bold text-primary tracking-tight">{stat.value}</div>
+                <div className="text-xs text-muted font-bold uppercase tracking-widest">{stat.label}</div>
+              </div>
+            </div>
+            <div className="h-[1px] w-full bg-white/5" />
+            <div className="text-xs text-gold font-bold uppercase opacity-60 tracking-widest">{stat.sub}</div>
           </div>
         ))}
       </div>
@@ -125,34 +189,30 @@ export default function ProfilePage() {
                 <th className="px-10 py-5 text-right">Temporal State</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
-              {[
-                { id: 'MND-3921-X', type: 'Liquidity Injection', amt: '+12.5 BNB', time: '2 hours ago' },
-                { id: 'GOV-AF90-A', type: 'Governance Vote', amt: '1,200 POW', time: '5 hours ago' },
-                { id: 'MND-3882-K', type: 'Tranche Unlock', amt: '+50,000 POW', time: '1 day ago' },
-                { id: 'SYS-LOG-01', type: 'Reputation Gain', amt: '+25 REP', time: '3 days ago' },
-                { id: 'SYS-LOG-02', type: 'Tier Upgrade', amt: 'TIER 1', time: '1 week ago' },
-              ].map((row, i) => (
-                <tr key={i} className="hover:bg-gold/[0.02] transition-colors group">
-                  <td className="px-10 py-6">
-                    <div className="flex flex-col">
-                      <span className="text-xs font-mono text-gold font-bold">{row.id}</span>
-                      <span className="text-xs text-primary/40">{row.type}</span>
-                    </div>
-                  </td>
-                  <td className="px-10 py-6">
-                    <span className="px-3 py-1 rounded-lg bg-secondary text-muted text-xs font-bold border border-primary/5 uppercase tracking-widest group-hover:border-gold/30 transition-all">Alpha Cluster</span>
-                  </td>
-                  <td className="px-10 py-6 text-right">
-                    <span className="text-sm font-bold text-primary tracking-tight">{row.amt}</span>
-                  </td>
-                  <td className="px-10 py-6 text-right">
-                    <span className="text-xs text-muted/60">{row.time}</span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+<tbody className="divide-y divide-white/5">
+  {profileData.history?.map((row, i) => (
+    <tr key={i} className="hover:bg-gold/[0.02] transition-colors group">
+      <td className="px-10 py-6">
+        <div className="flex flex-col">
+          <span className="text-xs font-mono text-gold font-bold">{row.id}</span>
+          <span className="text-xs text-primary/40">{row.type}</span>
+        </div>
+      </td>
+      <td className="px-10 py-6">
+        <span className="px-3 py-1 rounded-lg bg-secondary text-muted text-xs font-bold border border-primary/5 uppercase tracking-widest group-hover:border-gold/30 transition-all">
+          {row.cluster || 'Alpha Cluster'}
+        </span>
+      </td>
+      <td className="px-10 py-6 text-right">
+        <span className="text-sm font-bold text-primary tracking-tight">{row.amount}</span>
+      </td>
+      <td className="px-10 py-6 text-right">
+        <span className="text-xs text-muted/60">{row.timestamp}</span>
+      </td>
+    </tr>
+  ))}
+</tbody>
+</table>
         </div>
       </div>
     </div>

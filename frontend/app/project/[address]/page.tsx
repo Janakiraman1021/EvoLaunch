@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, AlertCircle, LineChart, Lock, Zap, Activity, TrendingUp } from 'lucide-react';
 import MSSChart from '../../../components/MSSChart';
+import api from '../../../lib/api';
 
 interface ProjectData {
   symbol: string;
@@ -70,112 +71,92 @@ export default function ProjectDashboard({ params }: { params: { address: string
   const [activeTab, setActiveTab] = useState<string>('overview');
 
   useEffect(() => {
-    // Simulate fetching project data from blockchain
-    const mockData: ProjectData = {
-      symbol: 'EVOA',
-      name: 'EvoToken Alpha',
-      currentPhase: 'Growth',
-      mssValue: 65,
-      phaseDescription: 'Token is in organic growth phase. Moderate taxes applied.',
-      lastAgentUpdateTime: '2 minutes ago',
+    async function loadProjectData() {
+      try {
+        const address = params.address as string;
 
-      tokenInfo: {
-        address: '0x' + params.address,
-        totalSupply: '1,000,000',
-        holders: 2450,
-      },
+        // Fetch all required data in parallel
+        const [statusData, historyData, metricsData, unlocksData] = await Promise.all([
+          api.getStatus(address),
+          api.getPhaseHistory(address),
+          api.getMetrics(address),
+          api.getLiquidityUnlocks(address)
+        ]);
 
-      liquidityInfo: {
-        totalLocked: '125,340 BNB',
-        totalReleased: '23,450 BNB',
-        frozen: false,
-        unlockSchedule: [
-          {
-            tranche: 1,
-            amount: '25,000 BNB',
-            threshold: 25,
-            phase: 'Growth',
-            status: 'unlocked',
-          },
-          {
-            tranche: 2,
-            amount: '30,000 BNB',
-            threshold: 50,
-            phase: 'Expansion',
-            status: 'pending',
-          },
-          {
-            tranche: 3,
-            amount: '35,000 BNB',
-            threshold: 75,
-            phase: 'Governance',
-            status: 'pending',
-          },
-        ],
-      },
+        const { launch, mss, logs } = statusData;
 
-      adaptiveParams: {
-        currentSellTax: 4.5,
-        currentBuyTax: 2.1,
-        maxTx: '50,000',
-        incentiveMultiplier: 1.2,
-        bounds: {
-          minTax: 0,
-          maxTax: 25,
-          minMaxTx: '10,000',
-          minMaxWallet: '20,000',
-        },
-      },
+        if (!launch) {
+          setProject(null);
+          setLoading(false);
+          return;
+        }
 
-      agentLogs: [
-        {
-          agent: 'Liquidity Agent',
-          timestamp: '2 minutes ago',
-          action: 'Monitored LP depth, computed MSS delta',
-          signature: '0x1234...',
+        const formattedLogs = (logs || []).map((l: any) => ({
+          agent: l.agentId || 'Neural Core',
+          timestamp: new Date(l.timestamp).toLocaleString(),
+          action: l.action || 'Performed state update',
+          signature: l.transactionHash || '0xSystem...',
           verified: true,
-          block: 12345678,
-        },
-        {
-          agent: 'Market Agent',
-          timestamp: '5 minutes ago',
-          action: 'Volume spike detected. Recommended tax increase.',
-          signature: '0x5678...',
-          verified: true,
-          block: 12345677,
-        },
-      ],
+          block: l.blockNumber || 0,
+        }));
 
-      transactions: [
-        {
-          type: 'buy',
-          amount: '5,000 EVOA',
-          price: '0.0042 BNB',
-          address: '0x123...abc',
-          timestamp: 'just now',
-          volumeSpike: false,
-        },
-        {
-          type: 'sell',
-          amount: '2,500 EVOA',
-          price: '0.0041 BNB',
-          address: '0x456...def',
-          timestamp: '30s ago',
-          volumeSpike: false,
-        },
-        {
-          type: 'buy',
-          amount: '25,000 EVOA',
-          price: '0.0042 BNB',
-          address: '0x789...ghi',
-          timestamp: '1m ago',
-          volumeSpike: true,
-        },
-      ],
-    };
+        const projectData: ProjectData = {
+          symbol: launch.symbol || 'UNK',
+          name: launch.name || 'Unknown Token',
+          currentPhase: launch.phaseName || 'Genesis',
+          mssValue: mss || 50,
+          phaseDescription: `Token is operating in ${launch.phaseName || 'Genesis'} phase. Dynamic bounds active.`,
+          lastAgentUpdateTime: formattedLogs.length > 0 ? formattedLogs[0].timestamp : 'Waiting for telemetry...',
 
-    setProject(mockData);
-    setLoading(false);
+          tokenInfo: {
+            address: launch.tokenAddress,
+            totalSupply: launch.totalSupply || '0',
+            holders: metricsData?.holders || 0,
+          },
+
+          liquidityInfo: {
+            totalLocked: `${metricsData?.liquidity || 0} BNB Locked`,
+            totalReleased: '0 BNB',
+            frozen: launch.status === 'paused',
+            unlockSchedule: (unlocksData || []).map((u: any, i: number) => ({
+              tranche: i + 1,
+              amount: `${u.amount || '0'} BNB`,
+              threshold: u.mssThreshold || 0,
+              phase: u.phaseName || 'Unknown',
+              status: u.unlocked ? 'unlocked' : 'pending'
+            })),
+          },
+
+          adaptiveParams: {
+            currentSellTax: launch.sellTax || 0,
+            currentBuyTax: launch.buyTax || 0,
+            maxTx: 'Dynamic',
+            incentiveMultiplier: 1.0,
+            bounds: {
+              minTax: 0,
+              maxTax: 25,
+              minMaxTx: 'Dynamic',
+              minMaxWallet: 'Dynamic',
+            },
+          },
+
+          agentLogs: formattedLogs.length > 0 ? formattedLogs : [{
+            agent: 'System Init', timestamp: 'Just now', action: 'Awaiting intelligence stream', signature: 'N/A', verified: true, block: 0
+          }],
+
+          transactions: [], // To be populated via WebSockets or real-time indexing
+        };
+
+        setProject(projectData);
+        setLoading(false);
+      } catch (err) {
+        console.error('Failed to load project details:', err);
+        setProject(null);
+        setLoading(false);
+      }
+    }
+
+    loadProjectData();
   }, [params.address]);
 
   if (loading) {

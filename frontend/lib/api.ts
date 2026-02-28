@@ -52,7 +52,7 @@ export interface ReputationData {
     walletAddress: string;
     score: number;
     allocationWeight: number;
-    holdingDuration: number;
+    holdingHours: number;
     dumpCount: number;
     [key: string]: any;
 }
@@ -149,7 +149,7 @@ export const getReputation = (walletAddress: string): Promise<ReputationData> =>
         walletAddress,
         score: 50,
         allocationWeight: 0.5,
-        holdingDuration: 0,
+        holdingHours: 0,
         dumpCount: 0,
     });
 

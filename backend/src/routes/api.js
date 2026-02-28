@@ -33,17 +33,18 @@ router.get('/health', (req, res) => {
 // ─── Rolling Market Metrics ───────────────────────────────────────
 router.get('/metrics/:address', (req, res) => {
     const pairAddress = process.env.AMM_PAIR_ADDRESS;
-    const metrics = getRollingMetrics(req.params.address, pairAddress);
+    const metrics = getRollingMetrics(req.params.address.toLowerCase(), pairAddress) || getRollingMetrics(req.params.address, pairAddress);
     res.json(metrics);
 });
 
 // ─── Launch Status ────────────────────────────────────────────────
 router.get('/status/:address', async (req, res) => {
     try {
+        const addressQuery = new RegExp(`^${req.params.address}$`, 'i');
         const [launch, latestMSS, recentLogs] = await Promise.all([
-            Launch.findOne({ tokenAddress: req.params.address }),
-            MSSHistory.findOne({ tokenAddress: req.params.address }).sort({ timestamp: -1 }),
-            AgentLog.find({ tokenAddress: req.params.address }).sort({ timestamp: -1 }).limit(10)
+            Launch.findOne({ tokenAddress: addressQuery }),
+            MSSHistory.findOne({ tokenAddress: addressQuery }).sort({ timestamp: -1 }),
+            AgentLog.find({ tokenAddress: addressQuery }).sort({ timestamp: -1 }).limit(10)
         ]);
         res.json({
             launch,
@@ -58,8 +59,9 @@ router.get('/status/:address', async (req, res) => {
 // ─── MSS History (for charts) ─────────────────────────────────────
 router.get('/history/:address', async (req, res) => {
     try {
+        const addressQuery = new RegExp(`^${req.params.address}$`, 'i');
         const limit = Math.min(parseInt(req.query.limit) || 100, 500);
-        const history = await MSSHistory.find({ tokenAddress: req.params.address })
+        const history = await MSSHistory.find({ tokenAddress: addressQuery })
             .sort({ timestamp: 1 }).limit(limit);
         res.json(history);
     } catch (err) {
@@ -70,7 +72,8 @@ router.get('/history/:address', async (req, res) => {
 // ─── Agent Logs ───────────────────────────────────────────────────
 router.get('/agent-logs/:address', async (req, res) => {
     try {
-        const logs = await AgentLog.find({ tokenAddress: req.params.address })
+        const addressQuery = new RegExp(`^${req.params.address}$`, 'i');
+        const logs = await AgentLog.find({ tokenAddress: addressQuery })
             .sort({ timestamp: -1 }).limit(50);
         res.json(logs);
     } catch (err) {
@@ -81,7 +84,8 @@ router.get('/agent-logs/:address', async (req, res) => {
 // ─── Phase Transition History ─────────────────────────────────────
 router.get('/phase-history/:address', async (req, res) => {
     try {
-        const phases = await PhaseTransition.find({ tokenAddress: req.params.address })
+        const addressQuery = new RegExp(`^${req.params.address}$`, 'i');
+        const phases = await PhaseTransition.find({ tokenAddress: addressQuery })
             .sort({ timestamp: -1 }).limit(50);
         res.json(phases);
     } catch (err) {
@@ -92,7 +96,8 @@ router.get('/phase-history/:address', async (req, res) => {
 // ─── Liquidity Unlocks ────────────────────────────────────────────
 router.get('/liquidity-unlocks/:address', async (req, res) => {
     try {
-        const unlocks = await LiquidityUnlock.find({ tokenAddress: req.params.address })
+        const addressQuery = new RegExp(`^${req.params.address}$`, 'i');
+        const unlocks = await LiquidityUnlock.find({ tokenAddress: addressQuery })
             .sort({ timestamp: -1 });
         res.json(unlocks);
     } catch (err) {

@@ -30,10 +30,11 @@ export default function ReputationDashboard() {
     api.getReputation(wallet.address).then(data => {
       const score = data.score || 50;
       const multiplier = data.allocationWeight || 0.5;
+      const holdingHours = data.holdingHours || 0;
       setReputation({
         score,
         category: score >= 80 ? 'Premium Holder' : score >= 60 ? 'Standard Holder' : 'New Participant',
-        holdingBehavior: data.holdingDuration > 30 ? 'Long-term accumulator' : data.holdingDuration > 7 ? 'Medium-term holder' : 'Active trader',
+        holdingBehavior: holdingHours > 30 ? 'Long-term accumulator' : holdingHours > 7 ? 'Medium-term holder' : 'Active trader',
         dumpFrequency: data.dumpCount || 0,
         allocationMultiplier: 1 + multiplier,
         launchEligibility: score >= 60,

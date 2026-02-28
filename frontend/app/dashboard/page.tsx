@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { TrendingUp, Wallet, Activity, AlertCircle, BarChart3, PieChart } from 'lucide-react';
+import { TrendingUp, Wallet, Activity, AlertCircle, BarChart3, Zap, Shield, Compass } from 'lucide-react';
 import Link from 'next/link';
 import api from '../../lib/api';
 import { useContracts } from '../../lib/hooks/useContracts';
@@ -24,10 +24,8 @@ export default function DashboardPage() {
   });
 
   const [positions, setPositions] = useState<any[]>([]);
-
   const [recentActivity] = useState<any[]>([]);
 
-  // Build positions from launched tokens
   useEffect(() => {
     if (launches.length > 0) {
       const newPositions = launches.map(l => ({
@@ -43,103 +41,146 @@ export default function DashboardPage() {
     }
   }, [launches]);
 
-  // Update with on-chain data for user balance
   useEffect(() => {
-    if (contracts.token && contracts.userBalance) {
-      const balance = parseFloat(contracts.userBalance);
-      if (balance > 0) {
-        setStats(prev => ({ ...prev, portfolio: `${balance.toFixed(2)} ${contracts.token!.symbol}` }));
-      }
+    if (wallet?.balance) {
+      setStats(prev => ({ ...prev, portfolio: `${wallet.balance} BNB`, totalValue: `${wallet.balance} BNB` }));
     }
-  }, [contracts.token, contracts.userBalance]);
+  }, [wallet?.balance]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
-      {/* Header */}
-      <div className="bg-slate-800/50 border-b border-emerald-500/20 sticky top-0 z-10 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <h1 className="text-3xl font-bold text-primary">
-            Dashboard <span className="text-emerald-400">Overview</span>
-          </h1>
-          <p className="text-slate-400 mt-1">Track your portfolio and trading activity</p>
+    <div className="min-h-screen bg-[#0C0C0F] text-white font-sans">
+      {/* Global Ecosystem Ticker */}
+      <div className="w-full h-8 overflow-hidden border-y border-[#C9A84C]/10 flex items-center bg-[#0f0f13] relative z-20">
+        <div className="flex whitespace-nowrap animate-marquee">
+          {[1, 2, 3].map((_, i) => (
+            <div key={i} className="flex gap-12 items-center px-12">
+              <span className="text-xs font-bold text-[#C9A84C] uppercase tracking-[0.2em] flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34D399]" />
+                PORTFOLIO: <span className="text-white">{stats.totalValue}</span>
+              </span>
+              <span className="text-xs font-bold text-white/40 uppercase tracking-[0.2em]">
+                POSITIONS: <span className="text-white">{stats.activePositions}</span>
+              </span>
+              <span className="text-xs font-bold text-white/40 uppercase tracking-[0.2em]">
+                MARKET_SYNC: <span className="text-emerald-400">ACTIVE</span>
+              </span>
+              <span className="text-xs font-bold text-[#C9A84C] uppercase tracking-[0.2em]">
+                CHAIN_STATUS: <span className="text-white">BNB_MAINNET</span>
+              </span>
+              <span className="text-xs font-bold text-white/40 uppercase tracking-[0.2em]">
+                YIELD_MODE: <span className="text-white">ADAPTIVE</span>
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <p className="text-slate-400">Portfolio Value</p>
-              <Wallet className="w-5 h-5 text-emerald-400" />
-            </div>
-            <p className="text-3xl font-bold text-primary">{stats.totalValue}</p>
-            <p className="text-emerald-400 text-sm mt-2">+{stats.dailyChange} today</p>
+      {/* Header */}
+      <div className="border-b border-[#C9A84C]/10 bg-[#0f0f13]/80 sticky top-0 z-10 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex items-end justify-between">
+          <div>
+            <h1 className="text-3xl font-black tracking-tight text-white flex items-center gap-3">
+              Dashboard
+              <span className="text-[#C9A84C]">Overview</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34D399]" />
+            </h1>
+            <p className="text-white/40 text-xs uppercase tracking-widest font-bold mt-1">Track your portfolio and trading activity</p>
           </div>
-
-          <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <p className="text-slate-400">Available Balance</p>
-              <TrendingUp className="w-5 h-5 text-emerald-400" />
-            </div>
-            <p className="text-3xl font-bold text-primary">{stats.portfolio}</p>
-            <p className="text-slate-400 text-sm mt-2">Ready to trade</p>
-          </div>
-
-          <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <p className="text-slate-400">Active Positions</p>
-              <Activity className="w-5 h-5 text-emerald-400" />
-            </div>
-            <p className="text-3xl font-bold text-primary">{stats.activePositions}</p>
-            <p className="text-slate-400 text-sm mt-2">Tokens held</p>
-          </div>
-
-          <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <p className="text-slate-400">Unrealized Gains</p>
-              <BarChart3 className="w-5 h-5 text-emerald-400" />
-            </div>
-            <p className="text-3xl font-bold text-emerald-400">{stats.unrealizedGains}</p>
-            <p className="text-slate-400 text-sm mt-2">Performance</p>
+          <div className="flex gap-3">
+            {['24h', '7d', '30d'].map(t => (
+              <button
+                key={t}
+                onClick={() => setTimeframe(t)}
+                className={`px-4 py-1.5 rounded-lg text-xs font-bold tracking-widest uppercase transition-all ${timeframe === t
+                    ? 'bg-[#C9A84C] text-[#0C0C0F] shadow-[0_0_12px_rgba(201,168,76,0.4)]'
+                    : 'border border-white/10 text-white/40 hover:border-[#C9A84C]/30 hover:text-white/70'
+                  }`}
+              >
+                {t}
+              </button>
+            ))}
           </div>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto px-6 py-10 space-y-10">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {[
+            { label: 'Portfolio Value', value: stats.totalValue, sub: `+${stats.dailyChange} today`, icon: Wallet, trend: 'Growing' },
+            { label: 'Available Balance', value: stats.portfolio, sub: 'Ready to trade', icon: TrendingUp, trend: 'Liquid' },
+            { label: 'Active Positions', value: stats.activePositions, sub: 'Tokens held', icon: Activity, trend: 'Tracked' },
+            { label: 'Unrealized Gains', value: stats.unrealizedGains, sub: 'Performance', icon: BarChart3, trend: 'Optimal' },
+          ].map((stat, i) => (
+            <div
+              key={i}
+              className="relative bg-[#111116] border border-white/[0.06] rounded-2xl p-7 flex flex-col gap-5 group hover:border-[#C9A84C]/30 transition-all duration-500 overflow-hidden"
+            >
+              {/* Shine sweep */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none bg-gradient-to-br from-[#C9A84C]/5 via-transparent to-transparent" />
+              <div className="flex justify-between items-start relative z-10">
+                <div className="w-10 h-10 rounded-xl bg-[#C9A84C]/5 border border-[#C9A84C]/10 flex items-center justify-center text-[#C9A84C] group-hover:scale-110 transition-transform shadow-[0_0_16px_rgba(201,168,76,0.1)]">
+                  <stat.icon size={20} />
+                </div>
+                <div className="flex flex-col items-end">
+                  <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">{stat.label}</span>
+                  <div className="text-2xl font-black text-white mt-1 tracking-tight group-hover:text-[#C9A84C] transition-colors">
+                    {stat.value}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between relative z-10">
+                <div className="h-0.5 flex-1 bg-white/5 rounded-full overflow-hidden mr-4">
+                  <div className="h-full bg-[#C9A84C]/50 w-[70%] group-hover:w-[88%] transition-all duration-1000" />
+                </div>
+                <span className="text-[10px] font-black text-emerald-400 tracking-widest uppercase">{stat.trend}</span>
+              </div>
+              <p className="text-white/30 text-xs font-bold tracking-widest uppercase relative z-10">{stat.sub}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-8">
             {/* Positions Table */}
-            <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg overflow-hidden">
-              <div className="p-6 border-b border-slate-700/50">
-                <h2 className="text-2xl font-bold text-primary">Your Positions</h2>
+            <div className="bg-[#111116] border border-white/[0.06] rounded-2xl overflow-hidden group hover:border-[#C9A84C]/20 transition-all duration-500">
+              <div className="p-8 border-b border-white/5 flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-black text-white tracking-tight">Your Positions</h2>
+                  <p className="text-white/30 text-[10px] uppercase tracking-widest font-bold mt-1">Live Execution Matrix</p>
+                </div>
+                <div className="px-4 py-2 rounded-xl bg-[#C9A84C] text-[#0C0C0F] text-[10px] font-black tracking-[0.1em] shadow-[0_0_12px_rgba(201,168,76,0.3)] hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                  LIVE_FEED
+                </div>
               </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-slate-700/50 bg-slate-700/20">
-                      <th className="px-6 py-3 text-left text-slate-400 font-semibold">Token</th>
-                      <th className="px-6 py-3 text-left text-slate-400 font-semibold">Amount</th>
-                      <th className="px-6 py-3 text-left text-slate-400 font-semibold">Value</th>
-                      <th className="px-6 py-3 text-left text-slate-400 font-semibold">Change</th>
-                      <th className="px-6 py-3 text-left text-slate-400 font-semibold">Phase</th>
+                    <tr className="border-b border-white/5 bg-white/[0.02]">
+                      <th className="px-7 py-4 text-left text-[10px] text-white/30 font-black uppercase tracking-[0.2em]">Token</th>
+                      <th className="px-7 py-4 text-left text-[10px] text-white/30 font-black uppercase tracking-[0.2em]">Amount</th>
+                      <th className="px-7 py-4 text-left text-[10px] text-white/30 font-black uppercase tracking-[0.2em]">Value</th>
+                      <th className="px-7 py-4 text-left text-[10px] text-white/30 font-black uppercase tracking-[0.2em]">MSS</th>
+                      <th className="px-7 py-4 text-left text-[10px] text-white/30 font-black uppercase tracking-[0.2em]">Phase</th>
                     </tr>
                   </thead>
                   <tbody>
                     {positions.map((position, idx) => (
-                      <tr key={idx} className="border-b border-slate-700/30 hover:bg-slate-700/20 transition">
-                        <td className="px-6 py-4">
-                          <Link href={`/explore`} className="font-bold text-emerald-400 hover:text-emerald-300">
+                      <tr key={idx} className="border-b border-white/[0.04] hover:bg-[#C9A84C]/[0.03] transition-all group/row">
+                        <td className="px-7 py-5">
+                          <Link href="/explore" className="font-black text-[#C9A84C] hover:text-[#E8C96A] tracking-wide transition-colors">
                             {position.symbol}
                           </Link>
                         </td>
-                        <td className="px-6 py-4 text-slate-300">{position.amount}</td>
-                        <td className="px-6 py-4 font-semibold text-primary">{position.value}</td>
-                        <td className={`px-6 py-4 font-semibold ${position.change.startsWith('+') ? 'text-emerald-400' : 'text-red-400'}`}>
+                        <td className="px-7 py-5 text-white/60 font-bold text-xs tracking-widest">{position.amount}</td>
+                        <td className="px-7 py-5 font-black text-white text-sm">{position.value}</td>
+                        <td className={`px-7 py-5 font-black text-sm ${position.change.startsWith('+') ? 'text-emerald-400' : 'text-red-400'}`}>
                           {position.change}
                         </td>
-                        <td className="px-6 py-4">
-                          <span className="px-2 py-1 rounded text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-400/50">
+                        <td className="px-7 py-5">
+                          <span className="px-3 py-1.5 rounded-lg text-[10px] font-black bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/20 tracking-widest uppercase">
                             {position.phase}
                           </span>
                         </td>
@@ -147,91 +188,129 @@ export default function DashboardPage() {
                     ))}
                   </tbody>
                 </table>
+
                 {positions.length === 0 && !launchesLoading && (
-                  <div className="text-center py-12 text-muted">
-                    <p className="text-sm uppercase tracking-widest font-bold mb-4">No tokens launched yet</p>
-                    <Link href="/launch" className="text-xs text-gold uppercase tracking-widest hover:underline">Launch your first token →</Link>
+                  <div className="text-center py-16">
+                    <p className="text-[10px] uppercase tracking-[0.3em] font-black text-white/20 mb-5">No tokens launched yet</p>
+                    <Link
+                      href="/launch"
+                      className="text-[10px] text-[#C9A84C] uppercase tracking-[0.2em] font-black hover:text-[#E8C96A] transition-colors"
+                    >
+                      Launch your first token →
+                    </Link>
                   </div>
                 )}
+
                 {launchesLoading && (
-                  <div className="text-center py-8">
-                    <div className="w-6 h-6 border-2 border-gold/20 border-t-gold rounded-full animate-spin mx-auto mb-3" />
-                    <p className="text-muted text-xs uppercase tracking-widest">Scanning chain...</p>
+                  <div className="text-center py-10">
+                    <div className="w-5 h-5 border-2 border-[#C9A84C]/20 border-t-[#C9A84C] rounded-full animate-spin mx-auto mb-3" />
+                    <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-black">Scanning chain...</p>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Recent Activity */}
-            <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg p-6">
-              <h2 className="text-2xl font-bold text-primary mb-6">Recent Activity</h2>
+            <div className="bg-[#111116] border border-white/[0.06] rounded-2xl p-8 hover:border-[#C9A84C]/20 transition-all duration-500">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h2 className="text-xl font-black text-white tracking-tight">Recent Activity</h2>
+                  <p className="text-white/30 text-[10px] uppercase tracking-widest font-bold mt-1">Audit Command Trail</p>
+                </div>
+              </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {recentActivity.map((activity, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-4 bg-slate-700/20 rounded-lg border border-slate-600/30 hover:border-emerald-400/30 transition">
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-5 bg-white/[0.02] rounded-xl border border-white/[0.04] hover:border-[#C9A84C]/20 transition-all"
+                  >
                     <div className="flex items-center gap-4">
-                      <div className={`w-3 h-3 rounded-full ${activity.type === 'buy' ? 'bg-emerald-400' : 'bg-red-400'}`} />
+                      <div className={`w-2.5 h-2.5 rounded-full ${activity.type === 'buy' ? 'bg-emerald-400 shadow-[0_0_8px_#34D399]' : 'bg-red-400'}`} />
                       <div>
-                        <p className="font-semibold text-primary">
+                        <p className="font-black text-white text-sm">
                           {activity.type === 'buy' ? '📈 Buy' : '📉 Sell'} {activity.symbol}
                         </p>
-                        <p className="text-xs text-slate-400">{activity.amount} @ {activity.price}</p>
+                        <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest mt-0.5">{activity.amount} @ {activity.price}</p>
                       </div>
                     </div>
-                    <p className="text-sm text-slate-400">{activity.time}</p>
+                    <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest">{activity.time}</p>
                   </div>
                 ))}
+
+                {recentActivity.length === 0 && (
+                  <div className="text-center py-10">
+                    <p className="text-[10px] uppercase tracking-[0.3em] font-black text-white/20">No activity recorded</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Watchlist */}
-            <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg p-6">
-              <h2 className="text-lg font-bold text-primary mb-4">Top Gainers</h2>
+            {/* Top Gainers */}
+            <div className="bg-[#111116] border border-white/[0.06] rounded-2xl p-7 hover:border-[#C9A84C]/20 transition-all duration-500">
+              <div className="flex items-center gap-3 mb-7">
+                <div className="w-8 h-8 rounded-xl bg-[#C9A84C]/10 border border-[#C9A84C]/20 flex items-center justify-center text-[#C9A84C]">
+                  <Zap size={16} />
+                </div>
+                <div>
+                  <h2 className="text-sm font-black text-white tracking-tight">Top Gainers</h2>
+                  <p className="text-[9px] text-white/30 font-black uppercase tracking-widest">Market Intel</p>
+                </div>
+              </div>
 
               <div className="space-y-3">
-                <div className="p-3 bg-slate-700/30 rounded border border-slate-600/50">
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-primary font-semibold">NOVA</span>
-                    <span className="text-emerald-400 font-bold">+45.2%</span>
+                {[
+                  { symbol: 'NOVA', change: '+45.2%', price: '0.00025 BNB' },
+                  { symbol: 'PULSE', change: '+32.1%', price: '0.00089 BNB' },
+                  { symbol: 'NEXUS', change: '+28.9%', price: '0.00042 BNB' },
+                ].map((token, i) => (
+                  <div
+                    key={i}
+                    className="p-4 bg-white/[0.02] rounded-xl border border-white/[0.04] hover:border-[#C9A84C]/20 transition-all group/token"
+                  >
+                    <div className="flex justify-between items-center mb-1.5">
+                      <span className="font-black text-white text-sm group-hover/token:text-[#C9A84C] transition-colors">{token.symbol}</span>
+                      <span className="font-black text-emerald-400 text-sm">{token.change}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest">{token.price}</p>
+                      <div className="h-0.5 w-16 bg-white/5 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-emerald-400/50"
+                          style={{ width: `${[90, 64, 58][i]}%` }}
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-xs text-slate-400">0.00025 BNB</p>
-                </div>
-
-                <div className="p-3 bg-slate-700/30 rounded border border-slate-600/50">
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-primary font-semibold">PULSE</span>
-                    <span className="text-emerald-400 font-bold">+32.1%</span>
-                  </div>
-                  <p className="text-xs text-slate-400">0.00089 BNB</p>
-                </div>
-
-                <div className="p-3 bg-slate-700/30 rounded border border-slate-600/50">
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-primary font-semibold">NEXUS</span>
-                    <span className="text-emerald-400 font-bold">+28.9%</span>
-                  </div>
-                  <p className="text-xs text-slate-400">0.00042 BNB</p>
-                </div>
+                ))}
               </div>
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-slate-800/50 border border-emerald-500/20 rounded-lg p-6">
-              <h2 className="text-lg font-bold text-primary mb-4">Quick Actions</h2>
+            <div className="bg-[#111116] border border-white/[0.06] rounded-2xl p-7 hover:border-[#C9A84C]/20 transition-all duration-500">
+              <div className="flex items-center gap-3 mb-7">
+                <div className="w-8 h-8 rounded-xl bg-[#C9A84C]/10 border border-[#C9A84C]/20 flex items-center justify-center text-[#C9A84C]">
+                  <Compass size={16} />
+                </div>
+                <div>
+                  <h2 className="text-sm font-black text-white tracking-tight">Quick Actions</h2>
+                  <p className="text-[9px] text-white/30 font-black uppercase tracking-widest">Execution Layer</p>
+                </div>
+              </div>
 
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Link
                   href="/explore"
-                  className="block p-3 rounded bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/50 text-emerald-300 text-center font-semibold transition"
+                  className="block p-4 rounded-xl bg-[#C9A84C] text-[#0C0C0F] text-center font-black text-[11px] uppercase tracking-[0.15em] shadow-[0_0_16px_rgba(201,168,76,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all"
                 >
                   Explore Launches
                 </Link>
                 <Link
                   href="/launch"
-                  className="block p-3 rounded bg-slate-700/50 hover:bg-slate-700/70 border border-slate-600/50 text-slate-300 text-center font-semibold transition"
+                  className="block p-4 rounded-xl border border-white/[0.08] text-white/60 text-center font-black text-[11px] uppercase tracking-[0.15em] hover:border-[#C9A84C]/30 hover:text-white transition-all"
                 >
                   Create Launch
                 </Link>
@@ -239,18 +318,69 @@ export default function DashboardPage() {
             </div>
 
             {/* Risk Alert */}
-            <div className="bg-red-500/10 border border-red-400/50 rounded-lg p-6">
-              <div className="flex gap-3">
-                <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="font-bold text-red-300 mb-1">Market Alert</h3>
-                  <p className="text-sm text-red-200">Volatility increased 15% in the last hour</p>
+            <div className="bg-red-500/5 border border-red-400/20 rounded-2xl p-7 hover:border-red-400/30 transition-all">
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-xl bg-red-500/10 border border-red-400/20 flex items-center justify-center text-red-400 flex-shrink-0">
+                  <AlertCircle size={16} />
                 </div>
+                <div>
+                  <h3 className="font-black text-red-300 text-sm mb-1 uppercase tracking-wide">Market Alert</h3>
+                  <p className="text-[11px] text-red-200/60 font-bold leading-relaxed">
+                    Volatility increased 15% in the last hour. Monitor positions closely.
+                  </p>
+                  <div className="mt-4 h-0.5 w-full bg-red-400/10 rounded-full overflow-hidden">
+                    <div className="h-full bg-red-400/50 w-[75%]" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Stability Metrics */}
+            <div className="bg-[#111116] border border-white/[0.06] rounded-2xl p-7 hover:border-[#C9A84C]/20 transition-all duration-500">
+              <div className="flex items-center gap-3 mb-7">
+                <div className="w-8 h-8 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center text-emerald-400">
+                  <Shield size={16} />
+                </div>
+                <div>
+                  <h2 className="text-sm font-black text-white tracking-tight">System Health</h2>
+                  <p className="text-[9px] text-white/30 font-black uppercase tracking-widest">Institutional Trust</p>
+                </div>
+              </div>
+
+              <div className="space-y-5">
+                {[
+                  { label: 'Stability Buffer', value: '8.2%', width: '65%' },
+                  { label: 'Network Load', value: 'Low', width: '30%', green: true },
+                  { label: 'Agent Sync', value: '94.2%', width: '94%' },
+                ].map((m, i) => (
+                  <div key={i} className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-[10px] text-white/30 font-black uppercase tracking-widest">{m.label}</span>
+                      <span className={`text-[10px] font-black ${m.green ? 'text-emerald-400' : 'text-[#C9A84C]'}`}>{m.value}</span>
+                    </div>
+                    <div className="h-0.5 w-full bg-white/5 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full ${m.green ? 'bg-emerald-400 shadow-[0_0_8px_#34D399]' : 'bg-[#C9A84C] shadow-[0_0_8px_rgba(201,168,76,0.5)]'}`}
+                        style={{ width: m.width }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <style jsx global>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.333%); }
+        }
+        .animate-marquee {
+          animation: marquee 30s linear infinite;
+        }
+      `}</style>
     </div>
   );
 }

@@ -8,6 +8,7 @@ interface ConnectedWallet {
   chainId: number;
   provider: BrowserProvider | null;
   signer: any;
+  balance: string;
 }
 
 export const useWeb3 = () => {
@@ -60,12 +61,16 @@ export const useWeb3 = () => {
 
       const signer = await provider.getSigner();
       const address = await signer.getAddress();
+      const balanceWei = await provider.getBalance(address);
+      const { formatEther } = await import('ethers');
+      const balance = formatEther(balanceWei);
 
       setWallet({
         address,
         chainId: Number(network.chainId),
         provider,
         signer,
+        balance: parseFloat(balance).toFixed(4),
       });
 
       // Persist connection
