@@ -1,6 +1,6 @@
 
-import PerformanceChart from '../../../../../../components/agents/PerformanceChart';
-import { mockPerformanceData } from '../../../../../../components/agents/mockData';
+import PerformanceChart from '../../../../../components/agents/PerformanceChart';
+import { mockPerformanceData } from '../../../../../components/agents/mockData';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, ScatterChart, Scatter, ZAxis } from 'recharts';
 
 const COLORS = ['#E6C07B', '#A1A1AA', '#15803D', '#DC2626'];

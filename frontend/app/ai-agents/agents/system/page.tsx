@@ -1,6 +1,6 @@
 
-import SystemStatusCard from '../../../../../components/agents/SystemStatusCard';
-import { mockSystemStatus } from '../../../../../components/agents/mockData';
+import SystemStatusCard from '../../../../components/agents/SystemStatusCard';
+import { mockSystemStatus } from '../../../../components/agents/mockData';
 
 export default function AgentsSystem() {
   return (
