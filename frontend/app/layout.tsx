@@ -6,11 +6,14 @@ import Sidebar from '../components/Sidebar'
 import Header from '../components/Header'
 import SparklingParticles from '../components/SparklingParticles'
 import { usePathname } from 'next/navigation'
+import Head from 'next/head' // <-- Add this import
 
 const outfit = Outfit({
     subsets: ['latin'],
     variable: '--font-outfit',
 })
+
+// REMOVE the metadata export here
 
 export default function RootLayout({
     children,
@@ -22,6 +25,11 @@ export default function RootLayout({
 
     return (
         <html lang="en" className={`${outfit.variable}`}>
+            <Head>
+                <title>EvoLaunch</title>
+                <meta name="description" content="The future of web development" />
+                {/* Add other meta tags as needed */}
+            </Head>
             <body className="flex h-screen overflow-hidden bg-background text-primary font-body antialiased">
                 {!isLanding && <Sidebar />}
                 <main className={`flex-1 ${isLanding ? 'ml-0 p-0' : 'ml-40 p-12'} h-screen overflow-y-auto relative scroll-smooth overflow-x-hidden`}>
