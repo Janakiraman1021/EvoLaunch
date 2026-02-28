@@ -14,43 +14,22 @@
   --muted: #A1A1AA;
   --primary-text: #F5F5F4;
   --particle-color: 230, 192, 123;
+  --color-white: 255 255 255;
 }
 
 html[data-theme='light'] {
-  --background: #EDF2F7 !important; /* Dimmer light gray (Gray 100/200 mix) */
-  --secondary: #E2E8F0 !important;
-  --card: #F8FAFC !important;
+  --background: #F4F7FC !important; /* Very light cool gray */
+  --secondary: #FFFFFF !important; /* Pure white containers */
+  --card: #F8FAFC !important; /* Slightly distinct light gray for nested elements */
   --gold: #A36E2E !important;
   --gold-hover: #8B5E27 !important;
-  --status-success: #166534 !important;
+  --status-success: #15803D !important;
   --status-warning: #B45309 !important;
-  --status-danger: #991B1B !important;
-  --muted: #4A5568 !important;
-  --primary-text: #171923 !important;
+  --status-danger: #B91C1C !important;
+  --muted: #64748B !important;
+  --primary-text: #0F172A !important;
   --particle-color: 0, 0, 0 !important;
-}
-
-/* Global Fixes for Light Mode white text/borders */
-html[data-theme='light'] .text-white,
-html[data-theme='light'] .text-primary-text {
-  color: var(--primary-text) !important;
-}
-
-html[data-theme='light'] .border-white\/5,
-html[data-theme='light'] .border-white\/10,
-html[data-theme='light'] .border-white\/20 {
-  border-color: color-mix(in srgb, var(--primary-text), transparent 90%) !important;
-}
-
-html[data-theme='light'] .divide-white\/5,
-html[data-theme='light'] .divide-white\/10 {
-  border-color: color-mix(in srgb, var(--primary-text), transparent 90%) !important;
-}
-
-html[data-theme='light'] .bg-white\/5,
-html[data-theme='light'] .bg-white\/10,
-html[data-theme='light'] .bg-white\/03 {
-  background-color: color-mix(in srgb, var(--primary-text), transparent 95%) !important;
+  --color-white: 15 23 42 !important; /* Maps white opacity classes to slate in light mode */
 }
 
 body {

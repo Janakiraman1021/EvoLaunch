@@ -217,7 +217,7 @@ export function FooterSection() {
 // Dashboard Redirect Icon (fixed, bottom right)
 export function DashboardRedirect() {
   return (
-    <Link href="/dashboard" className="fixed bottom-6 right-6 z-50 bg-gold text-[#0C0C0F] rounded-full shadow-gold-glow p-4 flex items-center justify-center hover:scale-110 transition-transform" title="Go to Dashboard">
+    <Link href="/dashboard" className="fixed bottom-6 right-6 z-50 bg-gold text-background rounded-full shadow-gold-glow p-4 flex items-center justify-center hover:scale-110 transition-transform" title="Go to Dashboard">
       <BarChart2 className="w-7 h-7" />
     </Link>
   );

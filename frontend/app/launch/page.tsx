@@ -480,7 +480,7 @@ export default function LaunchPage() {
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-3">
-                  <div className="w-5 h-5 border-2 border-[#0C0C0F]/20 border-t-[#0C0C0F] rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-background/20 border-t-background rounded-full animate-spin" />
                   Processing Mandate...
                 </span>
               ) : 'Execute Deployment'}

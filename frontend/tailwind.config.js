@@ -14,6 +14,7 @@ module.exports = {
           DEFAULT: "var(--gold)",
           hover: "var(--gold-hover)",
         },
+        white: "rgb(var(--color-white) / <alpha-value>)",
         primary: "var(--primary-text)",
         muted: "var(--muted)",
         status: {
@@ -75,5 +76,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };

@@ -48,13 +48,13 @@ export default function DashboardPage() {
   }, [wallet?.balance]);
 
   return (
-    <div className="min-h-screen bg-[#0C0C0F] text-white font-sans">
+    <div className="min-h-screen bg-background text-white font-sans">
       {/* Global Ecosystem Ticker */}
-      <div className="w-full h-8 overflow-hidden border-y border-[#C9A84C]/10 flex items-center bg-[#0f0f13] relative z-20">
+      <div className="w-full h-8 overflow-hidden border-y border-gold/10 flex items-center bg-secondary relative z-20">
         <div className="flex whitespace-nowrap animate-marquee">
           {[1, 2, 3].map((_, i) => (
             <div key={i} className="flex gap-12 items-center px-12">
-              <span className="text-xs font-bold text-[#C9A84C] uppercase tracking-[0.2em] flex items-center gap-2">
+              <span className="text-xs font-bold text-gold uppercase tracking-[0.2em] flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34D399]" />
                 PORTFOLIO: <span className="text-white">{stats.totalValue}</span>
               </span>
@@ -64,7 +64,7 @@ export default function DashboardPage() {
               <span className="text-xs font-bold text-white/40 uppercase tracking-[0.2em]">
                 MARKET_SYNC: <span className="text-emerald-400">ACTIVE</span>
               </span>
-              <span className="text-xs font-bold text-[#C9A84C] uppercase tracking-[0.2em]">
+              <span className="text-xs font-bold text-gold uppercase tracking-[0.2em]">
                 CHAIN_STATUS: <span className="text-white">BNB_MAINNET</span>
               </span>
               <span className="text-xs font-bold text-white/40 uppercase tracking-[0.2em]">
@@ -76,12 +76,12 @@ export default function DashboardPage() {
       </div>
 
       {/* Header */}
-      <div className="border-b border-[#C9A84C]/10 bg-[#0f0f13]/80 sticky top-0 z-10 backdrop-blur-md">
+      <div className="border-b border-gold/10 bg-background/90 sticky top-0 z-10 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 py-5 flex items-end justify-between">
           <div>
             <h1 className="text-3xl font-black tracking-tight text-white flex items-center gap-3">
               Dashboard
-              <span className="text-[#C9A84C]">Overview</span>
+              <span className="text-gold">Overview</span>
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34D399]" />
             </h1>
             <p className="text-white/40 text-xs uppercase tracking-widest font-bold mt-1">Track your portfolio and trading activity</p>
@@ -92,8 +92,8 @@ export default function DashboardPage() {
                 key={t}
                 onClick={() => setTimeframe(t)}
                 className={`px-4 py-1.5 rounded-lg text-xs font-bold tracking-widest uppercase transition-all ${timeframe === t
-                    ? 'bg-[#C9A84C] text-[#0C0C0F] shadow-[0_0_12px_rgba(201,168,76,0.4)]'
-                    : 'border border-white/10 text-white/40 hover:border-[#C9A84C]/30 hover:text-white/70'
+                    ? 'bg-gold text-background shadow-[0_0_12px_rgba(201,168,76,0.4)]'
+                    : 'border border-white/10 text-white/40 hover:border-gold/30 hover:text-white/70'
                   }`}
               >
                 {t}
@@ -114,24 +114,24 @@ export default function DashboardPage() {
           ].map((stat, i) => (
             <div
               key={i}
-              className="relative bg-[#111116] border border-white/[0.06] rounded-2xl p-7 flex flex-col gap-5 group hover:border-[#C9A84C]/30 transition-all duration-500 overflow-hidden"
+              className="relative bg-secondary border border-white/[0.06] rounded-2xl p-7 flex flex-col gap-5 group hover:border-gold/30 transition-all duration-500 overflow-hidden"
             >
               {/* Shine sweep */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none bg-gradient-to-br from-[#C9A84C]/5 via-transparent to-transparent" />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none bg-gradient-to-br from-gold/5 via-transparent to-transparent" />
               <div className="flex justify-between items-start relative z-10">
-                <div className="w-10 h-10 rounded-xl bg-[#C9A84C]/5 border border-[#C9A84C]/10 flex items-center justify-center text-[#C9A84C] group-hover:scale-110 transition-transform shadow-[0_0_16px_rgba(201,168,76,0.1)]">
+                <div className="w-10 h-10 rounded-xl bg-gold/5 border border-gold/10 flex items-center justify-center text-gold group-hover:scale-110 transition-transform shadow-[0_0_16px_rgba(201,168,76,0.1)]">
                   <stat.icon size={20} />
                 </div>
                 <div className="flex flex-col items-end">
                   <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">{stat.label}</span>
-                  <div className="text-2xl font-black text-white mt-1 tracking-tight group-hover:text-[#C9A84C] transition-colors">
+                  <div className="text-2xl font-black text-white mt-1 tracking-tight group-hover:text-gold transition-colors">
                     {stat.value}
                   </div>
                 </div>
               </div>
               <div className="flex items-center justify-between relative z-10">
                 <div className="h-0.5 flex-1 bg-white/5 rounded-full overflow-hidden mr-4">
-                  <div className="h-full bg-[#C9A84C]/50 w-[70%] group-hover:w-[88%] transition-all duration-1000" />
+                  <div className="h-full bg-gold/50 w-[70%] group-hover:w-[88%] transition-all duration-1000" />
                 </div>
                 <span className="text-[10px] font-black text-emerald-400 tracking-widest uppercase">{stat.trend}</span>
               </div>
@@ -144,13 +144,13 @@ export default function DashboardPage() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Positions Table */}
-            <div className="bg-[#111116] border border-white/[0.06] rounded-2xl overflow-hidden group hover:border-[#C9A84C]/20 transition-all duration-500">
+            <div className="bg-secondary border border-white/[0.06] rounded-2xl overflow-hidden group hover:border-gold/20 transition-all duration-500">
               <div className="p-8 border-b border-white/5 flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-black text-white tracking-tight">Your Positions</h2>
                   <p className="text-white/30 text-[10px] uppercase tracking-widest font-bold mt-1">Live Execution Matrix</p>
                 </div>
-                <div className="px-4 py-2 rounded-xl bg-[#C9A84C] text-[#0C0C0F] text-[10px] font-black tracking-[0.1em] shadow-[0_0_12px_rgba(201,168,76,0.3)] hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                <div className="px-4 py-2 rounded-xl bg-gold text-background text-[10px] font-black tracking-[0.1em] shadow-[0_0_12px_rgba(201,168,76,0.3)] hover:scale-105 active:scale-95 transition-all cursor-pointer">
                   LIVE_FEED
                 </div>
               </div>
@@ -158,7 +158,7 @@ export default function DashboardPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-white/5 bg-white/[0.02]">
+                    <tr className="border-b border-white/5 bg-card/50">
                       <th className="px-7 py-4 text-left text-[10px] text-white/30 font-black uppercase tracking-[0.2em]">Token</th>
                       <th className="px-7 py-4 text-left text-[10px] text-white/30 font-black uppercase tracking-[0.2em]">Amount</th>
                       <th className="px-7 py-4 text-left text-[10px] text-white/30 font-black uppercase tracking-[0.2em]">Value</th>
@@ -168,9 +168,9 @@ export default function DashboardPage() {
                   </thead>
                   <tbody>
                     {positions.map((position, idx) => (
-                      <tr key={idx} className="border-b border-white/[0.04] hover:bg-[#C9A84C]/[0.03] transition-all group/row">
+                      <tr key={idx} className="border-b border-white/[0.04] hover:bg-gold/[0.03] transition-all group/row">
                         <td className="px-7 py-5">
-                          <Link href="/explore" className="font-black text-[#C9A84C] hover:text-[#E8C96A] tracking-wide transition-colors">
+                          <Link href="/explore" className="font-black text-gold hover:text-[#E8C96A] tracking-wide transition-colors">
                             {position.symbol}
                           </Link>
                         </td>
@@ -180,7 +180,7 @@ export default function DashboardPage() {
                           {position.change}
                         </td>
                         <td className="px-7 py-5">
-                          <span className="px-3 py-1.5 rounded-lg text-[10px] font-black bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/20 tracking-widest uppercase">
+                          <span className="px-3 py-1.5 rounded-lg text-[10px] font-black bg-gold/10 text-gold border border-gold/20 tracking-widest uppercase">
                             {position.phase}
                           </span>
                         </td>
@@ -194,7 +194,7 @@ export default function DashboardPage() {
                     <p className="text-[10px] uppercase tracking-[0.3em] font-black text-white/20 mb-5">No tokens launched yet</p>
                     <Link
                       href="/launch"
-                      className="text-[10px] text-[#C9A84C] uppercase tracking-[0.2em] font-black hover:text-[#E8C96A] transition-colors"
+                      className="text-[10px] text-gold uppercase tracking-[0.2em] font-black hover:text-[#E8C96A] transition-colors"
                     >
                       Launch your first token →
                     </Link>
@@ -203,7 +203,7 @@ export default function DashboardPage() {
 
                 {launchesLoading && (
                   <div className="text-center py-10">
-                    <div className="w-5 h-5 border-2 border-[#C9A84C]/20 border-t-[#C9A84C] rounded-full animate-spin mx-auto mb-3" />
+                    <div className="w-5 h-5 border-2 border-gold/20 border-t-gold rounded-full animate-spin mx-auto mb-3" />
                     <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-black">Scanning chain...</p>
                   </div>
                 )}
@@ -211,7 +211,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Recent Activity */}
-            <div className="bg-[#111116] border border-white/[0.06] rounded-2xl p-8 hover:border-[#C9A84C]/20 transition-all duration-500">
+            <div className="bg-secondary border border-white/[0.06] rounded-2xl p-8 hover:border-gold/20 transition-all duration-500">
               <div className="flex items-center justify-between mb-8">
                 <div>
                   <h2 className="text-xl font-black text-white tracking-tight">Recent Activity</h2>
@@ -223,7 +223,7 @@ export default function DashboardPage() {
                 {recentActivity.map((activity, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center justify-between p-5 bg-white/[0.02] rounded-xl border border-white/[0.04] hover:border-[#C9A84C]/20 transition-all"
+                    className="flex items-center justify-between p-5 bg-card/70 rounded-xl border border-white/5 hover:border-gold/20 transition-all"
                   >
                     <div className="flex items-center gap-4">
                       <div className={`w-2.5 h-2.5 rounded-full ${activity.type === 'buy' ? 'bg-emerald-400 shadow-[0_0_8px_#34D399]' : 'bg-red-400'}`} />
@@ -250,9 +250,9 @@ export default function DashboardPage() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Top Gainers */}
-            <div className="bg-[#111116] border border-white/[0.06] rounded-2xl p-7 hover:border-[#C9A84C]/20 transition-all duration-500">
+            <div className="bg-secondary border border-white/[0.06] rounded-2xl p-7 hover:border-gold/20 transition-all duration-500">
               <div className="flex items-center gap-3 mb-7">
-                <div className="w-8 h-8 rounded-xl bg-[#C9A84C]/10 border border-[#C9A84C]/20 flex items-center justify-center text-[#C9A84C]">
+                <div className="w-8 h-8 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center text-gold">
                   <Zap size={16} />
                 </div>
                 <div>
@@ -269,10 +269,10 @@ export default function DashboardPage() {
                 ].map((token, i) => (
                   <div
                     key={i}
-                    className="p-4 bg-white/[0.02] rounded-xl border border-white/[0.04] hover:border-[#C9A84C]/20 transition-all group/token"
+                    className="p-4 bg-card/70 rounded-xl border border-white/5 hover:border-gold/20 transition-all group/token"
                   >
                     <div className="flex justify-between items-center mb-1.5">
-                      <span className="font-black text-white text-sm group-hover/token:text-[#C9A84C] transition-colors">{token.symbol}</span>
+                      <span className="font-black text-white text-sm group-hover/token:text-gold transition-colors">{token.symbol}</span>
                       <span className="font-black text-emerald-400 text-sm">{token.change}</span>
                     </div>
                     <div className="flex items-center justify-between">
@@ -290,9 +290,9 @@ export default function DashboardPage() {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-[#111116] border border-white/[0.06] rounded-2xl p-7 hover:border-[#C9A84C]/20 transition-all duration-500">
+            <div className="bg-secondary border border-white/[0.06] rounded-2xl p-7 hover:border-gold/20 transition-all duration-500">
               <div className="flex items-center gap-3 mb-7">
-                <div className="w-8 h-8 rounded-xl bg-[#C9A84C]/10 border border-[#C9A84C]/20 flex items-center justify-center text-[#C9A84C]">
+                <div className="w-8 h-8 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center text-gold">
                   <Compass size={16} />
                 </div>
                 <div>
@@ -304,13 +304,13 @@ export default function DashboardPage() {
               <div className="space-y-3">
                 <Link
                   href="/explore"
-                  className="block p-4 rounded-xl bg-[#C9A84C] text-[#0C0C0F] text-center font-black text-[11px] uppercase tracking-[0.15em] shadow-[0_0_16px_rgba(201,168,76,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all"
+                  className="block p-4 rounded-xl bg-gold text-background text-center font-black text-[11px] uppercase tracking-[0.15em] shadow-[0_0_16px_rgba(201,168,76,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all"
                 >
                   Explore Launches
                 </Link>
                 <Link
                   href="/launch"
-                  className="block p-4 rounded-xl border border-white/[0.08] text-white/60 text-center font-black text-[11px] uppercase tracking-[0.15em] hover:border-[#C9A84C]/30 hover:text-white transition-all"
+                  className="block p-4 rounded-xl border border-white/[0.08] text-white/60 text-center font-black text-[11px] uppercase tracking-[0.15em] hover:border-gold/30 hover:text-white transition-all"
                 >
                   Create Launch
                 </Link>
@@ -336,7 +336,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Stability Metrics */}
-            <div className="bg-[#111116] border border-white/[0.06] rounded-2xl p-7 hover:border-[#C9A84C]/20 transition-all duration-500">
+            <div className="bg-secondary border border-white/[0.06] rounded-2xl p-7 hover:border-gold/20 transition-all duration-500">
               <div className="flex items-center gap-3 mb-7">
                 <div className="w-8 h-8 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center text-emerald-400">
                   <Shield size={16} />
@@ -356,11 +356,11 @@ export default function DashboardPage() {
                   <div key={i} className="space-y-2">
                     <div className="flex justify-between">
                       <span className="text-[10px] text-white/30 font-black uppercase tracking-widest">{m.label}</span>
-                      <span className={`text-[10px] font-black ${m.green ? 'text-emerald-400' : 'text-[#C9A84C]'}`}>{m.value}</span>
+                      <span className={`text-[10px] font-black ${m.green ? 'text-emerald-400' : 'text-gold'}`}>{m.value}</span>
                     </div>
                     <div className="h-0.5 w-full bg-white/5 rounded-full overflow-hidden">
                       <div
-                        className={`h-full ${m.green ? 'bg-emerald-400 shadow-[0_0_8px_#34D399]' : 'bg-[#C9A84C] shadow-[0_0_8px_rgba(201,168,76,0.5)]'}`}
+                        className={`h-full ${m.green ? 'bg-emerald-400 shadow-[0_0_8px_#34D399]' : 'bg-gold shadow-[0_0_8px_rgba(201,168,76,0.5)]'}`}
                         style={{ width: m.width }}
                       />
                     </div>

@@ -126,11 +126,11 @@ export default function WalletGate({ children }: { children: React.ReactNode }) 
                                     <div className="relative flex items-center gap-2 sm:gap-3">
                                         {isConnecting ? (
                                             <>
-                                                <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-[#0C0C0F]/20 border-t-[#0C0C0F] rounded-full animate-spin" />
+                                                <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-background/20 border-t-background rounded-full animate-spin" />
                                                 <span className="text-xs sm:text-sm lg:text-base">Authenticating...</span>
                                                 <div className="flex gap-1">
                                                     {[...Array(3)].map((_, i) => (
-                                                        <div key={i} className="w-1 h-1 bg-[#0C0C0F] rounded-full animate-pulse"
+                                                        <div key={i} className="w-1 h-1 bg-background rounded-full animate-pulse"
                                                              style={{ animationDelay: `${i * 0.2}s` }}></div>
                                                     ))}
                                                 </div>

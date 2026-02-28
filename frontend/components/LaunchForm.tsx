@@ -76,7 +76,7 @@ export default function LaunchForm() {
                     </div>
                 </div>
 
-                <button className="w-full py-6 bg-gold-gradient text-[#0C0C0F] font-bold rounded-2xl hover:scale-[1.01] active:scale-[0.98] transition-all duration-500 mt-8 shadow-gold-subtle flex items-center justify-center gap-4 group uppercase tracking-widest text-sm">
+                <button className="w-full py-6 bg-gold-gradient text-background font-bold rounded-2xl hover:scale-[1.01] active:scale-[0.98] transition-all duration-500 mt-8 shadow-gold-subtle flex items-center justify-center gap-4 group uppercase tracking-widest text-sm">
                     Deploy Strategic Layer
                     <Sparkles size={20} className="animate-pulse" />
                 </button>

@@ -18,7 +18,7 @@ interface AgentPerformanceChartProps {
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload?.length) return null;
     return (
-        <div className="bg-[#1C1C21] border border-gold/20 rounded-xl px-4 py-3 shadow-2xl">
+        <div className="bg-card border border-gold/20 rounded-xl px-4 py-3 shadow-2xl">
             <p className="text-[10px] text-muted uppercase tracking-widest mb-2">{label}</p>
             {payload.map((p: any, i: number) => (
                 <p key={i} className="text-sm font-bold" style={{ color: p.color }}>

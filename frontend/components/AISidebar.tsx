@@ -15,36 +15,25 @@ import {
   User,
   BarChart3,
   LayoutDashboard,
-  Copy,
-  Settings,
-  LogOut,
+  Cpu,
+  TrendingUp,
   ArrowLeftRight
 } from 'lucide-react';
 import api from '../lib/api';
 
-interface SidebarProps {
+interface AISidebarProps {
   onSwitchMode?: () => void;
 }
 
-export default function Sidebar({ onSwitchMode }: SidebarProps) {
+export default function AISidebar({ onSwitchMode }: AISidebarProps) {
   const pathname = usePathname();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-  const [copied, setCopied] = useState(false);
-  const [tokenAddress, setTokenAddress] = useState('');
-
-  const mockProfile = {
-    name: 'Institutional Node',
-    address: '0x7D02fD90716722221277D8CA750B3611Ca51dAB9',
-    reputation: 85,
-    totalValue: '125.3 BNB',
-  };
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' || 'dark';
     setTheme(savedTheme);
     document.documentElement.setAttribute('data-theme', savedTheme);
-    setTokenAddress(api.getTokenAddress());
   }, []);
 
   const toggleTheme = () => {
@@ -54,23 +43,17 @@ export default function Sidebar({ onSwitchMode }: SidebarProps) {
     document.documentElement.setAttribute('data-theme', newTheme);
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(mockProfile.address);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   const links = [
-    { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { href: '/launch', icon: Rocket, label: 'Launch' },
-    { href: '/explore', icon: Compass, label: 'Explorer' },
-    ...(tokenAddress ? [{ href: `/project/${tokenAddress}`, icon: Activity, label: 'Terminal' }] : []),
-    { href: '/analytics', icon: BarChart3, label: 'Analytics' },
-    { href: '/reputation', icon: ShieldAlert, label: 'Reputation' },
-    { href: '/agents', icon: Bot, label: 'Agents' },
-    { href: '/profile', icon: User, label: 'Profile' },
-    { href: '/docs', icon: FileText, label: 'Docs' },
-    { href: '/system', icon: Activity, label: 'Network' },
+    { href: '/ai/dashboard', icon: LayoutDashboard, label: 'AI Dashboard' },
+    { href: '/ai/launch', icon: Bot, label: 'Launch Agent' },
+    { href: '/ai/explore', icon: Compass, label: 'Agent Explorer' },
+    // Only show Agent Terminal if there's an active address (for AI, might use a different logic, for now static route sample)
+    { href: '/ai/analytics', icon: BarChart3, label: 'AI Analytics' },
+    { href: '/ai/governance', icon: ShieldAlert, label: 'AI Governance' },
+    { href: '/ai/strategies', icon: TrendingUp, label: 'Strategies' },
+    { href: '/ai/treasury', icon: Cpu, label: 'Treasury' },
+    { href: '/ai/docs', icon: FileText, label: 'AI Docs' },
+    { href: '/ai/system', icon: Activity, label: 'System Status' },
   ];
 
   const getScaleClass = (index: number) => {
@@ -88,7 +71,7 @@ export default function Sidebar({ onSwitchMode }: SidebarProps) {
       <Link href="/" className="mb-6 relative group">
         <div className="absolute inset-0 bg-gold/20 blur-xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-700 opacity-50" />
         <div className="w-10 h-10 rounded-xl bg-gold-gradient flex items-center justify-center shadow-gold-glow relative z-10 transition-all duration-500 group-hover:rotate-[10deg] group-hover:scale-110">
-          <Rocket className="text-background" size={20} />
+          <Bot className="text-background" size={20} />
         </div>
       </Link>
 
@@ -130,6 +113,21 @@ export default function Sidebar({ onSwitchMode }: SidebarProps) {
 
       {/* Bottom Utility Actions */}
       <div className="flex flex-col items-center gap-4 w-full pt-6 border-t border-gold/[0.05]">
+        
+        {/* Switch Mode Button */}
+        {onSwitchMode && (
+          <button
+            onClick={onSwitchMode}
+            className="w-10 h-10 rounded-xl bg-gold/10 border border-gold/20 text-gold hover:bg-gold hover:text-background flex items-center justify-center transition-all duration-300 group relative"
+          >
+            <ArrowLeftRight size={16} />
+            <div className="absolute left-14 top-1/2 -translate-y-1/2 px-4 py-2 rounded-lg bg-secondary border border-gold/20 text-gold text-xs font-bold uppercase tracking-widest opacity-0 scale-90 translate-x-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap shadow-luxury-soft">
+              Switch Paradigm
+              <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-secondary border-l border-b border-gold/20 rotate-45" />
+            </div>
+          </button>
+        )}
+
         <button
           onClick={toggleTheme}
           className="text-muted hover:text-gold hover:scale-110 transition-all duration-300 group relative"
@@ -142,32 +140,18 @@ export default function Sidebar({ onSwitchMode }: SidebarProps) {
           </div>
         </button>
 
-        {/* Switch Mode Button */}
-        {onSwitchMode && (
-          <button
-            onClick={onSwitchMode}
-            className="w-10 h-10 rounded-xl bg-gold/10 border border-gold/20 text-gold hover:bg-gold hover:text-background flex items-center justify-center transition-all duration-300 group relative mb-2"
-          >
-            <ArrowLeftRight size={16} />
-            <div className="absolute left-14 top-1/2 -translate-y-1/2 px-4 py-2 rounded-lg bg-secondary border border-gold/20 text-gold text-xs font-bold uppercase tracking-widest opacity-0 scale-90 translate-x-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap shadow-luxury-soft">
-              Switch Paradigm
-              <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-secondary border-l border-b border-gold/20 rotate-45" />
-            </div>
-          </button>
-        )}
-
         {/* Institutional Profile */}
         <Link href="/profile" className="relative cursor-pointer group">
           <div className="absolute inset-0 bg-gold/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           <div className="w-9 h-9 rounded-full p-[1px] bg-gradient-to-b from-gold/40 to-transparent relative z-10 transition-transform duration-500 group-hover:scale-110">
             <div className="w-full h-full rounded-full bg-background flex items-center justify-center overflow-hidden border border-black/50">
-              <span className="text-[10px] font-bold text-gold tracking-tighter">EVO</span>
+              <span className="text-[10px] font-bold text-gold tracking-tighter">AI</span>
             </div>
           </div>
-          <div className="absolute bottom-0 right-0 w-2 h-2 bg-status-success rounded-full border border-background z-20 shadow-status-success" />
+          <div className="absolute bottom-0 right-0 w-2 h-2 bg-gold rounded-full border border-background z-20 shadow-[0_0_8px_#C9A84C]" />
 
           <div className="absolute left-14 top-1/2 -translate-y-1/2 px-4 py-2 rounded-lg bg-secondary border border-gold/20 text-gold text-xs font-bold uppercase tracking-widest opacity-0 scale-90 translate-x-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap shadow-luxury-soft">
-            Institutional Profile
+            Agent Profile
             <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-secondary border-l border-b border-gold/20 rotate-45" />
           </div>
         </Link>

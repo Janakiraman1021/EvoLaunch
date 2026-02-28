@@ -3,10 +3,13 @@
 import { Outfit } from 'next/font/google'
 import './globals.css'
 import Sidebar from '../components/Sidebar'
+import AISidebar from '../components/AISidebar'
 import Header from '../components/Header'
 import SparklingParticles from '../components/SparklingParticles'
+import ModeSelector from '../components/ModeSelector'
 import { usePathname } from 'next/navigation'
 import Head from 'next/head' // <-- Add this import
+import { useMode } from '../lib/hooks/useMode'
 
 const outfit = Outfit({
     subsets: ['latin'],
@@ -22,6 +25,7 @@ export default function RootLayout({
 }) {
     const pathname = usePathname();
     const isLanding = pathname === '/' || pathname === '/landing';
+    const { mode, setMode, isInitialized } = useMode();
 
     return (
         <html lang="en" className={`${outfit.variable}`}>
@@ -31,7 +35,9 @@ export default function RootLayout({
                 {/* Add other meta tags as needed */}
             </Head>
             <body className="flex h-screen overflow-hidden bg-background text-primary font-body antialiased">
-                {!isLanding && <Sidebar />}
+                <ModeSelector isOpen={isInitialized && mode === null && !isLanding} onSelect={setMode} />
+                {!isLanding && mode !== 'ai' && <Sidebar onSwitchMode={() => setMode(null)} />}
+                {!isLanding && mode === 'ai' && <AISidebar onSwitchMode={() => setMode(null)} />}
                 <main className={`flex-1 ${isLanding ? 'ml-0 p-0' : 'ml-40 p-12'} h-screen overflow-y-auto relative scroll-smooth overflow-x-hidden`}>
                     {/* Institutional Background Elements */}
                     <div className="fixed inset-0 pointer-events-none overflow-hidden select-none z-0">
