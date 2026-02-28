@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, AlertCircle, CheckCircle, Zap, Lock } from 'lucide-react';
 import { useWeb3 } from '../../lib/hooks/useWeb3';
-import { CONTRACT_ADDRESSES, LAUNCH_FACTORY_ABI, getSignedContract } from '../../lib/contracts';
+import { CONTRACT_ADDRESSES, LAUNCH_FACTORY_ABI, ADAPTIVE_TOKEN_ABI, EVOLUTION_CONTROLLER_ABI, PHASE_NAMES, getSignedContract, getReadProvider } from '../../lib/contracts';
+import { postLaunch } from '../../lib/api';
+import { parseUnits, parseEther, Contract, formatUnits } from 'ethers';
 
 interface FormData {
   name: string;
@@ -40,7 +42,7 @@ export default function LaunchPage() {
     name: 'Sample Token',
     symbol: 'SMPL',
     totalSupply: '1000000',
-    initialLiquidity: '10000',
+    initialLiquidity: '0',
     initialSellTax: 5,
     initialBuyTax: 2,
     minTax: 0,
@@ -59,6 +61,13 @@ export default function LaunchPage() {
 
   const [validationWarnings, setValidationWarnings] = useState<string[]>([]);
 
+  // Auto-fill feeCollector when wallet connects
+  useEffect(() => {
+    if (wallet?.address && !form.feeCollector) {
+      setForm(prev => ({ ...prev, feeCollector: wallet.address }));
+    }
+  }, [wallet?.address]);
+
   // Validate form
   useEffect(() => {
     const warnings: string[] = [];
@@ -69,14 +78,22 @@ export default function LaunchPage() {
     if (form.initialSellTax > form.maxTax) {
       warnings.push('Initial sell tax exceeds maximum tax bound');
     }
-    if (BigInt(form.minMaxTx) > BigInt(form.initialMaxTx)) {
-      warnings.push('Minimum max-tx is higher than initial max-tx');
-    }
-    if (BigInt(form.minMaxWallet) > BigInt(form.initialMaxWallet)) {
-      warnings.push('Minimum max-wallet is higher than initial max-wallet');
-    }
-    if (!form.feeCollector || form.feeCollector === '') {
+    try {
+      if (BigInt(form.minMaxTx || '0') > BigInt(form.initialMaxTx || '0')) {
+        warnings.push('Minimum max-tx is higher than initial max-tx');
+      }
+      if (BigInt(form.minMaxWallet || '0') > BigInt(form.initialMaxWallet || '0')) {
+        warnings.push('Minimum max-wallet is higher than initial max-wallet');
+      }
+    } catch { /* ignore parsing errors during typing */ }
+    if (!form.feeCollector || form.feeCollector.length < 42) {
       warnings.push('Fee collector address is required');
+    }
+    if (!form.name.trim()) {
+      warnings.push('Token name is required');
+    }
+    if (!form.symbol.trim()) {
+      warnings.push('Token symbol is required');
     }
 
     setValidationWarnings(warnings);
@@ -116,35 +133,111 @@ export default function LaunchPage() {
         wallet.signer
       );
 
-      // Parse form values to wei
-      const parseValue = (val: string, decimals: number = 18) => {
-        return BigInt(Math.floor(parseFloat(val) * Math.pow(10, decimals)));
-      };
+      // Build the LaunchParams struct as a tuple for ethers.js
+      const params = [
+        form.name,
+        form.symbol,
+        parseUnits(form.totalSupply || '1000000', 18),
+        BigInt(Math.round(form.initialSellTax * 100)),  // basis points
+        BigInt(Math.round(form.initialBuyTax * 100)),
+        parseUnits(form.initialMaxTx || '10000', 18),
+        parseUnits(form.initialMaxWallet || '20000', 18),
+        BigInt(Math.round(form.minTax * 100)),
+        BigInt(Math.round(form.maxTax * 100)),
+        parseUnits(form.minMaxTx || '1000', 18),
+        parseUnits(form.minMaxWallet || '2000', 18),
+        form.feeCollector || wallet.address,
+        [wallet.address],  // agentPublicKeys
+      ];
 
-      const tx = await factory.createLaunch({
-        name: form.name,
-        symbol: form.symbol,
-        totalSupply: parseValue(form.totalSupply),
-        initialSellTax: form.initialSellTax * 100, // Convert to basis points
-        initialBuyTax: form.initialBuyTax * 100,
-        initialMaxTx: parseValue(form.initialMaxTx),
-        initialMaxWallet: parseValue(form.initialMaxWallet),
-        minTax: form.minTax * 100,
-        maxTax: form.maxTax * 100,
-        minMaxTx: parseValue(form.minMaxTx),
-        minMaxWallet: parseValue(form.minMaxWallet),
-        feeCollector: form.feeCollector || wallet.address,
-        agentPublicKeys: [wallet.address]
+      // NOTE: The LaunchFactory contract is marked payable but does NOT use msg.value.
+      // Do NOT send BNB — it would just be locked in the factory contract.
+      // Deploying 5 contracts in one tx requires high gas.
+      console.log('[Launch] Deploying with params:', params);
+
+      const tx = await factory.createLaunch(params, {
+        gasLimit: 8_000_000,  // high gas: deploys 5 contracts internally
       });
 
       setTxHash(tx.hash);
+      console.log('[Launch] TX sent:', tx.hash);
 
       const receipt = await tx.wait();
+      console.log('[Launch] TX confirmed:', receipt);
+
       if (receipt) {
-        router.push(`/project/${form.symbol}`);
+        // Parse the LaunchCreated event to get all addresses
+        let tokenAddress = '', vaultAddress = '', controllerAddress = '', governanceAddress = '', ammPairAddress = '';
+
+        const event = receipt.logs?.find((log: any) => {
+          try {
+            const parsed = factory.interface.parseLog({ topics: log.topics, data: log.data });
+            return parsed?.name === 'LaunchCreated';
+          } catch { return false; }
+        });
+
+        if (event) {
+          const parsed = factory.interface.parseLog({ topics: event.topics, data: event.data });
+          tokenAddress = parsed?.args?.[0] || '';
+          vaultAddress = parsed?.args?.[1] || '';
+          controllerAddress = parsed?.args?.[2] || '';
+          governanceAddress = parsed?.args?.[3] || '';
+          ammPairAddress = parsed?.args?.[4] || '';
+          console.log('[Launch] New token:', tokenAddress);
+        }
+
+        // Read on-chain token data and save to localStorage
+        if (tokenAddress) {
+          let totalSupply = '0', sellTax = 0, buyTax = 0, phase = 0, mss = 0;
+          try {
+            const provider = getReadProvider();
+            const tokenContract = new Contract(tokenAddress, ADAPTIVE_TOKEN_ABI, provider);
+            const [ts, st, bt] = await Promise.all([
+              tokenContract.totalSupply(),
+              tokenContract.sellTax(),
+              tokenContract.buyTax(),
+            ]);
+            totalSupply = formatUnits(ts, 18);
+            sellTax = Number(st) / 100;
+            buyTax = Number(bt) / 100;
+          } catch (e) { console.warn('[Launch] Token read failed:', e); }
+
+          try {
+            if (controllerAddress) {
+              const provider = getReadProvider();
+              const ctrl = new Contract(controllerAddress, EVOLUTION_CONTROLLER_ABI, provider);
+              const [p, m] = await Promise.all([ctrl.currentPhase(), ctrl.currentMSS()]);
+              phase = Number(p); mss = Number(m);
+            }
+          } catch { /* controller read failed */ }
+
+          await postLaunch({
+            tokenAddress,
+            vaultAddress,
+            controllerAddress,
+            governanceAddress,
+            ammPairAddress,
+            name: form.name,
+            symbol: form.symbol,
+            totalSupply,
+            sellTax,
+            buyTax,
+            phase,
+            phaseName: PHASE_NAMES[phase] || 'Genesis',
+            mss,
+            deployer: wallet.address,
+            blockNumber: receipt.blockNumber || 0,
+          });
+          console.log('[Launch] Token registered in backend!');
+        }
+
+        router.push(`/explore`);
       }
     } catch (err: any) {
-      setError(err.message || 'Deployment failed');
+      console.error('[Launch] Deploy error:', err);
+      // Extract readable error from revert or user rejection
+      const reason = err?.reason || err?.data?.message || err?.shortMessage || err?.message || 'Deployment failed';
+      setError(reason);
     } finally {
       setLoading(false);
     }
@@ -176,7 +269,7 @@ export default function LaunchPage() {
 
         {/* Deployment Matrix */}
         <div className="space-y-12 opacity-0 animate-in fade-in slide-in-from-bottom-5 duration-1000 fill-mode-forwards" style={{ animationDelay: '200ms' }}>
-          
+
           {/* Section: Core Parameters */}
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-1">

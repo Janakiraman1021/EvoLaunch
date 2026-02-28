@@ -44,15 +44,23 @@ export const GOVERNANCE_MODULE_ABI = [
   'event LogicFrozen(bool frozen)',
 ];
 
+export const PANCAKE_ROUTER_ABI = [
+  'function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts)',
+  'function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts)',
+  'function swapExactTokensForETHSupportingFeeOnTransferTokens(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external',
+  'function WETH() external pure returns (address)'
+];
+
 // ─── Deployed Contract Addresses (BSC Testnet) ────────────────────
 
 export const CONTRACT_ADDRESSES = {
-  LAUNCH_FACTORY: '0x2C95eEeF7d0F5Be75dce165aC7689B09Fd06FEF6',
+  LAUNCH_FACTORY: '0xe5d0cc05BFDb99e4E4EF8665fB59eaC0B2B5D81f',
   ADAPTIVE_TOKEN: '0xb142FCD1fc79BE3EA60C1B83558f171033A0c12E',
   LIQUIDITY_VAULT: '0x383D77A86D51313e5C3F6f9feb372191FAEdA4fF',
   EVOLUTION_CONTROLLER: '0xC4D65495eB47AC8726Dad401d28A83C25B77f110',
   GOVERNANCE_MODULE: '0xfE63A74EcAC6BCaDF4078B7C53d01e2f511ff629',
   AMM_PAIR: '0x6FdFe8B580864A97Ae21f5Ba46046016FC3173DA',
+  PANCAKE_ROUTER: '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3',
   RPC_URL: 'https://data-seed-prebsc-1-s1.binance.org:8545',
   CHAIN_ID: 97,
   CHAIN_NAME: 'BSC Testnet',
@@ -228,3 +236,130 @@ export async function fetchUserBalance(userAddress: string): Promise<string> {
     return '0';
   }
 }
+
+// ─── Launched Token Registry (from events) ────────────────────────
+
+export interface LaunchedToken {
+  tokenAddress: string;
+  vaultAddress: string;
+  controllerAddress: string;
+  governanceAddress: string;
+  ammPairAddress: string;
+  name: string;
+  symbol: string;
+  totalSupply: string;
+  sellTax: number;
+  buyTax: number;
+  phase: number;
+  phaseName: string;
+  mss: number;
+  blockNumber: number;
+}
+
+/** Fetch all tokens launched via the LaunchFactory by querying LaunchCreated events */
+export async function fetchAllLaunches(): Promise<LaunchedToken[]> {
+  try {
+    const provider = getReadProvider();
+    const factory = new Contract(CONTRACT_ADDRESSES.LAUNCH_FACTORY, LAUNCH_FACTORY_ABI, provider);
+
+    // BSC Testnet RPCs limit getLogs to ~5000 block ranges.
+    // Scan backwards from current block in chunks.
+    const currentBlock = await provider.getBlockNumber();
+    const CHUNK_SIZE = 5000;
+    const MAX_SCAN_DEPTH = 50000; // scan up to 50k blocks back
+    const startBlock = Math.max(0, currentBlock - MAX_SCAN_DEPTH);
+
+    console.log(`[Launches] Scanning blocks ${startBlock} → ${currentBlock} for LaunchCreated events...`);
+
+    const allEvents: any[] = [];
+    const filter = factory.filters.LaunchCreated();
+
+    for (let from = startBlock; from <= currentBlock; from += CHUNK_SIZE) {
+      const to = Math.min(from + CHUNK_SIZE - 1, currentBlock);
+      try {
+        const events = await factory.queryFilter(filter, from, to);
+        if (events.length > 0) {
+          console.log(`[Launches] Found ${events.length} events in blocks ${from}-${to}`);
+          allEvents.push(...events);
+        }
+      } catch (chunkErr) {
+        console.warn(`[Launches] Chunk ${from}-${to} failed:`, (chunkErr as Error).message);
+      }
+    }
+
+    console.log(`[Launches] Total events found: ${allEvents.length}`);
+
+    if (allEvents.length === 0) return [];
+
+    const launches: LaunchedToken[] = [];
+
+    for (const event of allEvents) {
+      const log = event as any;
+      const tokenAddr = log.args?.[0] || log.args?.token;
+      const vaultAddr = log.args?.[1] || log.args?.vault;
+      const controllerAddr = log.args?.[2] || log.args?.controller;
+      const govAddr = log.args?.[3] || log.args?.governance;
+      const pairAddr = log.args?.[4] || log.args?.ammPair;
+
+      if (!tokenAddr) continue;
+
+      console.log(`[Launches] Reading on-chain data for token at ${tokenAddr}...`);
+
+      // Read token data on-chain
+      let name = 'Unknown', symbol = '???', totalSupply = '0', sellTax = 0, buyTax = 0;
+      let phase = 0, mss = 0;
+
+      try {
+        const tokenContract = new Contract(tokenAddr, ADAPTIVE_TOKEN_ABI, provider);
+        const [n, s, ts, st, bt] = await Promise.all([
+          tokenContract.name(),
+          tokenContract.symbol(),
+          tokenContract.totalSupply(),
+          tokenContract.sellTax(),
+          tokenContract.buyTax(),
+        ]);
+        name = n; symbol = s;
+        totalSupply = formatUnits(ts, 18);
+        sellTax = Number(st) / 100;
+        buyTax = Number(bt) / 100;
+        console.log(`[Launches] Token: ${name} (${symbol}), supply: ${totalSupply}`);
+      } catch (e) {
+        console.warn(`[Launches] Failed to read token at ${tokenAddr}:`, (e as Error).message);
+      }
+
+      // Read phase data if controller exists
+      try {
+        if (controllerAddr) {
+          const ctrl = new Contract(controllerAddr, EVOLUTION_CONTROLLER_ABI, provider);
+          const [p, m] = await Promise.all([ctrl.currentPhase(), ctrl.currentMSS()]);
+          phase = Number(p);
+          mss = Number(m);
+        }
+      } catch { /* controller read failed */ }
+
+      launches.push({
+        tokenAddress: tokenAddr,
+        vaultAddress: vaultAddr || '',
+        controllerAddress: controllerAddr || '',
+        governanceAddress: govAddr || '',
+        ammPairAddress: pairAddr || '',
+        name,
+        symbol,
+        totalSupply,
+        sellTax,
+        buyTax,
+        phase,
+        phaseName: PHASE_NAMES[phase] || 'Genesis',
+        mss,
+        blockNumber: log.blockNumber || 0,
+      });
+    }
+
+    console.log(`[Launches] Successfully loaded ${launches.length} launched tokens`);
+    return launches;
+  } catch (err) {
+    console.error('[Launches] fetchAllLaunches failed:', (err as Error).message);
+    return [];
+  }
+}
+

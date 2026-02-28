@@ -131,4 +131,58 @@ router.get('/governance-events/:address', async (req, res) => {
     }
 });
 
+// ─── Launched Tokens Registry ─────────────────────────────────────
+/** GET all launched tokens (for Explore & Dashboard) */
+router.get('/launches', async (req, res) => {
+    try {
+        const launches = await Launch.find().sort({ creationTimestamp: -1 });
+        res.json(launches);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/** POST register a newly launched token */
+router.post('/launches', async (req, res) => {
+    try {
+        const {
+            tokenAddress, vaultAddress, controllerAddress, governanceAddress,
+            ammPairAddress, name, symbol, totalSupply, sellTax, buyTax,
+            phase, phaseName, mss, deployer, blockNumber
+        } = req.body;
+
+        if (!tokenAddress || !name || !symbol) {
+            return res.status(400).json({ error: 'tokenAddress, name, and symbol are required' });
+        }
+
+        // Upsert — update if exists, insert if new
+        const launch = await Launch.findOneAndUpdate(
+            { tokenAddress: tokenAddress.toLowerCase() },
+            {
+                tokenAddress: tokenAddress.toLowerCase(),
+                vaultAddress: vaultAddress || '',
+                controllerAddress: controllerAddress || '',
+                governanceAddress: governanceAddress || '',
+                ammPairAddress: ammPairAddress || '',
+                name,
+                symbol,
+                totalSupply: totalSupply || '0',
+                sellTax: sellTax || 0,
+                buyTax: buyTax || 0,
+                phase: phase || 0,
+                phaseName: phaseName || 'Genesis',
+                mss: mss || 0,
+                deployer: (deployer || '').toLowerCase(),
+                blockNumber: blockNumber || 0,
+            },
+            { upsert: true, new: true }
+        );
+
+        res.status(201).json(launch);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;
+

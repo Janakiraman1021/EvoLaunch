@@ -165,6 +165,27 @@ export const getLiquidityUnlocks = (tokenAddress: string): Promise<LiquidityUnlo
 export const getTokenAddress = (): string =>
     (typeof window !== 'undefined' ? process.env.NEXT_PUBLIC_TOKEN_ADDRESS : '') || '';
 
+/** Get all launched tokens */
+export const getLaunches = (): Promise<any[]> =>
+    fetchAPI('/launches', []);
+
+/** Register a newly launched token */
+export const postLaunch = async (data: any): Promise<any> => {
+    try {
+        const res = await fetch(`${API_BASE}/api/launches`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+            signal: AbortSignal.timeout(8000),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+    } catch (err) {
+        console.warn('[API] POST /launches failed:', (err as Error).message);
+        return null;
+    }
+};
+
 export default {
     getHealth,
     getStatus,
@@ -176,4 +197,6 @@ export default {
     getGovernanceEvents,
     getLiquidityUnlocks,
     getTokenAddress,
+    getLaunches,
+    postLaunch,
 };

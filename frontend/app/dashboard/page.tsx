@@ -6,53 +6,52 @@ import Link from 'next/link';
 import api from '../../lib/api';
 import { useContracts } from '../../lib/hooks/useContracts';
 import { useWeb3 } from '../../lib/hooks/useWeb3';
+import { useLaunches } from '../../lib/hooks/useLaunches';
+import { CONTRACT_ADDRESSES } from '../../lib/contracts';
 
 export default function DashboardPage() {
   const [timeframe, setTimeframe] = useState('24h');
   const { wallet } = useWeb3();
   const contracts = useContracts(wallet?.address);
+  const { launches, loading: launchesLoading } = useLaunches();
 
   const [stats, setStats] = useState({
-    portfolio: '42.5 BNB',
-    unrealizedGains: '+8.5%',
-    activePositions: 5,
-    totalValue: '125.3 BNB',
-    dailyChange: '+2.1 BNB',
+    portfolio: '0 BNB',
+    unrealizedGains: '+0%',
+    activePositions: 0,
+    totalValue: '0 BNB',
+    dailyChange: '0 BNB',
   });
 
-  const [positions, setPositions] = useState([
-    { symbol: 'EVO', amount: '50,000', value: '8.5 BNB', change: '+12.5%', phase: 'Growth' },
-    { symbol: 'TOKEN1', amount: '10,000', value: '3.2 BNB', change: '+5.2%', phase: 'Expansion' },
-    { symbol: 'TOKEN2', amount: '25,000', value: '2.1 BNB', change: '-2.1%', phase: 'Protective' },
-    { symbol: 'TOKEN3', amount: '5,000', value: '1.8 BNB', change: '+18.3%', phase: 'Growth' },
-    { symbol: 'TOKEN4', amount: '8,000', value: '0.9 BNB', change: '+3.5%', phase: 'Expansion' },
-  ]);
+  const [positions, setPositions] = useState<any[]>([]);
 
-  const [recentActivity, setRecentActivity] = useState([
-    { type: 'buy', symbol: 'EVO', amount: '5,000', price: '0.00017', time: '2 mins ago' },
-    { type: 'sell', symbol: 'TOKEN1', amount: '2,000', price: '0.00032', time: '15 mins ago' },
-    { type: 'buy', symbol: 'TOKEN3', amount: '5,000', price: '0.00018', time: '1 hour ago' },
-    { type: 'buy', symbol: 'TOKEN2', amount: '10,000', price: '0.000084', time: '3 hours ago' },
-  ]);
+  const [recentActivity] = useState<any[]>([]);
 
-  // Update with on-chain data
+  // Build positions from launched tokens
   useEffect(() => {
-    if (contracts.token) {
-      const sym = contracts.token.symbol;
+    if (launches.length > 0) {
+      const newPositions = launches.map(l => ({
+        symbol: l.symbol,
+        amount: Number(l.totalSupply).toLocaleString(),
+        value: `Tax ${l.sellTax}%/${l.buyTax}%`,
+        change: `MSS ${l.mss}`,
+        phase: l.phaseName,
+        address: l.tokenAddress,
+      }));
+      setPositions(newPositions);
+      setStats(prev => ({ ...prev, activePositions: launches.length }));
+    }
+  }, [launches]);
+
+  // Update with on-chain data for user balance
+  useEffect(() => {
+    if (contracts.token && contracts.userBalance) {
       const balance = parseFloat(contracts.userBalance);
-      setPositions(prev => prev.map((p, i) =>
-        i === 0 ? {
-          ...p,
-          symbol: sym,
-          amount: balance > 0 ? balance.toLocaleString() : p.amount,
-          phase: contracts.phase?.phaseName || p.phase,
-        } : p
-      ));
       if (balance > 0) {
-        setStats(prev => ({ ...prev, activePositions: 1, portfolio: `${balance.toFixed(2)} ${sym}` }));
+        setStats(prev => ({ ...prev, portfolio: `${balance.toFixed(2)} ${contracts.token!.symbol}` }));
       }
     }
-  }, [contracts.token, contracts.userBalance, contracts.phase]);
+  }, [contracts.token, contracts.userBalance]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
@@ -148,6 +147,18 @@ export default function DashboardPage() {
                     ))}
                   </tbody>
                 </table>
+                {positions.length === 0 && !launchesLoading && (
+                  <div className="text-center py-12 text-muted">
+                    <p className="text-sm uppercase tracking-widest font-bold mb-4">No tokens launched yet</p>
+                    <Link href="/launch" className="text-xs text-gold uppercase tracking-widest hover:underline">Launch your first token →</Link>
+                  </div>
+                )}
+                {launchesLoading && (
+                  <div className="text-center py-8">
+                    <div className="w-6 h-6 border-2 border-gold/20 border-t-gold rounded-full animate-spin mx-auto mb-3" />
+                    <p className="text-muted text-xs uppercase tracking-widest">Scanning chain...</p>
+                  </div>
+                )}
               </div>
             </div>
 

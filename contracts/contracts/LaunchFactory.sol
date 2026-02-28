@@ -111,6 +111,15 @@ contract LaunchFactory is Ownable {
         EvolutionController controller,
         address receiver
     ) internal {
+        // Fix: Exclude the receiver (deployer) from limits and fees so they can receive
+        // the total supply without hitting maxTx/maxWallet limits during deployment.
+        token.setExcludedFromLimits(receiver, true);
+        token.setExcludedFromFees(receiver, true);
+
+        // Fix: Transfer the entire balance of newly minted tokens to the deployer
+        // so they can provide liquidity on PancakeSwap.
+        token.transfer(receiver, token.balanceOf(address(this)));
+
         // Transfer token ownership
         token.grantRole(token.DEFAULT_ADMIN_ROLE(), receiver);
         token.renounceRole(token.DEFAULT_ADMIN_ROLE(), address(this));

@@ -4,11 +4,11 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import { useWeb3 } from '../lib/hooks/useWeb3';
 import { CONTRACT_ADDRESSES } from '../lib/contracts';
-import { Wallet, Globe, Copy, Check } from 'lucide-react';
+import { Wallet, Globe, Copy, Check, LogOut } from 'lucide-react';
 
 export default function Header() {
   const pathname = usePathname();
-  const { wallet, connectWallet, isConnecting, error, isConnected } = useWeb3();
+  const { wallet, connectWallet, disconnectWallet, isConnecting, error, isConnected } = useWeb3();
   const [copied, setCopied] = React.useState(false);
 
   const getPageTitle = () => {
@@ -50,7 +50,7 @@ export default function Header() {
         <div className="contract-bar" title="Launch Factory Address">
           <span className="opacity-40 uppercase tracking-widest shrink-0">Factory</span>
           <span className="address shrink-0">{CONTRACT_ADDRESSES.LAUNCH_FACTORY.slice(0, 6)}...{CONTRACT_ADDRESSES.LAUNCH_FACTORY.slice(-4)}</span>
-          <button 
+          <button
             onClick={copyAddress}
             className="p-1.5 hover:bg-white/5 rounded-lg transition-colors text-gold/40 hover:text-gold"
           >
@@ -70,9 +70,9 @@ export default function Header() {
         {/* Wallet Connection */}
         <div className="relative group">
           {isConnected ? (
-            <div className="flex items-center gap-4 bg-white/[0.03] border border-white/[0.05] px-5 py-2 rounded-xl hover:border-gold/30 transition-all cursor-default">
+            <div className="flex items-center gap-4 bg-white/[0.03] border border-white/[0.05] px-5 py-2 rounded-xl hover:border-gold/30 transition-all">
               <div className="text-right">
-                <p className="text-xs text-muted font-bold uppercase tracking-widest">Connected Wallet</p>
+                <p className="text-xs text-muted font-bold uppercase tracking-widest">Connected</p>
                 <p className="text-sm font-mono text-gold font-bold">
                   {wallet?.address.slice(0, 6)}...{wallet?.address.slice(-4)}
                 </p>
@@ -80,6 +80,13 @@ export default function Header() {
               <div className="icon-box bg-gold/10 text-gold border-gold/20">
                 <Wallet size={18} />
               </div>
+              <button
+                onClick={disconnectWallet}
+                className="p-2 hover:bg-status-danger/10 rounded-lg transition-all text-muted hover:text-status-danger"
+                title="Disconnect Wallet"
+              >
+                <LogOut size={16} />
+              </button>
             </div>
           ) : (
             <button

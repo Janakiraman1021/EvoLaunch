@@ -6,7 +6,7 @@ async function main() {
     console.log("Deploying token infrastructure via LaunchFactory...\n");
 
     const [deployer] = await hre.ethers.getSigners();
-    const LAUNCH_FACTORY_ADDRESS = "0x2C95eEeF7d0F5Be75dce165aC7689B09Fd06FEF6";
+    const LAUNCH_FACTORY_ADDRESS = "0xe5d0cc05BFDb99e4E4EF8665fB59eaC0B2B5D81f";
 
     console.log(`Account: ${deployer.address}`);
     console.log(`LaunchFactory: ${LAUNCH_FACTORY_ADDRESS}\n`);
@@ -41,21 +41,21 @@ async function main() {
 
     try {
         console.log("Calling createLaunch()...\n");
-        
+
         // Estimate gas
         const gasEstimate = await factory.createLaunch.estimateGas(launchParams);
         console.log(`Gas estimate: ${gasEstimate.toString()}`);
-        
+
         // Call createLaunch with higher gas limit
-        const tx = await factory.createLaunch(launchParams, { 
+        const tx = await factory.createLaunch(launchParams, {
             gasLimit: Math.floor(Number(gasEstimate) * 1.2) // 20% buffer
         });
-        
+
         console.log(`📤 Transaction sent: ${tx.hash}\n`);
         console.log("⏳ Waiting for confirmation...\n");
-        
+
         const receipt = await tx.wait();
-        
+
         if (!receipt || receipt.status === 0) {
             console.error("❌ Transaction reverted!");
             process.exit(1);
@@ -174,21 +174,21 @@ async function main() {
     } catch (err) {
         console.error("❌ Deployment failed:\n");
         console.error("Error:", err.message);
-        
+
         if (err.reason) {
             console.error("Reason:", err.reason);
         }
-        
+
         // Check if it's a revert error
         if (err.data) {
             console.error("Error Data:", err.data);
         }
-        
+
         console.error("\n💡 Troubleshooting:");
         console.error("- Make sure you have enough BNB for gas");
         console.error("- Check that LaunchFactory address is correct");
         console.error("- Verify PancakeSwap addresses are valid for BSC Testnet\n");
-        
+
         process.exit(1);
     }
 }

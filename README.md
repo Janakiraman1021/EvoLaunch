@@ -426,7 +426,7 @@ struct LaunchParams {
 
 | Contract             | Address                                      | Status  |
 |---------------------|----------------------------------------------|---------|
-| LaunchFactory        | `0x2C95eEeF7d0F5Be75dce165aC7689B09Fd06FEF6` | ✅ Live |
+| LaunchFactory        | `0xe5d0cc05BFDb99e4E4EF8665fB59eaC0B2B5D81f` | ✅ Live |
 | AdaptiveToken        | `0xb142FCD1fc79BE3EA60C1B83558f171033A0c12E` | ✅ Live |
 | EvolutionController  | `0xC4D65495eB47AC8726Dad401d28A83C25B77f110` | ✅ Live |
 | LiquidityVault       | `0x...`                                       | ✅ Live |

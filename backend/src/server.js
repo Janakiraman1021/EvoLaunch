@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const rateLimit = require('express-rate-limit');
 
 const connectDB = require('./services/database');
-const { startHealthMonitor } = require('./services/healthMonitor');
+// const { startHealthMonitor } = require('./services/healthMonitor');
 const { startEventListener, onTriggerOrchestrator } = require('./services/eventListener');
 const { startGovernanceMonitor } = require('./services/governanceMonitor');
 const { startOrchestrator, runEvaluationCycle } = require('./services/orchestrator');
@@ -52,7 +52,7 @@ const startServer = async () => {
     await connectDB();
 
     // 2. Start health monitor (independent of chain)
-    startHealthMonitor();
+    // startHealthMonitor();
 
     // 3. Start governance monitor (syncs freeze state from chain)
     await startGovernanceMonitor();

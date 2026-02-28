@@ -363,3 +363,46 @@ html[data-theme='dark'] .floating-navbar {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--gold);
 }
+
+/* Futuristic Cyberpunk Animations */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Refined Luxury Animations */
+@keyframes elegant-pulse {
+  0%, 100% { 
+    opacity: 0.6; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.02);
+  }
+}
+
+@keyframes luxury-glow {
+  0%, 100% { 
+    box-shadow: 0 0 15px rgba(230, 192, 123, 0.2); 
+  }
+  50% { 
+    box-shadow: 0 0 25px rgba(230, 192, 123, 0.4), 0 0 35px rgba(230, 192, 123, 0.2); 
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spin-slow 6s linear infinite reverse;
+}
+
+.animate-elegant-pulse {
+  animation: elegant-pulse 3s ease-in-out infinite;
+}
+
+.animate-luxury-glow {
+  animation: luxury-glow 3s ease-in-out infinite;
+}
