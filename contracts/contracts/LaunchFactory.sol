@@ -7,6 +7,7 @@ import "./EvolutionController.sol";
 import "./GovernanceModule.sol";
 import "./interfaces/IPancakeSwap.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "hardhat/console.sol";
 
 /**
  * @title LaunchFactory
@@ -29,10 +30,14 @@ contract LaunchFactory is Ownable {
         pancakeFactory = _factory;
     }
 
+    // Required to receive the unused BNB refund from PancakeSwap when adding liquidity
+    receive() external payable {}
+
     struct LaunchParams {
         string name;
         string symbol;
         uint256 totalSupply;
+        uint256 initialLiquidityTokens; // NEW: Amount of tokens to pair with msg.value
         uint256 initialSellTax;
         uint256 initialBuyTax;
         uint256 initialMaxTx;
@@ -105,20 +110,67 @@ contract LaunchFactory is Ownable {
         }
     }
 
-    function _transferOwnership(
+    function _finalizeAndTransfer(
         AdaptiveToken token,
         LiquidityVault vault,
         EvolutionController controller,
+        LaunchParams calldata params,
         address receiver
     ) internal {
-        // Fix: Exclude the receiver (deployer) from limits and fees so they can receive
-        // the total supply without hitting maxTx/maxWallet limits during deployment.
+        console.log("Starting finalizeAndTransfer");
+        
+        // Exclude the factory and receiver (deployer) from limits and fees during setup
+        token.setExcludedFromLimits(address(this), true);
+        token.setExcludedFromFees(address(this), true);
         token.setExcludedFromLimits(receiver, true);
         token.setExcludedFromFees(receiver, true);
 
-        // Fix: Transfer the entire balance of newly minted tokens to the deployer
-        // so they can provide liquidity on PancakeSwap.
-        token.transfer(receiver, token.balanceOf(address(this)));
+        // Crucial: The router and the pair must be excluded from limits during LP creation
+        // to prevent reverting on maxTxAmount or maxWalletSize.
+        token.setExcludedFromLimits(pancakeRouter, true);
+        token.setExcludedFromFees(pancakeRouter, true);
+        token.setExcludedFromLimits(token.ammPair(), true);
+        token.setExcludedFromFees(token.ammPair(), true);
+
+        console.log("Limits excluded");
+
+        // Automate Liquidity Provision if BNB is sent
+        if (msg.value > 0 && params.initialLiquidityTokens > 0) {
+            console.log("Adding liquidity", msg.value, params.initialLiquidityTokens);
+            uint256 tokensToAdd = params.initialLiquidityTokens;
+            if (tokensToAdd > token.balanceOf(address(this))) {
+                tokensToAdd = token.balanceOf(address(this)); // Safely clamp if user sends too high param
+            }
+
+            console.log("Approving router");
+            // Approve PancakeRouter to spend the factory's minted tokens
+            token.approve(pancakeRouter, tokensToAdd);
+
+            console.log("Calling addLiquidityETH");
+            // Add liquidity. The LP tokens will be minted directly to the receiver (deployer).
+            IPancakeRouter02(pancakeRouter).addLiquidityETH{value: msg.value}(
+                address(token),
+                tokensToAdd,
+                0, // slippage is unavoidable for initial LP
+                0, 
+                receiver, // LP tokens go to deployer
+                block.timestamp + 300 // 5 min deadline
+            );
+            console.log("Liquidity added successfully");
+
+            // Refund any unused BNB to the deployer
+            if (address(this).balance > 0) {
+                (bool success, ) = receiver.call{value: address(this).balance}("");
+                require(success, "BNB refund failed");
+            }
+        }
+
+        // Transfer the *remaining* balance of newly minted tokens to the deployer.
+        // If they pooled 100%, this does nothing. If they pooled 50%, they receive the other 50%.
+        uint256 remainingBal = token.balanceOf(address(this));
+        if (remainingBal > 0) {
+            token.transfer(receiver, remainingBal);
+        }
 
         // Transfer token ownership
         token.grantRole(token.DEFAULT_ADMIN_ROLE(), receiver);
@@ -148,7 +200,7 @@ contract LaunchFactory is Ownable {
         ) = _deployContracts(params);
 
         _setupRoles(token, vault, controller, params.agentPublicKeys);
-        _transferOwnership(token, vault, controller, msg.sender);
+        _finalizeAndTransfer(token, vault, controller, params, msg.sender);
 
         emit LaunchCreated(
             address(token),

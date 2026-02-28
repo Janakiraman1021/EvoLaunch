@@ -3,7 +3,7 @@ import { Contract, BrowserProvider, JsonRpcProvider, formatUnits } from 'ethers'
 // ─── Contract ABIs ────────────────────────────────────────────────
 
 export const LAUNCH_FACTORY_ABI = [
-  `function createLaunch((string name, string symbol, uint256 totalSupply, uint256 initialSellTax, uint256 initialBuyTax, uint256 initialMaxTx, uint256 initialMaxWallet, uint256 minTax, uint256 maxTax, uint256 minMaxTx, uint256 minMaxWallet, address feeCollector, address[] agentPublicKeys) params) external payable returns (address)`,
+  `function createLaunch((string name, string symbol, uint256 totalSupply, uint256 initialLiquidityTokens, uint256 initialSellTax, uint256 initialBuyTax, uint256 initialMaxTx, uint256 initialMaxWallet, uint256 minTax, uint256 maxTax, uint256 minMaxTx, uint256 minMaxWallet, address feeCollector, address[] agentPublicKeys) params) external payable returns (address)`,
   'event LaunchCreated(address indexed token, address vault, address controller, address governance, address ammPair)',
 ];
 
@@ -54,7 +54,7 @@ export const PANCAKE_ROUTER_ABI = [
 // ─── Deployed Contract Addresses (BSC Testnet) ────────────────────
 
 export const CONTRACT_ADDRESSES = {
-  LAUNCH_FACTORY: '0xe5d0cc05BFDb99e4E4EF8665fB59eaC0B2B5D81f',
+  LAUNCH_FACTORY: '0x37d28D8E694FdDc282Df52C297BfCC492Ca1940c',
   ADAPTIVE_TOKEN: '0xb142FCD1fc79BE3EA60C1B83558f171033A0c12E',
   LIQUIDITY_VAULT: '0x383D77A86D51313e5C3F6f9feb372191FAEdA4fF',
   EVOLUTION_CONTROLLER: '0xC4D65495eB47AC8726Dad401d28A83C25B77f110',

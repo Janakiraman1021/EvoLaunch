@@ -406,3 +406,53 @@ html[data-theme='dark'] .floating-navbar {
 .animate-luxury-glow {
   animation: luxury-glow 3s ease-in-out infinite;
 }
+
+/* Responsive enhancements */
+@media (max-width: 640px) {
+  .luxury-card {
+    border-radius: 1rem;
+    box-shadow: 0 4px 25px -5px rgba(0, 0, 0, 0.4);
+  }
+  
+  .shadow-gold-glow {
+    box-shadow: 0 4px 15px -5px rgba(230, 192, 123, 0.25);
+  }
+  
+  /* Optimize animations for mobile */
+  .animate-spin-slow {
+    animation-duration: 12s;
+  }
+  
+  .animate-elegant-pulse {
+    animation-duration: 4s;
+  }
+  
+  /* Better touch targets */
+  .btn-primary {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens */
+  .luxury-card {
+    margin: 0.5rem;
+    border-radius: 0.75rem;
+  }
+  
+  /* Reduce motion for better performance on low-end devices */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-spin-slow,
+    .animate-spin-reverse,
+    .animate-elegant-pulse,
+    .animate-luxury-glow {
+      animation: none;
+    }
+    
+    .animate-pulse {
+      animation: none;
+      opacity: 0.7;
+    }
+  }
+}

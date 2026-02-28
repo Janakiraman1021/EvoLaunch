@@ -16,6 +16,9 @@ module.exports = {
   networks: {
     hardhat: {
       chainId: 31337,
+      forking: {
+        url: process.env.BSC_TESTNET_RPC || "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+      }
     },
     bscTestnet: {
       url: process.env.BSC_TESTNET_RPC || "https://bsc-testnet.publicnode.com",

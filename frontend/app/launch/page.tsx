@@ -7,13 +7,14 @@ import { ArrowLeft, AlertCircle, CheckCircle, Zap, Lock } from 'lucide-react';
 import { useWeb3 } from '../../lib/hooks/useWeb3';
 import { CONTRACT_ADDRESSES, LAUNCH_FACTORY_ABI, ADAPTIVE_TOKEN_ABI, EVOLUTION_CONTROLLER_ABI, PHASE_NAMES, getSignedContract, getReadProvider } from '../../lib/contracts';
 import { postLaunch } from '../../lib/api';
-import { parseUnits, parseEther, Contract, formatUnits } from 'ethers';
+import { parseUnits, parseEther, formatEther, Contract, formatUnits } from 'ethers';
 
 interface FormData {
   name: string;
   symbol: string;
   totalSupply: string;
   initialLiquidity: string;
+  initialLiquidityBnb: string;
   initialSellTax: number;
   initialBuyTax: number;
   minTax: number;
@@ -42,7 +43,8 @@ export default function LaunchPage() {
     name: 'Sample Token',
     symbol: 'SMPL',
     totalSupply: '1000000',
-    initialLiquidity: '0',
+    initialLiquidity: '500000',
+    initialLiquidityBnb: '0.01',
     initialSellTax: 5,
     initialBuyTax: 2,
     minTax: 0,
@@ -79,10 +81,15 @@ export default function LaunchPage() {
       warnings.push('Initial sell tax exceeds maximum tax bound');
     }
     try {
-      if (BigInt(form.minMaxTx || '0') > BigInt(form.initialMaxTx || '0')) {
+      const minTxBn = parseUnits(form.minMaxTx || '0', 18);
+      const initTxBn = parseUnits(form.initialMaxTx || '0', 18);
+      if (minTxBn > initTxBn) {
         warnings.push('Minimum max-tx is higher than initial max-tx');
       }
-      if (BigInt(form.minMaxWallet || '0') > BigInt(form.initialMaxWallet || '0')) {
+
+      const minWalletBn = parseUnits(form.minMaxWallet || '0', 18);
+      const initWalletBn = parseUnits(form.initialMaxWallet || '0', 18);
+      if (minWalletBn > initWalletBn) {
         warnings.push('Minimum max-wallet is higher than initial max-wallet');
       }
     } catch { /* ignore parsing errors during typing */ }
@@ -138,6 +145,7 @@ export default function LaunchPage() {
         form.name,
         form.symbol,
         parseUnits(form.totalSupply || '1000000', 18),
+        parseUnits(form.initialLiquidity || '0', 18), // NEW: initialLiquidityTokens
         BigInt(Math.round(form.initialSellTax * 100)),  // basis points
         BigInt(Math.round(form.initialBuyTax * 100)),
         parseUnits(form.initialMaxTx || '10000', 18),
@@ -150,13 +158,14 @@ export default function LaunchPage() {
         [wallet.address],  // agentPublicKeys
       ];
 
-      // NOTE: The LaunchFactory contract is marked payable but does NOT use msg.value.
-      // Do NOT send BNB — it would just be locked in the factory contract.
-      // Deploying 5 contracts in one tx requires high gas.
-      console.log('[Launch] Deploying with params:', params);
+      // Send BNB along with transaction to auto-create liquidity pool
+      const bnbValue = parseEther(form.initialLiquidityBnb || '0');
+
+      console.log('[Launch] Deploying with params:', params, 'BNB:', formatEther(bnbValue));
 
       const tx = await factory.createLaunch(params, {
-        gasLimit: 8_000_000,  // high gas: deploys 5 contracts internally
+        value: bnbValue,
+        gasLimit: 15_000_000,  // very high gas: deploys 5 contracts and adds liquidity
       });
 
       setTxHash(tx.hash);
@@ -312,7 +321,19 @@ export default function LaunchPage() {
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-xs font-bold text-gold uppercase tracking-[0.1em] ml-2">Initial Liquidity</label>
+                    <label className="text-xs font-bold text-gold uppercase tracking-[0.1em] ml-2">Initial Liquidity (BNB)</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      value={form.initialLiquidityBnb}
+                      onChange={(e) => handleInputChange('initialLiquidityBnb', e.target.value)}
+                      className="w-full bg-background border border-gold/[0.08] rounded-xl px-6 py-4 focus:border-gold/30 outline-none transition-all text-primary font-medium"
+                      placeholder="e.g. 0.05"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-xs font-bold text-gold uppercase tracking-[0.1em] ml-2">Initial Liquidity (Tokens)</label>
                     <input
                       type="number"
                       value={form.initialLiquidity}

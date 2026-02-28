@@ -6,7 +6,7 @@ async function main() {
     console.log("Deploying token infrastructure via LaunchFactory...\n");
 
     const [deployer] = await hre.ethers.getSigners();
-    const LAUNCH_FACTORY_ADDRESS = "0xe5d0cc05BFDb99e4E4EF8665fB59eaC0B2B5D81f";
+    const LAUNCH_FACTORY_ADDRESS = "0x4Ab4727c436077cD56652166d32503f959e943Ab";
 
     console.log(`Account: ${deployer.address}`);
     console.log(`LaunchFactory: ${LAUNCH_FACTORY_ADDRESS}\n`);

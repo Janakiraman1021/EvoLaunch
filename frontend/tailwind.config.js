@@ -34,6 +34,15 @@ module.exports = {
         "gold-glow": "0 0 15px rgba(230, 192, 123, 0.35)",
         "gold-subtle": "0 4px 20px rgba(230, 192, 123, 0.1)",
         "luxury-soft": "0 10px 40px -10px rgba(0, 0, 0, 0.5)",
+        "mobile-luxury": "0 4px 25px -5px rgba(0, 0, 0, 0.4)",
+      },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+        '128': '32rem',
+      },
+      fontSize: {
+        'xxs': '0.625rem',
       },
       animation: {
         'spin-slow': 'spin-slow 8s linear infinite',
